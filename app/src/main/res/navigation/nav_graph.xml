@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
+
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.example.iscorebridge.HomePage"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_first">
+
+        <action
+            android:id="@+id/homeToJoin"
+            app:destination="@id/JoinGame" />
+        <action
+            android:id="@+id/homeToStart"
+            app:destination="@id/StartGameScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="com.example.iscorebridge.SecondFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_second">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_startGameFragment"
+            app:destination="@id/StartGameScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/StartGameScreen"
+        android:name="com.example.iscorebridge.StartGameScreen"
+        android:label="Start Game"
+        tools:layout="@layout/fragment_start_game_screen">
+        <action
+            android:id="@+id/startGameToScore"
+            app:destination="@id/ScoreEntryFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/JoinGame"
+        android:name="com.example.iscorebridge.JoinGame"
+        android:label="Join game"
+        tools:layout="@layout/fragment_join_game">
+
+        <action
+            android:id="@+id/joinGameToWaitToStart"
+            app:destination="@id/WaitToStart" />
+    </fragment>
+    <fragment
+        android:id="@+id/WaitToStart"
+        android:name="com.example.iscorebridge.WaitToStart"
+        android:label="Wait for start"
+        tools:layout="@layout/fragment_wait_to_start">
+
+        <action
+            android:id="@+id/waitToStartToScoreEntry"
+            app:destination="@id/ScoreEntryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ScoreEntryFragment"
+        android:name="com.example.iscorebridge.ScoreEntryFragment"
+        android:label="Score Entry"
+        tools:layout="@layout/fragment_score_entry">
+
+        <action
+            android:id="@+id/scoreEntryToScoreEntry"
+            app:destination="@id/ScoreEntryFragment" />
+    </fragment>
+</navigation>
