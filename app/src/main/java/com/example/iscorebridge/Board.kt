@@ -9,19 +9,17 @@ val IMPCONVERSION : Array<Int> = arrayOf(0, 20, 50, 90, 130, 170, 220, 270, 320,
 
 class Board {
     var boardNumber: Int
-    var games: ArrayList<Game>
+    var games: ArrayList<Game> = ArrayList<Game>()
     var vulnerability: Vulnerability
     var dlm = "|||"
 
     constructor(boardNumber: Int){
         this.boardNumber = boardNumber
-        this.games = ArrayList<Game>()
         this.vulnerability = calculateVulnerability(boardNumber)
     }
 
     constructor(board:String){
         var parametersAsString = board.split(dlm + "$")
-        games = ArrayList<Game>()
         var gamesAsString = parametersAsString[1].split(dlm)
         for(game in gamesAsString){
             games.add(Game(game))
@@ -41,6 +39,19 @@ class Board {
         out += dlm + "$" + vulnerability.toString()
         return out
 
+    }
+
+    fun hasGame(compareGame : Game) : Boolean{
+        for(game in games){
+            if(game.pairNS == compareGame.pairNS && game.pairEW == compareGame.pairEW){
+                return true
+            }
+        }
+        return false
+    }
+
+    fun addGame(game: Game){
+        this.games.add(game)
     }
 
     fun addGame(pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean){

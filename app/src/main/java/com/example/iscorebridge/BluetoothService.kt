@@ -24,48 +24,59 @@ val programUUID: UUID = UUID.fromString("096e8f5d-2b31-410a-9cc3-c577003bbfdd")
 
 @Volatile lateinit var bluetoothService : BluetoothService
 
-fun getMac(context: Context) : String{
-    val manager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
-    val info = manager.connectionInfo
-    return if (ActivityCompat.checkSelfPermission(
-            context,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED
-    ) {
-        return ""
-    }
-    else {
-        info.macAddress.toUpperCase()
-    }
-}
 
-class SharedBluetoothData : ViewModel() {
-    private val room = MutableLiveData<BluetoothService>()
 
-    fun setBluetoothRoom(service : BluetoothService){
-        this.room.value = service
-    }
-}
-
-class SharedMatch : ViewModel(){
-    val match = MutableLiveData<Match>()
-}
 
 const val MESSAGECONNECTED = 3
+const val MESSAGE_START = 13
 const val MESSAGE_SEND = 6
+const val MESSAGE_SEND_MATCH = 11
+const val MESSAGE_READ_MATCH = 12
 const val ENABLE_DISCOVERABLE = 4
 const val MESSAGE_MATCHUPDATE = 5
 
-class BluetoothService(var readerID : String, var bluetoothAdapter: BluetoothAdapter, var deviceID:String, @Volatile public var parentHandler: Handler) : Activity() {
+fun send(purpose : Int, msg : String){
+    var c = Communication(bluetoothAdapter.name, purpose, msg)
+    bluetoothService.childHandler.obtainMessage(MESSAGE_SEND, -1, -1, c).sendToTarget()
+}
+
+class BluetoothService(): Activity() {
 
     lateinit var writer : BluetoothWriter
     lateinit var reader : BluetoothReader
+    var writerSet : Boolean = false
+    var readerSet : Boolean = false
     lateinit var childHandler : Handler
+    lateinit var bluetoothDevice : BluetoothDevice
+    lateinit var deviceID : String
+    lateinit var readerID : String
+    @Volatile lateinit var parentHandler : Handler
 
-
-    public fun start(){
+    constructor(readerID : String, parentHandler : Handler) : this() {
+        this.readerID = readerID
+        this.parentHandler = parentHandler
+        deviceID = bluetoothAdapter.name
         enableDiscoverable()
     }
+    constructor(bluetoothDevice : BluetoothDevice, parentHandler: Handler) : this() {
+        deviceID = bluetoothAdapter.name
+        this.parentHandler = parentHandler
+        this.bluetoothDevice = bluetoothDevice
+        enableDiscoverable()
+
+    }
+
+    constructor(bluetoothWriter: BluetoothWriter, readerID: String, parentHandler: Handler) : this(){
+        deviceID = bluetoothAdapter.name
+        this.writer = bluetoothWriter
+        writerSet = true
+        this.readerID = readerID
+        this.parentHandler = parentHandler
+        connect()
+    }
+
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -90,17 +101,8 @@ class BluetoothService(var readerID : String, var bluetoothAdapter: BluetoothAda
 
     }
 
-    private fun decodeID(id: String) : String{
-        return id
-    }
 
-    public fun updateMatch(newMatch : Match){
-        writer.getAsyncWriter().write(deviceID + newMatch.toString())
-    }
 
-    private fun parseDeviceID(msg: String) : String{
-        return msg[0].toString() + msg[1].toString()
-    }
 
     private inner class DataHandler() : Thread() {
         override fun run() {
@@ -113,15 +115,22 @@ class BluetoothService(var readerID : String, var bluetoothAdapter: BluetoothAda
                             var readBuf: ByteArray = msg.obj as ByteArray;
                             // construct a string from the valid bytes in the buffer
                             var readMessage = String(readBuf, 0, msg.arg1);
-                            if(parseDeviceID(readMessage) == deviceID) {
-                                writer.getAsyncWriter().write(readBuf)
+                            var c = Communication(readMessage)
+                            if(c.deviceID != deviceID) {
+                                writer.sendHandler.obtainMessage(MESSAGE_WRITE,  BYTEARRAY, -1, readBuf).sendToTarget()
                             }
-                            var newMatch = Match(readMessage.substring(2))
-                            match = newMatch
-                            reader.getAsyncReader().start()
+                            if(c.purpose == SENDMATCH){
+                                var newMatch = Match(c.msg)
+                                match.merge(newMatch)
+                            }
+                            else if(c.purpose == SENDSTART){
+                                parentHandler.obtainMessage(MESSAGE_START, -1, -1, null).sendToTarget()
+                            }
+
                         }
                         MESSAGE_SEND ->{
-                            writer.getAsyncWriter().write(deviceID + (msg.obj as Match).toString())
+                            var c = msg.obj as Communication
+                            writer.sendHandler.obtainMessage(MESSAGE_WRITE,  STRING, -1, c.toString()).sendToTarget()
                         }
                     }
 
@@ -145,23 +154,32 @@ class BluetoothService(var readerID : String, var bluetoothAdapter: BluetoothAda
             mmSocket?.let { socket ->
                 socket.connect()
                 onconnect(socket)
+
+
             }
         }
 
-        public fun onconnect(socket:BluetoothSocket){
-            reader = BluetoothReader(childHandler, socket)
+        public fun initialiseWriter(){
             var serverSoc = bluetoothAdapter.listenUsingRfcommWithServiceRecord(
                 "iscorebridge",
                 programUUID
             )
             val writerSoc = serverSoc.accept()
             serverSoc.close()
-            writer = BluetoothWriter(childHandler, writerSoc)
-            val writtenMsg = parentHandler.obtainMessage(
+            writer = BluetoothWriter(writerSoc)
+
+        }
+
+        public fun onconnect(socket:BluetoothSocket){
+            reader = BluetoothReader(childHandler, socket)
+            if(!writerSet) {
+                initialiseWriter()
+            }
+            val connectedMsg = parentHandler.obtainMessage(
                 MESSAGECONNECTED
             )
-            writtenMsg.sendToTarget()
-            reader.getAsyncReader().start()
+            connectedMsg.sendToTarget()
+            reader.start()
         }
     }
 
@@ -171,11 +189,12 @@ class BluetoothService(var readerID : String, var bluetoothAdapter: BluetoothAda
         override fun onReceive(context: Context, intent: Intent) {
             when(intent.action) {
                 BluetoothDevice.ACTION_FOUND -> {
+                    bluetoothAdapter.cancelDiscovery()
                     // Discovery has found a device. Get the BluetoothDevice
                     // object and its info from the Intent.
                     val device: BluetoothDevice =
                         intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)!!
-                    if(device.address == decodeID(readerID)){
+                    if(device.address == readerID){
                         ConnectThread(device).start()
                     }
 
@@ -186,9 +205,9 @@ class BluetoothService(var readerID : String, var bluetoothAdapter: BluetoothAda
 
 
     private fun connect(){
-        val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
+        val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter!!.bondedDevices
         pairedDevices?.forEach { device ->
-            if(device.address == decodeID(this.readerID)){
+            if(device.address == this.readerID){
                 ConnectThread(device).start()
                 return
             }
@@ -196,6 +215,7 @@ class BluetoothService(var readerID : String, var bluetoothAdapter: BluetoothAda
 
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         registerReceiver(pair, filter)
+        bluetoothAdapter.startDiscovery()
 
 
 

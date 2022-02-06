@@ -1,15 +1,19 @@
 package com.example.iscorebridge
 
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import org.w3c.dom.Text
 
@@ -38,14 +42,20 @@ class JoinGame : Fragment() {
         return inflater.inflate(R.layout.fragment_join_game, container, false)
     }
 
-    private fun joinGame(view : View){
+
+
+
+
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun joinGame(view : View){
         var id = view.findViewById<TextView>(R.id.idEntry).text
-        Looper.prepare()
         var handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
                     MESSAGECONNECTED -> {
-                        Looper.myLooper()!!.quit()
                         findNavController().navigate(R.id.joinGameToWaitToStart)
                     }
                 }
@@ -53,10 +63,47 @@ class JoinGame : Fragment() {
             }
         }
         var btc = BluetoothClient(id.toString(), handler)
-        btc.start()
-        Looper.loop()
+
+        lateinit var pair : BroadcastReceiver
+        pair = object : BroadcastReceiver() {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onReceive(context: Context, intent: Intent) {
+                when(intent.action) {
+                    BluetoothDevice.ACTION_FOUND -> {
+                        // Discovery has found a device. Get the BluetoothDevice
+                        // object and its info from the Intent.
+                        val device: BluetoothDevice? =
+                            intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                        if(device != null){
+                            if(device.name != null) {
+                                if (encodeID(device.name) == id.toString()) {
+                                    activity!!.unregisterReceiver(pair)
+                                    bluetoothAdapter.cancelDiscovery()
+
+                                    btc.connect(device)
+                                    Looper.loop()
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter.bondedDevices
+        pairedDevices?.forEach { device ->
+            if(encodeID(device.name) == id.toString()){
+                btc.connect(device)
+                Looper.loop()
+            }
+        }
+        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        activity!!.registerReceiver(pair, filter)
+        bluetoothAdapter.startDiscovery()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.joinButton).setOnClickListener {

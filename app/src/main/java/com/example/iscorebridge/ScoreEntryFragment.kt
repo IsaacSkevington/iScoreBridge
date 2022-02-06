@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import org.w3c.dom.Text
+import androidx.navigation.fragment.findNavController
 
 
 /**
@@ -16,6 +16,10 @@ import org.w3c.dom.Text
  * Use the [ScoreEntryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+var boardNumber = 0
+var pairNS = 0
+var pairEW = 0
+var teams : Boolean = true
 class ScoreEntryFragment() : Fragment() {
 
     private var contractNumber: Int = 0
@@ -57,12 +61,27 @@ class ScoreEntryFragment() : Fragment() {
         displayContract()
     }
 
+    private fun setDouble(){
+        redoubled = false
+        doubled = true
+        displayContract()
+    }
+
+    private fun setreDouble(){
+        redoubled = true
+        doubled = false
+        displayContract()
+    }
+
 
 
     private fun submit(){
-        match.addGame(view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt(),
-                        view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt(),
-                        view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt(),
+        pairNS = view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
+        pairEW = view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
+        boardNumber = view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
+        match.addGame(  boardNumber,
+                        pairNS,
+                        pairEW,
                         contractSuit,
                         contractNumber,
                         view!!.findViewById<TextView>(R.id.TricksEntry).text.toString().toInt(),
@@ -71,11 +90,9 @@ class ScoreEntryFragment() : Fragment() {
                         doubled,
                         redoubled
         )
-        val matchUpdateMessage = bts.childHandler.obtainMessage(
-            MESSAGE_SEND, 0, 0,
-            match
-        )
-        matchUpdateMessage.sendToTarget()
+
+        send(SENDMATCH, match.toString())
+        findNavController().navigate(R.id.scoreEntryToScoreView)
 
     }
 
@@ -127,27 +144,17 @@ class ScoreEntryFragment() : Fragment() {
         view.findViewById<Button>(R.id.button7).setOnClickListener{
             setNumber(7)
         }
+        view.findViewById<Button>(R.id.button7).setOnClickListener{
+            setNumber(7)
+        }
+        view.findViewById<Button>(R.id.DoubleButton).setOnClickListener{
+            setDouble()
+        }
+        view.findViewById<Button>(R.id.reDoubleButton).setOnClickListener{
+            setreDouble()
+        }
         view.findViewById<Button>(R.id.submitResult).setOnClickListener{
             submit()
         }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ScoreEntryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(match : SharedMatch) =
-            ScoreEntryFragment().apply {
-                arguments = Bundle().apply {
-                    match
-                }
-            }
     }
 }

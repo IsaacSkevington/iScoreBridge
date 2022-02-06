@@ -70,5 +70,18 @@
         <action
             android:id="@+id/scoreEntryToScoreEntry"
             app:destination="@id/ScoreEntryFragment" />
+        <action
+            android:id="@+id/scoreEntryToScoreView"
+            app:destination="@id/ScoreViewWindow" />
+    </fragment>
+    <fragment
+        android:id="@+id/ScoreViewWindow"
+        android:name="com.example.iscorebridge.BoardScoreView"
+        android:label="Board Score View"
+        tools:layout="@layout/fragment_board_score_view">
+        <action
+            android:id="@+id/scoreViewToScoreEntry"
+            app:destination="@id/ScoreEntryFragment" />
+
     </fragment>
 </navigation>

@@ -1,8 +1,8 @@
 package com.example.iscorebridge
 
 import android.bluetooth.BluetoothAdapter
-import android.os.Build
-import android.os.Bundle
+import android.content.Intent
+import android.os.*
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,13 +19,16 @@ import java.util.*
  * create an instance of this fragment.
  */
 
-const val IDSTART = 0
-const val IDEND = 5
-
+@Volatile lateinit var bluetoothHost: BluetoothHost
+@Volatile var amHost : Boolean = false
 @RequiresApi(Build.VERSION_CODES.O)
 fun encodeID(ID : String) : String{
     var b64Encoder = Base64.getEncoder()
-    var ID64 = b64Encoder.encodeToString(ID.substring(IDSTART, IDEND).toByteArray())
+    var start= ID.length - 5
+    if(start < 0){
+        start = 0
+    }
+    var ID64 = b64Encoder.encodeToString(ID.substring(start, ID.length).toByteArray())
     return ID64.toString()
 }
 
@@ -47,14 +50,39 @@ class StartGameScreen : Fragment() {
         return inflater.inflate(R.layout.fragment_start_game_screen, container, false)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        amHost = false
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        amHost = true
         view.findViewById<TextView>(R.id.idTextView).text = encodeID(bluetoothAdapter.name)
-        bth = BluetoothHost(bluetoothAdapter, bluetoothAdapter.address)
+        val requestCode = ENABLE_DISCOVERABLE;
+
+        val discoverableIntent: Intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
+            putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300)
+        }
+        startActivityForResult(discoverableIntent, requestCode)
+
+        bluetoothHost = BluetoothHost(bluetoothAdapter)
+        bluetoothHost.start()
         view.findViewById<Button>(R.id.StartPlayingButton).setOnClickListener {
-            bth.cancel = true
-            findNavController().navigate(R.id.startGameToScore)
+            Looper.prepare()
+            var handler = object : Handler(Looper.myLooper()!!) {
+                override fun handleMessage(msg: Message) {
+                    when (msg.what) {
+                        MESSAGECONNECTED ->{
+                            send(MESSAGE_START, "")
+                            findNavController().navigate(R.id.startGameToScore)
+                        }
+                    }
+                }
+            }
+            bluetoothService = BluetoothService(bluetoothHost.myWriter, bluetoothHost.myClient.remoteDevice.address, handler)
+
         }
 
     }

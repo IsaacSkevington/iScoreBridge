@@ -1,37 +1,47 @@
 package com.example.iscorebridge
 
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import java.net.Socket
 
 const val MESSAGE_CONNECT = 7
 
-class BluetoothHost(private val deviceAdapter : BluetoothAdapter, var myMAC : String) : Thread(){
 
+val ME = "HOSTCONNECT"
+class BluetoothHost(private val deviceAdapter : BluetoothAdapter) : Thread(){
+    
     lateinit var hostHandler : Handler
-    lateinit var writer: BluetoothWriter
+    lateinit var myWriter: BluetoothWriter
     var clients = ArrayList<String>()
+    @Volatile lateinit var myClient : BluetoothSocket
     @Volatile var cancel = false
 
 
     override fun run(){
+        var serverSoc = deviceAdapter.listenUsingRfcommWithServiceRecord(
+            "iscorebridge",
+            programUUID
+        )
         while(!cancel) {
-            var serverSoc = deviceAdapter.listenUsingRfcommWithServiceRecord(
-                "iscorebridge",
-                programUUID
-            )
+
             val writerSoc = serverSoc.accept()
-            var clientAssignment: String
-            clientAssignment = if (clients.size == 0) {
-                myMAC
+            var clientAssignment: String = if (clients.size == 0) {
+                myClient = writerSoc
+                ME
+
             } else {
                 clients[clients.size - 1]
             }
 
-            var writer = BluetoothWriter(hostHandler, writerSoc)
-            writer.getAsyncWriter().write(clientAssignment)
+            var writer = BluetoothWriter(writerSoc, clientAssignment)
+            writer.start()
+            if(clients.size == 0){
+                myWriter = writer
+            }
             clients.add(writerSoc.remoteDevice.address)
         }
     }

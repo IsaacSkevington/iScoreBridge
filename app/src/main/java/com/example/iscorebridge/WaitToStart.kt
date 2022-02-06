@@ -41,7 +41,6 @@ class WaitToStart : Fragment() {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
                     MESSAGESTART -> {
-                        Looper.myLooper()!!.quit()
                         findNavController().navigate(R.id.waitToStartToScoreEntry)
                     }
                 }

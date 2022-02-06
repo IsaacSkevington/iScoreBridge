@@ -1,5 +1,6 @@
 package com.example.iscorebridge
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +11,11 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.os.Build
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 
 private const val REQUEST_ENABLE_BT = 1
@@ -19,9 +23,12 @@ private const val REQUEST_ENABLE_BT = 1
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+const val BLUETOOTH_PERMISSIONS_GRANTED = 10
 @Volatile lateinit var bluetoothAdapter : BluetoothAdapter
 class HomePage : Fragment() {
-
+    val START = "START"
+    val JOIN = "JOIN"
+    var buttonPress : String = ""
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == REQUEST_ENABLE_BT){
             if(resultCode == RESULT_OK){
@@ -31,6 +38,29 @@ class HomePage : Fragment() {
                 Toast.makeText(context, "Bluetooth permissions incorrect", Toast.LENGTH_SHORT).show()
             }
         }
+
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if(requestCode == BLUETOOTH_PERMISSIONS_GRANTED){
+            setupBluetooth()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setupPermissions(){
+        if(activity!!.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED && activity!!.checkSelfPermission(Manifest.permission.BLUETOOTH) == PERMISSION_GRANTED){
+            setupBluetooth()
+        }
+        else{
+            activity!!.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH), BLUETOOTH_PERMISSIONS_GRANTED);
+        }
+
 
     }
 
@@ -50,7 +80,13 @@ class HomePage : Fragment() {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
         else{
-            findNavController().navigate(R.id.homeToStart)
+            if(buttonPress == START){
+                findNavController().navigate(R.id.homeToStart)
+            }
+            else{
+                findNavController().navigate(R.id.homeToJoin)
+            }
+
         }
 
     }
@@ -65,14 +101,20 @@ class HomePage : Fragment() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.playButton).setOnClickListener {
-            setupBluetooth()
+            buttonPress = START
+            setupPermissions()
+
         }
         view.findViewById<Button>(R.id.joingamebutton).setOnClickListener {
-            findNavController().navigate(R.id.homeToJoin)
+            buttonPress = JOIN
+            setupPermissions()
+
+
         }
     }
 }

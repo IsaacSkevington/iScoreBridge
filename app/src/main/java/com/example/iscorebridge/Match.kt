@@ -43,6 +43,21 @@ class Match {
         boards[boardNumber]?.addGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
     }
 
+    fun merge(other : Match){
+        for(board in other.boards){
+            if(!this.boards.containsKey(board.key)){
+                this.boards[board.key] = board.value
+            }
+            else{
+                for(game in board.value!!.games){
+                    if(!this.boards[board.key]!!.hasGame(game)){
+                        this.boards[board.key]!!.addGame(game)
+                    }
+                }
+            }
+        }
+    }
+
 
 
 
