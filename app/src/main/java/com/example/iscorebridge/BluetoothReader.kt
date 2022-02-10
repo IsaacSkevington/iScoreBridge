@@ -4,16 +4,30 @@ import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import java.io.IOException
 import java.io.InputStream
-import java.io.OutputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
-val MESSAGE_READ = 0
 
-class BluetoothReader (val handler : Handler, var socket : BluetoothSocket) : Thread(){
-    private var inputStream: InputStream = socket.inputStream
+class BluetoothReader (@Volatile var handler : Handler, var socket: BluetoothSocket, @Volatile var serviceHandler: Handler) : Thread(){
+
+
+
+    private var inputStream: InputStream
     private val buffer: ByteArray = ByteArray(10000) // mmBuffer store for the stream
+    @Volatile lateinit var forwardHandler : Handler
+    @Volatile var forwardHandlerSet : Boolean = false
+
+    init{
+        this.inputStream = socket.inputStream
+        start()
+    }
+
+    fun forwardHandlerSet(handler : Handler){
+        this.forwardHandler = handler
+        this.forwardHandlerSet = true
+    }
 
     override fun run() {
-        socket.connect()
         inputStream = socket.inputStream
         var numBytes: Int = 0 // bytes returned from read()
 
@@ -23,15 +37,52 @@ class BluetoothReader (val handler : Handler, var socket : BluetoothSocket) : Th
             try {
                 numBytes = inputStream.read(buffer)
             } catch (e: IOException) {
-                throw e
+                handler.obtainMessage(MESSAGE_READER_DISCONNECTED).sendToTarget()
+                continue
             }
 
-            // Send the obtained bytes to the UI activity.
-            val readMsg = handler.obtainMessage(
-                MESSAGE_READ, numBytes, -1,
-                buffer
-            )
-            readMsg.sendToTarget()
+            var readMessage = String(buffer, 0, numBytes);
+            var c : Communication
+            try {
+                c = Communication(readMessage)
+            }
+            catch (e : Exception){
+                continue
+            }
+
+            if(c.purpose == SENDGAME){
+                if (c.deviceID != bluetoothAdapter.name) {
+                    var newGame = Game(c.msg)
+                    match.addGame(newGame)
+                    while(!forwardHandlerSet){var x = 0}
+                    forwardHandler.obtainMessage(MESSAGE_WRITE, BYTEARRAY, -1, buffer).sendToTarget()
+                }
+            }
+            else if(c.purpose == SENDSTART){
+                var gameInfo = GameInfo(c.msg)
+                if(!gameInfo.clientList.contains(socket.remoteDevice.address)){
+                    gameInfo.clientList.add(0, socket.remoteDevice.address)
+                    c.msg = gameInfo.toString()
+                    while(!forwardHandlerSet){var x = 0}
+                    forwardHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
+                    handler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+                    continue
+
+                }
+                while(!forwardHandlerSet){var x = 0}
+                if (c.deviceID != bluetoothAdapter.name) {
+                    forwardHandler.obtainMessage(MESSAGE_WRITE, BYTEARRAY, -1, buffer).sendToTarget()
+                }
+                handler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+
+            }
+            else{
+                handler.obtainMessage(MESSAGE_READ, c).sendToTarget()
+            }
+
+            // construct a string from the valid bytes in the buffer
+
+
         }
     }
 

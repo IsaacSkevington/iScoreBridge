@@ -21,30 +21,60 @@ import java.util.*
 class BluetoothClient(var hostID : String, var parentHandler: Handler){
 
     lateinit var childHandler : Handler
+    lateinit @Volatile var connectionHandler : Handler
+    @Volatile var connectionHandlerSet = false
+    init{
+        ConnectionHandler().start()
+    }
+
+    inner class ConnectionHandler() : Thread(){
+        override fun run(){
+            Looper.prepare()
+            connectionHandler = object : Handler(Looper.myLooper()!!) {
+                override fun handleMessage(msg: Message) {
+                    when (msg.what) {
+                        MESSAGE_READER_DISCONNECTED->{
+
+                        }
+                        MESSAGE_WRITER_DISCONNECTED->{
+
+                        }
+                    }
+
+                }
+            }
+            connectionHandlerSet = true
+            Looper.loop()
+        }
+    }
+
     fun connect(device : BluetoothDevice){
         var hostSoc = device.createRfcommSocketToServiceRecord(programUUID)
+        hostSoc.connect()
+        lateinit var reader : BluetoothReader
         childHandler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
                     MESSAGE_READ -> {
-                        var readBuf: ByteArray = msg.obj as ByteArray;
-                        // construct a string from the valid bytes in the buffer
-                        var correctConnectionID = String(readBuf, 0, msg.arg1);
-                        bluetoothService = if(correctConnectionID == ME){
-                            BluetoothService(device, parentHandler)
+                        var communication = msg.obj as Communication;
+                        if(communication.msg == ME){
+                            bluetoothService = BluetoothService(reader, parentHandler)
                         } else{
-                            BluetoothService(correctConnectionID, parentHandler)
+                            bluetoothService = BluetoothService(communication.msg, parentHandler)
+                            val writtenMsg = parentHandler.obtainMessage(
+                                MESSAGECONNECTED
+                            )
+                            writtenMsg.sendToTarget()
                         }
-                        val writtenMsg = parentHandler.obtainMessage(
-                            MESSAGECONNECTED, -1, -1, ""
-                        )
-                        writtenMsg.sendToTarget()
+
+
                     }
                 }
             }
         }
-        BluetoothReader(childHandler, hostSoc).start()
-        //Looper.loop()
+        while(!connectionHandlerSet){
+        }
+        reader = BluetoothReader(childHandler, hostSoc, connectionHandler)
     }
 
 

@@ -1,6 +1,5 @@
 package com.example.iscorebridge
 
-import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -9,18 +8,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
-import android.net.wifi.WifiManager
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import androidx.core.app.ActivityCompat
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import java.util.*
 
 
-val programUUID: UUID = UUID.fromString("096e8f5d-2b31-410a-9cc3-c577003bbfdd")
+
 
 @Volatile lateinit var bluetoothService : BluetoothService
 
@@ -28,6 +22,9 @@ val programUUID: UUID = UUID.fromString("096e8f5d-2b31-410a-9cc3-c577003bbfdd")
 
 
 const val MESSAGECONNECTED = 3
+const val  MESSAGECONNECTEDWRITER = 14
+const val MESSAGECONNECTEDREADER = 15
+const val MESSAGE_CLIENT_CHANGE = 19
 const val MESSAGE_START = 13
 const val MESSAGE_SEND = 6
 const val MESSAGE_SEND_MATCH = 11
@@ -35,34 +32,36 @@ const val MESSAGE_READ_MATCH = 12
 const val ENABLE_DISCOVERABLE = 4
 const val MESSAGE_MATCHUPDATE = 5
 
-fun send(purpose : Int, msg : String){
-    var c = Communication(bluetoothAdapter.name, purpose, msg)
-    bluetoothService.childHandler.obtainMessage(MESSAGE_SEND, -1, -1, c).sendToTarget()
-}
 
-class BluetoothService(): Activity() {
 
-    lateinit var writer : BluetoothWriter
-    lateinit var reader : BluetoothReader
-    var writerSet : Boolean = false
-    var readerSet : Boolean = false
-    lateinit var childHandler : Handler
-    lateinit var bluetoothDevice : BluetoothDevice
+class BluetoothService() {
+
+    @Volatile lateinit var clientList : ArrayList<String>
+    @Volatile lateinit public var activity : Activity
+    @Volatile lateinit var writer : BluetoothWriter
+    @Volatile lateinit var reader : BluetoothReader
+    @Volatile var writerSet : Boolean = false
+    @Volatile var readerSet : Boolean = false
+    @Volatile lateinit var childHandler : Handler
     lateinit var deviceID : String
     lateinit var readerID : String
     @Volatile lateinit var parentHandler : Handler
+    @Volatile lateinit var serviceHandler : Handler
+
 
     constructor(readerID : String, parentHandler : Handler) : this() {
         this.readerID = readerID
         this.parentHandler = parentHandler
         deviceID = bluetoothAdapter.name
-        enableDiscoverable()
+        RunningThread().start()
     }
-    constructor(bluetoothDevice : BluetoothDevice, parentHandler: Handler) : this() {
+    constructor(reader : BluetoothReader, parentHandler: Handler) : this() {
         deviceID = bluetoothAdapter.name
         this.parentHandler = parentHandler
-        this.bluetoothDevice = bluetoothDevice
-        enableDiscoverable()
+        this.reader = reader
+        readerSet = true
+        RunningThread().start()
+        parentHandler.obtainMessage(MESSAGECONNECTEDREADER).sendToTarget()
 
     }
 
@@ -72,77 +71,131 @@ class BluetoothService(): Activity() {
         writerSet = true
         this.readerID = readerID
         this.parentHandler = parentHandler
-        connect()
+        RunningThread().start()
     }
 
 
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when(requestCode){
-            ENABLE_DISCOVERABLE ->{
-                if(resultCode != RESULT_CANCELED){
-                    DataHandler().start()
-                    connect()
-                }
 
-            }
-        }
+
+    fun send(purpose : Int, msg : String){
+        var c = Communication(bluetoothAdapter.name, purpose, msg)
+        writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
     }
 
 
-    private fun enableDiscoverable(){
-        val requestCode = ENABLE_DISCOVERABLE
-        val discoverableIntent: Intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
-            putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300)
-        }
-        startActivityForResult(discoverableIntent, requestCode)
-
-    }
-
-
-
-
-    private inner class DataHandler() : Thread() {
-        override fun run() {
+    inner class RunningThread() : Thread(){
+        public override fun run(){
             Looper.prepare()
-            childHandler = object : Handler(Looper.myLooper()!!) {
+            serviceHandler = object : Handler(Looper.myLooper()!!) {
                 override fun handleMessage(msg: Message) {
                     when (msg.what) {
-                        MESSAGE_READ -> {
+                        MESSAGE_READER_DISCONNECTED -> {
 
-                            var readBuf: ByteArray = msg.obj as ByteArray;
-                            // construct a string from the valid bytes in the buffer
-                            var readMessage = String(readBuf, 0, msg.arg1);
-                            var c = Communication(readMessage)
-                            if(c.deviceID != deviceID) {
-                                writer.sendHandler.obtainMessage(MESSAGE_WRITE,  BYTEARRAY, -1, readBuf).sendToTarget()
+                            var index = clientList.indexOf(reader.socket.remoteDevice.address)
+                            if(index == 0){
+                                index = clientList.size
                             }
-                            if(c.purpose == SENDMATCH){
-                                var newMatch = Match(c.msg)
-                                match.merge(newMatch)
+                            var
+                                    connectionAddress = clientList[index - 1]
+                            // Create a BroadcastReceiver for ACTION_FOUND.
+                            val pair = object : BroadcastReceiver() {
+                                override fun onReceive(context: Context, intent: Intent) {
+                                    when(intent.action) {
+                                        BluetoothDevice.ACTION_FOUND -> {
+                                            bluetoothAdapter.cancelDiscovery()
+                                            // Discovery has found a device. Get the BluetoothDevice
+                                            // object and its info from the Intent.
+                                            val device: BluetoothDevice =
+                                                intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)!!
+                                            if(device.address == connectionAddress){
+                                                var socket = device.createRfcommSocketToServiceRecord(programUUID)
+                                                socket.connect()
+                                                var handler = reader.handler
+                                                reader.stop()
+                                                reader = BluetoothReader(handler, socket, serviceHandler)
+                                                reader.forwardHandler = writer.sendHandler
+                                            }
+
+                                        }
+                                    }
+                                }
                             }
-                            else if(c.purpose == SENDSTART){
-                                parentHandler.obtainMessage(MESSAGE_START, -1, -1, null).sendToTarget()
+                            val pairedDevices: Set<BluetoothDevice> = bluetoothAdapter!!.bondedDevices
+                            for(device in pairedDevices){
+                                if(device.address == connectionAddress){
+                                    var socket = device.createRfcommSocketToServiceRecord(programUUID)
+                                    socket.connect()
+                                    var handler = reader.handler
+                                    reader.stop()
+                                    reader = BluetoothReader(handler, socket, serviceHandler)
+                                    reader.forwardHandler = writer.sendHandler
+                                }
                             }
 
+                            val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+                            activity.registerReceiver(pair, filter)
+                            bluetoothAdapter.startDiscovery()
                         }
-                        MESSAGE_SEND ->{
-                            var c = msg.obj as Communication
-                            writer.sendHandler.obtainMessage(MESSAGE_WRITE,  STRING, -1, c.toString()).sendToTarget()
+                        MESSAGE_WRITER_DISCONNECTED ->{
+                            var serverSoc = bluetoothAdapter.listenUsingRfcommWithServiceRecord(
+                                "iscorebridge",
+                                programUUID
+                            )
+                            val writerSoc = serverSoc.accept()
+                            clientList.remove(writer.socket.remoteDevice.address)
+                            writer.stop()
+                            var c = Communication(bluetoothAdapter.name, MESSAGE_CLIENT_CHANGE, clientList.toString().substring(1, clientList.toString().length - 1))
+                            writer = BluetoothWriter(writerSoc, serviceHandler, c.toString())
                         }
                     }
 
                 }
             }
+            if(readerSet) {
+                reader.serviceHandler = serviceHandler
+            }
+            if(writerSet) {
+                writer.serviceHandler = serviceHandler
+            }
             Looper.loop()
+        }
+    }
+
+    public fun setHandler(handler: Handler){
+        this.parentHandler = handler
+        if(readerSet) {
+            this.reader.handler = parentHandler
+        }
+    }
+
+    inner class ConnectWriterThread() : Thread(){
+        public override fun run(){
+            initialiseWriter()
+        }
+        public fun initialiseWriter(){
+            var serverSoc = bluetoothAdapter.listenUsingRfcommWithServiceRecord(
+                "iscorebridge",
+                programUUID
+            )
+            val writerSoc = serverSoc.accept()
+            serverSoc.close()
+            writer = BluetoothWriter(writerSoc, serviceHandler)
+            while(!writer.sendHandlerSet){
+
+            }
+            reader.forwardHandlerSet(writer.sendHandler)
+            parentHandler.obtainMessage(MESSAGECONNECTEDWRITER).sendToTarget()
+
         }
     }
 
 
 
-    private inner class ConnectThread(device: BluetoothDevice) : Thread() {
+
+
+    private inner class ConnectReaderThread(device: BluetoothDevice) : Thread() {
 
         private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
             device.createRfcommSocketToServiceRecord(programUUID)
@@ -159,71 +212,57 @@ class BluetoothService(): Activity() {
             }
         }
 
-        public fun initialiseWriter(){
-            var serverSoc = bluetoothAdapter.listenUsingRfcommWithServiceRecord(
-                "iscorebridge",
-                programUUID
-            )
-            val writerSoc = serverSoc.accept()
-            serverSoc.close()
-            writer = BluetoothWriter(writerSoc)
 
-        }
 
         public fun onconnect(socket:BluetoothSocket){
-            reader = BluetoothReader(childHandler, socket)
-            if(!writerSet) {
-                initialiseWriter()
+            reader = BluetoothReader(parentHandler, socket, serviceHandler)
+            readerSet = true
+            if(writerSet){
+                reader.forwardHandlerSet(writer.sendHandler)
             }
-            val connectedMsg = parentHandler.obtainMessage(
-                MESSAGECONNECTED
-            )
-            connectedMsg.sendToTarget()
-            reader.start()
+
+            parentHandler.obtainMessage(MESSAGECONNECTEDREADER).sendToTarget()
         }
     }
 
 
-    // Create a BroadcastReceiver for ACTION_FOUND.
-    private val pair = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when(intent.action) {
-                BluetoothDevice.ACTION_FOUND -> {
-                    bluetoothAdapter.cancelDiscovery()
-                    // Discovery has found a device. Get the BluetoothDevice
-                    // object and its info from the Intent.
-                    val device: BluetoothDevice =
-                        intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)!!
-                    if(device.address == readerID){
-                        ConnectThread(device).start()
-                    }
 
+
+
+    fun connect(activity : Activity){
+
+        // Create a BroadcastReceiver for ACTION_FOUND.
+        val pair = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                when(intent.action) {
+                    BluetoothDevice.ACTION_FOUND -> {
+                        bluetoothAdapter.cancelDiscovery()
+                        // Discovery has found a device. Get the BluetoothDevice
+                        // object and its info from the Intent.
+                        val device: BluetoothDevice =
+                            intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)!!
+                        if(device.address == readerID){
+                            ConnectReaderThread(device).start()
+                        }
+
+                    }
                 }
             }
         }
-    }
-
-
-    private fun connect(){
         val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter!!.bondedDevices
         pairedDevices?.forEach { device ->
             if(device.address == this.readerID){
-                ConnectThread(device).start()
+                ConnectReaderThread(device).start()
                 return
             }
         }
 
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        registerReceiver(pair, filter)
+        activity.registerReceiver(pair, filter)
         bluetoothAdapter.startDiscovery()
 
 
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(pair)
     }
 
 

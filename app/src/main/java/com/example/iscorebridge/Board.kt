@@ -50,16 +50,18 @@ class Board {
         return false
     }
 
-    fun addGame(game: Game){
+    fun addGame(game: Game) : Game{
         this.games.add(game)
+        return game
     }
 
-    fun addGame(pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean){
+    fun addGame(pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
 
         var contract : Contract = Contract(suit, trickNumbers, declarer, doubled, redoubled)
         var leadCard = Card(lead)
-        var g : Game = Game(contract, pairNS, pairEW, tricksMade, leadCard, vulnerability)
+        var g : Game = Game(boardNumber, contract, pairNS, pairEW, tricksMade, leadCard, vulnerability)
         this.games.add(g)
+        return g
     }
 
     fun IMPConversion(score: Int) : Int{
@@ -127,8 +129,8 @@ class Board {
 
     fun calculateScores(scoringMode : Int) : MutableMap<Int, Int?>{
         return when(scoringMode) {
-            TEAMS -> teamsScore()
-            PAIRS -> pairScore()
+            GAMEMODE_TEAMS -> teamsScore()
+            GAMEMODE_PAIRS -> pairScore()
             else -> HashMap<Int, Int?>()
         }
     }

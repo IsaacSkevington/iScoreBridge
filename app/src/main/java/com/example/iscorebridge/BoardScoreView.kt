@@ -1,5 +1,6 @@
 package com.example.iscorebridge
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,7 +38,7 @@ class BoardScoreView : Fragment() {
     private fun display(view : View){
         var tableLayout = view.findViewById<TableLayout>(R.id.ScoreViewTable)
         var currentScores : MutableMap<Int,Int?>
-        if(teams){
+        if(gameInfo.gameMode == GAMEMODE_TEAMS){
             currentScores = match.boards[boardNumber]!!.teamsScore()
             view.findViewById<TextView>(R.id.ScoreTitle).text = "IMPs (NS)"
         }
@@ -48,15 +49,20 @@ class BoardScoreView : Fragment() {
 
         for(game in match.boards[boardNumber]!!.games){
             var tableRow = TableRow(view.context)
+            if(game.pairNS == pairNS && game.pairEW == pairEW){
+                tableRow.setBackgroundColor(Color.parseColor("#A6DAF2"))
+            }
             var contractView = TextView(view.context)
-            contractView.text = game.contract.toString()
+            contractView.text = game.contract.toDisplayString()
+            var leadView = TextView(view.context)
+            leadView.text = game.lead.toString()
             var tricksView = TextView(view.context)
             tricksView.text = game.tricks.toString()
             var pointsView = TextView(view.context)
             pointsView.text = game.score.toString()
             var scoreView = TextView(view.context)
-            if(currentScores.containsKey(pairNS)){
-                scoreView.text = currentScores[pairNS].toString()
+            if(currentScores.containsKey(game.pairNS)){
+                scoreView.text = currentScores[game.pairNS].toString()
             }
             else{
                 scoreView.text = "?"
@@ -73,6 +79,9 @@ class BoardScoreView : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.nextScoreEntryButton).setOnClickListener {
             findNavController().navigate(R.id.scoreViewToScoreEntry)
+        }
+        view.findViewById<Button>(R.id.finishButton).setOnClickListener {
+            findNavController().navigate(R.id.scoreViewToFinalScore)
         }
         display(view)
     }

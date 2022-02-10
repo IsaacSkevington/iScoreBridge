@@ -1,5 +1,6 @@
 package com.example.iscorebridge
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.resources.TextAppearance
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 
 /**
@@ -20,15 +25,16 @@ var boardNumber = 0
 var pairNS = 0
 var pairEW = 0
 var teams : Boolean = true
+var round = 0
 class ScoreEntryFragment() : Fragment() {
 
     private var contractNumber: Int = 0
     var contractSuit: Char = ' '
     var doubled: Boolean = false
     var redoubled: Boolean = false
-    @Volatile
-    lateinit var match : Match
-    lateinit var bts : BluetoothService
+    @Volatile lateinit var bts : BluetoothService
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -73,25 +79,157 @@ class ScoreEntryFragment() : Fragment() {
         displayContract()
     }
 
+    private fun setunDouble(){
+        redoubled = false
+        doubled = false
+        displayContract()
+    }
 
+    private fun isInt(text : String) : Boolean{
+        return try{
+            text.toInt()
+            true
+        } catch(e : Exception){
+            false
+        }
+    }
+
+
+
+    private fun boardCheck(view: View) : Boolean{
+        var boardText = view.findViewById<TextInputEditText>(R.id.BoardNum).text.toString()
+        if(boardText == ""){
+            view.findViewById<TextInputLayout>(R.id.BoardNumLayout).error = "Board required"
+            return false
+        }
+        if(!isInt(boardText)){
+            view.findViewById<TextInputLayout>(R.id.BoardNumLayout).error = "Board must be number"
+            return false
+        }
+        return true
+    }
+
+    private fun pairNSErrorCheck(view: View) : Boolean{
+        var pairText = view.findViewById<TextInputEditText>(R.id.NorthSouth).text.toString()
+        if(pairText == ""){
+            view.findViewById<TextInputLayout>(R.id.NorthSouthLayout).error = "Pair required"
+            return false
+        }
+        if(!isInt(pairText)){
+            view.findViewById<TextInputLayout>(R.id.NorthSouthLayout).error = "Pair must be number"
+            return false
+        }
+        return true
+    }
+
+    private fun pairEWErrorCheck(view: View) : Boolean{
+        var pairText = view.findViewById<TextInputEditText>(R.id.EastWest).text.toString()
+        if(pairText == ""){
+            view.findViewById<TextInputLayout>(R.id.EastWestLayout).error = "Pair required"
+            return false
+        }
+        if(!isInt(pairText)){
+            view.findViewById<TextInputLayout>(R.id.EastWestLayout).error = "Pair must be number"
+            return false
+        }
+        return true
+    }
+
+    private fun contractCheck(view: View) : Boolean{
+        if(contractSuit == ' ' || contractNumber == 0){
+            view!!.findViewById<TextView>(R.id.contractView).setTextColor(Color.parseColor("#DD2C00"))
+            return false
+        }
+        return true
+    }
+
+    private fun declarerCheck(view: View) : Boolean{
+        var declarerText = view.findViewById<TextInputEditText>(R.id.DeclarerEntry).text.toString()
+        if(declarerText == ""){
+            view.findViewById<TextInputLayout>(R.id.DeclarerEntryLayout).error = "Declarer required"
+            return false
+        }
+        var d = declarerText[0]
+        if(d != 'N' && d != 'E' && d != 'S' && d != 'W'){
+            view.findViewById<TextInputLayout>(R.id.DeclarerEntryLayout).error = "Declarer must be N, E, S or W"
+            return false
+        }
+        return true
+    }
+
+    private fun trickCheck(view: View) : Boolean{
+
+        var trickText = view.findViewById<TextInputEditText>(R.id.TricksEntry).text.toString()
+        if(trickText == ""){
+            view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).error = "Trick count required"
+            return false
+        }
+        if(!isInt(trickText)){
+            view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).error = "Tricks must be a number"
+            return false
+        }
+        var tricks = trickText.toInt()
+        if(tricks < 0){
+            view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).error = "Tricks must be a positive number"
+            return false
+        }
+        if(tricks > 13){
+            view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).error = "Tricks too large"
+            return false
+        }
+
+        return true
+    }
+    private fun leadCheck(view: View) : Boolean{
+        var leadText = view.findViewById<TextInputEditText>(R.id.LeadEntry).text.toString()
+        if(leadText == ""){
+            view.findViewById<TextInputLayout>(R.id.LeadEntryLayout).error = "Lead required"
+            return false
+        }
+        if(!isCard(leadText)){
+            view.findViewById<TextInputLayout>(R.id.LeadEntryLayout).error = "Incorrect. E.g. 3S or KC or TH"
+            return false
+        }
+        return true
+    }
+
+    private fun errorCheck(view: View) : Boolean{
+        view.findViewById<TextInputLayout>(R.id.BoardNumLayout).isErrorEnabled = false
+        view.findViewById<TextInputLayout>(R.id.NorthSouthLayout).isErrorEnabled = false
+        view.findViewById<TextInputLayout>(R.id.EastWestLayout).isErrorEnabled = false
+        view.findViewById<TextInputLayout>(R.id.DeclarerEntryLayout).isErrorEnabled = false
+        view.findViewById<TextInputLayout>(R.id.LeadEntryLayout).isErrorEnabled = false
+        view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).isErrorEnabled = false
+        view!!.findViewById<TextView>(R.id.contractView).setTextColor(Color.parseColor("#000000"))
+        var ret = true
+        ret = boardCheck(view) && ret
+        ret = pairNSErrorCheck(view) && ret
+        ret = pairEWErrorCheck(view) && ret
+        ret = contractCheck(view) && ret
+        ret = declarerCheck(view) && ret
+        ret = leadCheck(view) && ret
+        ret = trickCheck(view) && ret
+        return ret
+    }
 
     private fun submit(){
         pairNS = view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
         pairEW = view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
         boardNumber = view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
-        match.addGame(  boardNumber,
+        var game : Game = match.addGame(  boardNumber,
                         pairNS,
                         pairEW,
                         contractSuit,
                         contractNumber,
                         view!!.findViewById<TextView>(R.id.TricksEntry).text.toString().toInt(),
                         view!!.findViewById<TextView>(R.id.LeadEntry).text.toString(),
-                        view!!.findViewById<TextView>(R.id.ByEntry).text[0],
+                        view!!.findViewById<TextView>(R.id.DeclarerEntry).text[0],
                         doubled,
                         redoubled
         )
 
-        send(SENDMATCH, match.toString())
+        bluetoothService.send(SENDGAME, game.toString())
+        round++
         findNavController().navigate(R.id.scoreEntryToScoreView)
 
     }
@@ -153,8 +291,13 @@ class ScoreEntryFragment() : Fragment() {
         view.findViewById<Button>(R.id.reDoubleButton).setOnClickListener{
             setreDouble()
         }
+        view.findViewById<Button>(R.id.undoublebutton).setOnClickListener{
+            setunDouble()
+        }
         view.findViewById<Button>(R.id.submitResult).setOnClickListener{
-            submit()
+            if(errorCheck(view)) {
+                submit()
+            }
         }
     }
 }

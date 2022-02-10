@@ -2,7 +2,7 @@ package com.example.iscorebridge
 
 import android.bluetooth.BluetoothDevice
 
-@Volatile lateinit var match : Match
+@Volatile var match : Match = Match()
 
 class Match {
 
@@ -35,12 +35,37 @@ class Match {
     }
 
 
+    fun addGame(g : Game) : Game{
+        if(!boards.containsKey(g.boardNumber)){
+            boards[g.boardNumber] = Board(g.boardNumber)
+        }
+        boards[g.boardNumber]!!.addGame(g)
+        return g
+    }
 
-    fun addGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean){
+    fun getScores(matchMode : Int) : MutableMap<Int, Int?>{
+        var scores = HashMap<Int, Int>() as MutableMap<Int, Int?>
+        for(board in boards.values){
+            var boardScores = board!!.calculateScores(matchMode)
+            for(pair in boardScores.keys){
+                if(!scores.containsKey(pair)){
+                    scores[pair] = 0
+                }
+                if(!scores.containsKey(pair)) {
+                    scores[pair] = 0
+                }
+
+                scores[pair] = boardScores[pair]!! + scores[pair]!!
+            }
+        }
+        return scores
+    }
+
+    fun addGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
         if(!boards.containsKey(boardNumber)){
             boards[boardNumber] = Board(boardNumber)
         }
-        boards[boardNumber]?.addGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
+        return boards[boardNumber]!!.addGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
     }
 
     fun merge(other : Match){

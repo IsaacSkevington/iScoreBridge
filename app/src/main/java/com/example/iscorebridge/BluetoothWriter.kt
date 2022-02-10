@@ -8,21 +8,24 @@ import androidx.navigation.fragment.findNavController
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-
-val MESSAGE_WRITE = 2
-val STRING = 0
-val BYTEARRAY = 1
+import java.util.*
 
 
-class BluetoothWriter(val socket : BluetoothSocket) : Thread() {
+
+class BluetoothWriter(var socket: BluetoothSocket, var serviceHandler : Handler, var firstMessage: String = "NONE") : Thread() {
+
+
 
         @Volatile lateinit var sendHandler: Handler
-        var firstMessage = "NONE"
-        private val outputStream: OutputStream = socket.outputStream
+        private var outputStream: OutputStream
 
-        constructor(socket: BluetoothSocket, firstMessage: String) : this(socket) {
-            this.firstMessage = firstMessage
+        @Volatile public var sendHandlerSet = false
+
+        init {
+            this.outputStream = this.socket.outputStream
+            start()
         }
+
 
 
         // Call this from the main activity to send data to the remote device.
@@ -34,6 +37,7 @@ class BluetoothWriter(val socket : BluetoothSocket) : Thread() {
             try {
                 outputStream.write(bytes)
             } catch (e: IOException) {
+                throw e
             }
 
             // Share the sent message with the UI activity.
@@ -52,7 +56,7 @@ class BluetoothWriter(val socket : BluetoothSocket) : Thread() {
                             if (msg.arg1 == STRING) {
                                 write(msg.obj as String)
                             }
-                            if (msg.arg1 == BYTEARRAY) {
+                            else if (msg.arg1 == BYTEARRAY) {
                                 write(msg.obj as ByteArray)
                             }
 
@@ -60,6 +64,7 @@ class BluetoothWriter(val socket : BluetoothSocket) : Thread() {
                     }
                 }
             }
+            sendHandlerSet = true
             if(firstMessage != "NONE"){
                 write(firstMessage)
             }

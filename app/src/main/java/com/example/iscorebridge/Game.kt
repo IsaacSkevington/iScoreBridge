@@ -2,33 +2,37 @@ package com.example.iscorebridge
 
 class Game {
     lateinit var contract: Contract
-    var pairNS: Int = 0
-    var pairEW: Int = 0
-    var tricks: Int = 0
-    var score: Int = -1
-    lateinit var lead : Card
+    var pairNS: Int
+    var pairEW: Int
+    var tricks: Int
+    var score: Int
+    var boardNumber : Int
+    var lead : Card
     var dlm = "||"
 
-    constructor(contract: Contract, pairNS: Int, pairEW: Int, tricks: Int, lead: Card, vulnerability: Vulnerability){
+    constructor(boardNumber : Int, contract: Contract, pairNS: Int, pairEW: Int, tricks: Int, lead: Card, vulnerability: Vulnerability){
+        this.boardNumber = boardNumber
         this.contract = contract
         this.pairNS = pairNS
         this.pairEW = pairEW
         this.tricks = tricks
         this.lead = lead
-        if(this.score == -1){
-            calculateScore(vulnerability)
-        }
-
+        this.score = calculateScore(vulnerability)
     }
 
     constructor(game: String){
         var parametersAsString = game.split(dlm)
+        this.boardNumber = parametersAsString[0].toInt()
+        this.contract = Contract(parametersAsString[1])
+        this.pairNS = parametersAsString[2].toInt()
+        this.pairEW = parametersAsString[3].toInt()
+        this.tricks = parametersAsString[4].toInt()
+        this.lead = Card(parametersAsString[5])
         this.score = parametersAsString[6].toInt()
-        Game(Contract(parametersAsString[0]), parametersAsString[1].toInt(), parametersAsString[2].toInt(), parametersAsString[3].toInt(), Card(parametersAsString[4]), Vulnerability(parametersAsString[5]))
     }
 
     override fun toString(): String {
-        return this.contract.toString() + dlm + this.pairNS.toString() + dlm + this.pairEW.toString() + dlm + this.tricks.toString() + dlm + this.lead.toString() + dlm + this.score.toString()
+        return this.boardNumber.toString() + dlm +this.contract.toString() + dlm + this.pairNS.toString() + dlm + this.pairEW.toString() + dlm + this.tricks.toString() + dlm + this.lead.toString() + dlm + this.score.toString()
     }
 
     private fun goingDown(tricksDown : Int, vulnerability: Vulnerability) : Int{
@@ -138,8 +142,8 @@ class Game {
         return 0
     }
 
-    fun calculateScore(vulnerability: Vulnerability){
-        score = 0
+    fun calculateScore(vulnerability: Vulnerability) : Int{
+        var score = 0
         var tricksNeeded = this.contract.number + 6
         if(tricksNeeded > tricks){
             score = -1 * goingDown(tricksNeeded - tricks, vulnerability)
@@ -164,5 +168,6 @@ class Game {
         if(contract.declarer == 'E' || contract.declarer == 'W'){
             score *= -1
         }
+        return score
     }
 }

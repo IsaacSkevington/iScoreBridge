@@ -1,7 +1,6 @@
 package com.example.iscorebridge
 
-val SENDMATCH = 0
-val SENDSTART = 1
+
 
 
 class Communication{

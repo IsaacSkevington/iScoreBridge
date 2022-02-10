@@ -18,12 +18,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 
-private const val REQUEST_ENABLE_BT = 1
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-const val BLUETOOTH_PERMISSIONS_GRANTED = 10
+
 @Volatile lateinit var bluetoothAdapter : BluetoothAdapter
 class HomePage : Fragment() {
     val START = "START"
@@ -58,19 +58,19 @@ class HomePage : Fragment() {
             setupBluetooth()
         }
         else{
-            activity!!.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH), BLUETOOTH_PERMISSIONS_GRANTED);
+            activity!!.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH), BLUETOOTH_PERMISSIONS_GRANTED)
         }
 
 
     }
 
-    fun setupBluetooth(){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+    private fun setupBluetooth(){
+        bluetoothAdapter = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             var btm = context!!.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-            bluetoothAdapter = btm.adapter
+            btm.adapter
 
         } else {
-            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            BluetoothAdapter.getDefaultAdapter()
         }
         if(bluetoothAdapter == null){
             return

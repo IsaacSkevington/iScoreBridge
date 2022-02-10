@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import java.util.ArrayList
 
 
 /**
@@ -18,7 +19,6 @@ import androidx.navigation.fragment.findNavController
  * create an instance of this fragment.
  */
 
-const val MESSAGESTART = 8
 class WaitToStart : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,23 +36,29 @@ class WaitToStart : Fragment() {
     }
 
     private fun wait(view : View){
-        Looper.prepare()
+
         var handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
-                    MESSAGESTART -> {
+                    MESSAGE_START -> {
+                        gameInfo = msg.obj as GameInfo
+                        bluetoothService.clientList = gameInfo.clientList
+                        round = 1
                         findNavController().navigate(R.id.waitToStartToScoreEntry)
+                    }
+                    MESSAGECONNECTEDWRITER ->{
+
                     }
                 }
 
             }
         }
-        bluetoothService.parentHandler = handler
-        Looper.loop()
+        bluetoothService.setHandler(handler)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        wait(view)
 
     }
 

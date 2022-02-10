@@ -1,5 +1,7 @@
 package com.example.iscorebridge
 
+import android.app.Activity
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.BroadcastReceiver
@@ -44,7 +46,19 @@ class JoinGame : Fragment() {
 
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            ENABLE_DISCOVERABLE ->{
+                if(resultCode != Activity.RESULT_CANCELED){
+                    bluetoothService.ConnectWriterThread().start()
+                    findNavController().navigate(R.id.joinGameToWaitToStart)
 
+                }
+
+            }
+        }
+    }
 
 
 
@@ -55,8 +69,19 @@ class JoinGame : Fragment() {
         var handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
-                    MESSAGECONNECTED -> {
-                        findNavController().navigate(R.id.joinGameToWaitToStart)
+                    MESSAGECONNECTEDREADER -> {
+
+
+                        val requestCode = ENABLE_DISCOVERABLE
+                        val discoverableIntent: Intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
+                            putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0)
+                        }
+                        startActivityForResult(discoverableIntent, requestCode)
+
+
+                    }
+                    MESSAGECONNECTED ->{
+                        bluetoothService.connect(activity!!)
                     }
                 }
 
@@ -95,7 +120,7 @@ class JoinGame : Fragment() {
         pairedDevices?.forEach { device ->
             if(encodeID(device.name) == id.toString()){
                 btc.connect(device)
-                Looper.loop()
+                return
             }
         }
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
@@ -109,23 +134,5 @@ class JoinGame : Fragment() {
         view.findViewById<Button>(R.id.joinButton).setOnClickListener {
             joinGame(view)
         }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment JoinGame.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            JoinGame().apply {
-                arguments = Bundle().apply {
-                }
-            }
     }
 }

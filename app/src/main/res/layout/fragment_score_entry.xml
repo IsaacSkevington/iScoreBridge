@@ -7,262 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ScoreEntryFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="355dp"
-        android:layout_height="433dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NorthSouth">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tableLayout"
-            android:layout_width="99dp"
-            android:layout_height="340dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/noTrumpButton"
-                android:layout_width="65dp"
-                android:layout_height="66dp"
-                android:text="NT"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageButton
-                android:id="@+id/spadeButton"
-                android:layout_width="65dp"
-                android:layout_height="66dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/spade"
-                app:layout_constraintBottom_toTopOf="@+id/noTrumpButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.529"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="138dp" />
-
-            <ImageButton
-                android:id="@+id/heartButton"
-                android:layout_width="65dp"
-                android:layout_height="66dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/heart"
-                app:layout_constraintBottom_toTopOf="@+id/spadeButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageButton
-                android:id="@+id/diamondButton"
-                android:layout_width="65dp"
-                android:layout_height="66dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/diamond"
-                app:layout_constraintBottom_toTopOf="@+id/heartButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageButton
-                android:id="@+id/clubButton"
-                android:layout_width="65dp"
-                android:layout_height="66dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/club"
-                app:layout_constraintBottom_toTopOf="@+id/diamondButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="73dp"
-            android:layout_height="358dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="3"
-                app:layout_constraintBottom_toTopOf="@+id/button4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="6"
-                app:layout_constraintBottom_toTopOf="@+id/button7"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="7"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="4"
-                app:layout_constraintBottom_toTopOf="@+id/button5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="1"
-                app:layout_constraintBottom_toTopOf="@+id/button2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="2"
-                app:layout_constraintBottom_toTopOf="@+id/button3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="5"
-                app:layout_constraintBottom_toTopOf="@+id/button6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="79dp"
-            android:layout_height="112dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/reDoubleButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="XX"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/DoubleButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="X"
-                app:layout_constraintBottom_toTopOf="@+id/reDoubleButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/contractView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No Contract Selected"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <EditText
-        android:id="@+id/BoardNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Board Number"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/NorthSouth"
-        android:layout_width="153dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:hint="N/S Pair"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BoardNum" />
-
-    <EditText
-        android:id="@+id/EastWest"
-        android:layout_width="153dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:hint="E/W Pair"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BoardNum" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="VS"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/EastWest"
-        app:layout_constraintEnd_toStartOf="@+id/EastWest"
-        app:layout_constraintStart_toEndOf="@+id/NorthSouth"
-        app:layout_constraintTop_toBottomOf="@+id/BoardNum" />
-
-    <EditText
-        android:id="@+id/TricksEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Tricks"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LeadEntry" />
-
-    <EditText
-        android:id="@+id/ByEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="By"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
-
-    <EditText
-        android:id="@+id/LeadEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Lead"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ByEntry" />
-
     <Button
         android:id="@+id/submitResult"
         android:layout_width="wrap_content"
@@ -270,7 +14,349 @@
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/submitResult"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TricksEntry" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:foregroundGravity="fill_vertical">
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/BoardNumLayout" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/BoardNumLayout"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="Board Number"
+                android:padding="10sp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/BoardNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:text="VS"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="355dp"
+                android:layout_height="433dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/EastWestLayout">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tableLayout"
+                    android:layout_width="99dp"
+                    android:layout_height="340dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
+                    app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/noTrumpButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:text="NT"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/spadeButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/spade"
+                        app:layout_constraintBottom_toTopOf="@+id/noTrumpButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/heartButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/heart"
+                        app:layout_constraintBottom_toTopOf="@+id/spadeButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/diamondButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/diamond"
+                        app:layout_constraintBottom_toTopOf="@+id/heartButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/clubButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/club"
+                        app:layout_constraintBottom_toTopOf="@+id/diamondButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="73dp"
+                    android:layout_height="358dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/button3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="3"
+                        app:layout_constraintBottom_toTopOf="@+id/button4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/button6"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="6"
+                        app:layout_constraintBottom_toTopOf="@+id/button7"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/button7"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="7"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/button4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="4"
+                        app:layout_constraintBottom_toTopOf="@+id/button5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="1"
+                        app:layout_constraintBottom_toTopOf="@+id/button2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="2"
+                        app:layout_constraintBottom_toTopOf="@+id/button3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/button5"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="5"
+                        app:layout_constraintBottom_toTopOf="@+id/button6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout2"
+                    android:layout_width="76dp"
+                    android:layout_height="164dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/reDoubleButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="XX"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <Button
+                        android:id="@+id/DoubleButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="X"
+                        app:layout_constraintBottom_toTopOf="@+id/reDoubleButton"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/undoublebutton" />
+
+                    <Button
+                        android:id="@+id/undoublebutton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="-"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/contractView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Contract Selected"
+                    android:textSize="30sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/NorthSouthLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10sp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toStartOf="@+id/textView3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/BoardNumLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/NorthSouth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:hint="N/S Pair" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/EastWestLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10sp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/BoardNumLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/EastWest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="E/W Pair" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/LeadEntryLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="10sp"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/LeadEntry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Lead" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TricksEntryLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10sp"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TricksEntry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Tricks" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/DeclarerEntryLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="10sp"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/DeclarerEntry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="By" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

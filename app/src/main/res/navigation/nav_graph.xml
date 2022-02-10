@@ -82,6 +82,15 @@
         <action
             android:id="@+id/scoreViewToScoreEntry"
             app:destination="@id/ScoreEntryFragment" />
+        <action
+            android:id="@+id/scoreViewToFinalScore"
+            app:destination="@id/FinalScore" />
+    </fragment>
+    <fragment
+        android:id="@+id/FinalScore"
+        android:name="com.example.iscorebridge.FinalScoreScreen"
+        android:label="Final Score View"
+        tools:layout="@layout/fragment_final_score_screen">
 
     </fragment>
 </navigation>
