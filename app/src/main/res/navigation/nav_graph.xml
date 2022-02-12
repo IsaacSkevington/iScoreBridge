@@ -9,7 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.example.iscorebridge.HomePage"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_home_page">
 
         <action
             android:id="@+id/homeToJoin"
@@ -18,19 +18,7 @@
             android:id="@+id/homeToStart"
             app:destination="@id/StartGameScreen" />
     </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.iscorebridge.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-        <action
-            android:id="@+id/action_SecondFragment_to_startGameFragment"
-            app:destination="@id/StartGameScreen" />
-    </fragment>
     <fragment
         android:id="@+id/StartGameScreen"
         android:name="com.example.iscorebridge.StartGameScreen"

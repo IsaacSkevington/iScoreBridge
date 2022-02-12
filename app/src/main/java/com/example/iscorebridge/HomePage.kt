@@ -2,27 +2,22 @@ package com.example.iscorebridge
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Build
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-
-
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 
 @Volatile lateinit var bluetoothAdapter : BluetoothAdapter
 class HomePage : Fragment() {
@@ -95,8 +90,7 @@ class HomePage : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.fragment_home_page, container, false)
     }
 
 

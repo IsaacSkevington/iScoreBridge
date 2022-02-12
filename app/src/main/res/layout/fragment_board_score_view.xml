@@ -5,73 +5,88 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BoardScoreView" >
+    tools:context=".BoardScoreView">
 
-    <ScrollView
-        android:id="@+id/ScoreViewWindow"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scrollbars="horizontal|vertical"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/nextScoreEntryButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TableLayout
-            android:id="@+id/ScoreViewTable"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/ScoreViewWindow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="0,1,2,3,4">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <TableRow
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Contract"
-                    android:textSize="20sp"
-                    android:textStyle="bold|italic" />
+                <TableLayout
+                    android:id="@+id/ScoreViewTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:stretchColumns="0,1,2,3,4">
 
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lead"
-                    android:textSize="20sp"
-                    android:textStyle="bold|italic" />
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tricks"
-                    android:textSize="20sp"
-                    android:textStyle="bold|italic" />
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Contract"
+                            android:textSize="20sp"
+                            android:textStyle="bold|italic" />
 
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Score (NS)"
-                    android:textSize="20sp"
-                    android:textStyle="bold|italic" />
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Lead"
+                            android:textSize="20sp"
+                            android:textStyle="bold|italic" />
 
-                <TextView
-                    android:id="@+id/ScoreTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ST"
-                    android:textSize="20sp"
-                    android:textStyle="bold|italic" />
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Tricks"
+                            android:textSize="20sp"
+                            android:textStyle="bold|italic" />
 
-            </TableRow>
-        </TableLayout>
-    </ScrollView>
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Score (NS)"
+                            android:textSize="20sp"
+                            android:textStyle="bold|italic" />
+
+                        <TextView
+                            android:id="@+id/ScoreTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="ST"
+                            android:textSize="20sp"
+                            android:textStyle="bold|italic" />
+
+                    </TableRow>
+                </TableLayout>
+            </HorizontalScrollView>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
     <Button
         android:id="@+id/nextScoreEntryButton"

@@ -41,13 +41,38 @@ class Board {
 
     }
 
-    fun hasGame(compareGame : Game) : Boolean{
+    fun sortGamesByScore() : ArrayList<Game>{
+        var sortedList = ArrayList<Game>()
+        for(i in 0 until games.size){
+            var added = false
+            for(j in 0 until sortedList.size){
+                if(games[i].score > sortedList[j].score){
+                    sortedList.add(j, games[i])
+                    added = true
+                    break
+                }
+            }
+            if(!added){
+                sortedList.add(games[i])
+            }
+        }
+        return sortedList
+
+
+    }
+
+    fun hasGame(pairNS : Int, pairEW: Int) : Boolean{
         for(game in games){
-            if(game.pairNS == compareGame.pairNS && game.pairEW == compareGame.pairEW){
+            if(game.pairNS == pairNS && game.pairEW == pairEW){
                 return true
             }
         }
         return false
+
+    }
+
+    fun hasGame(compareGame : Game) : Boolean{
+        return hasGame(compareGame.pairNS, compareGame.pairEW)
     }
 
     fun addGame(game: Game) : Game{
@@ -78,7 +103,7 @@ class Board {
         for(game1 in this.games){
             for(game2 in this.games){
                 if(game1.pairNS == game2.pairEW && game1.pairEW == game2.pairNS && !scores.containsKey(game1.pairNS)){
-                    var overallScorewrtNS = game1.score + game2.score
+                    var overallScorewrtNS = game1.score - game2.score
                     var IMPs : Int = IMPConversion(abs(overallScorewrtNS))
                     if(overallScorewrtNS > 0){
                         scores[game1.pairNS] = IMPs

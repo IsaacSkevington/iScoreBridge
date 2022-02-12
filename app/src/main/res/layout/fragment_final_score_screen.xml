@@ -10,10 +10,26 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Scores"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="#000000" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -23,32 +39,32 @@
             android:isScrollContainer="false"
             android:scrollbars="horizontal|vertical">
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Scores"
-                    android:textStyle="bold" />
-
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:background="#000000" />
+                android:layout_height="wrap_content">
 
                 <TableLayout
                     android:id="@+id/scoreDisplayTable"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-            </LinearLayout>
+            </HorizontalScrollView>
         </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Boards"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="#000000" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -57,67 +73,55 @@
             android:fillViewport="true"
             android:scrollbars="horizontal|vertical">
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Boards"
-                    android:textStyle="bold" />
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:background="#000000" />
+                android:layout_height="wrap_content">
 
                 <TableLayout
                     android:id="@+id/boardsDisplayTable"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-
-            </LinearLayout>
+            </HorizontalScrollView>
         </androidx.core.widget.NestedScrollView>
 
+        <TextView
+            android:id="@+id/boardNumberText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:text="Board Not Selected"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="1sp"
+            android:background="#000000" />
+
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/greyScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="#AAAAAA"
             android:fillViewport="true"
             android:scrollbars="horizontal|vertical">
 
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/boardNumberText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Board Not Selected"
-                    android:textStyle="bold" />
-
-                <View
-                    android:id="@+id/view3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1sp"
-                    android:background="#000000" />
+                android:layout_height="wrap_content">
 
                 <TableLayout
                     android:id="@+id/boardDisplayTable"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#CFCFCF"/>
+                    android:layout_height="wrap_content"
+                    android:background="#CFCFCF" />
 
-            </LinearLayout>
+            </HorizontalScrollView>
         </androidx.core.widget.NestedScrollView>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

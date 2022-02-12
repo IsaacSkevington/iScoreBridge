@@ -1,31 +1,32 @@
 package com.example.iscorebridge
 
+import android.app.Dialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.resources.TextAppearance
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ScoreEntryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 var boardNumber = 0
 var pairNS = 0
 var pairEW = 0
 var teams : Boolean = true
 var round = 0
+
+
+
+
 class ScoreEntryFragment() : Fragment() {
 
     private var contractNumber: Int = 0
@@ -212,21 +213,40 @@ class ScoreEntryFragment() : Fragment() {
         return ret
     }
 
-    private fun submit(){
+    private fun logicCheck(view : View) : Boolean{
+        var pairNS = view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
+        var pairEW = view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
+        var boardNumber = view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
+        if(match.boards.containsKey(boardNumber)){
+            if(match.boards[boardNumber]!!.hasGame(pairNS, pairEW)){
+                view.findViewById<TextInputLayout>(R.id.BoardNumLayout).error = "Game already played"
+                view.findViewById<TextInputLayout>(R.id.NorthSouthLayout).error = "Game already played"
+                view.findViewById<TextInputLayout>(R.id.EastWestLayout).error = "Game already played"
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun getGame(view : View) : Game{
         pairNS = view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
         pairEW = view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
         boardNumber = view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
-        var game : Game = match.addGame(  boardNumber,
-                        pairNS,
-                        pairEW,
-                        contractSuit,
-                        contractNumber,
-                        view!!.findViewById<TextView>(R.id.TricksEntry).text.toString().toInt(),
-                        view!!.findViewById<TextView>(R.id.LeadEntry).text.toString(),
-                        view!!.findViewById<TextView>(R.id.DeclarerEntry).text[0],
-                        doubled,
-                        redoubled
+        return match.addGame(  boardNumber,
+            pairNS,
+            pairEW,
+            contractSuit,
+            contractNumber,
+            view!!.findViewById<TextView>(R.id.TricksEntry).text.toString().toInt(),
+            view!!.findViewById<TextView>(R.id.LeadEntry).text.toString(),
+            view!!.findViewById<TextView>(R.id.DeclarerEntry).text[0],
+            doubled,
+            redoubled
         )
+    }
+
+    private fun submit(game : Game){
+
 
         bluetoothService.send(SENDGAME, game.toString())
         round++
@@ -240,12 +260,44 @@ class ScoreEntryFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_score_entry, container, false)
+    }
+
+    inner class ConfirmDialog(var game : Game) : DialogFragment() {
+
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            return activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.setMessage("Confirmation required! Contract: " + game.contract.toDisplayString() + " by " + game.contract.declarer + " Score: " + game.score.toString())
+                    .setPositiveButton("Confirm",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            submit(game)
+                        })
+                    .setNegativeButton("Reject",
+                        DialogInterface.OnClickListener { dialog, id ->
+
+                        })
+                builder.create()
+            } ?: throw IllegalStateException("Activity cannot be null")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(gameInfo.gameMode == MOVEMENT_NONE){
+            if(pairNS != 0 && pairEW != 0 && boardNumber != 0){
+                view!!.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
+                view!!.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
+                view!!.findViewById<TextView>(R.id.BoardNum).text = (boardNumber + 1).toString()
+            }
+        }
+
+        else{
+            //Implement movement display here
+        }
+
+
         view.findViewById<ImageButton>(R.id.clubButton).setOnClickListener{
             setSuit('C')
         }
@@ -296,7 +348,10 @@ class ScoreEntryFragment() : Fragment() {
         }
         view.findViewById<Button>(R.id.submitResult).setOnClickListener{
             if(errorCheck(view)) {
-                submit()
+                if(logicCheck(view)){
+                    var game = getGame(view)
+                    ConfirmDialog(game).show(fragmentManager!!, "ConfirmDialog")
+                }
             }
         }
     }

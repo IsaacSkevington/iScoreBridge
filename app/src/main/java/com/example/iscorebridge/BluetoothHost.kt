@@ -1,19 +1,14 @@
 package com.example.iscorebridge
 
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import java.net.Socket
-
-
 
 
 val ME = "HOSTCONNECT"
-class BluetoothHost(private val deviceAdapter : BluetoothAdapter) : Thread(){
+class BluetoothHost(private val deviceAdapter : BluetoothAdapter, @Volatile var parentHandler: Handler) : Thread(){
     
     @Volatile lateinit var hostHandler : Handler
     @Volatile lateinit var myWriter: BluetoothWriter
@@ -62,6 +57,7 @@ class BluetoothHost(private val deviceAdapter : BluetoothAdapter) : Thread(){
             } else {
                 clients[clients.size - 1]
             }
+            parentHandler.obtainMessage(MESSAGE_CLIENT_CONNECTED, clients.size + 1, -1, writerSoc.remoteDevice.name).sendToTarget()
             var c = Communication(bluetoothAdapter.name, MESSAGE_CONNECTDEVICE, clientAssignment)
             var writer = BluetoothWriter(writerSoc, hostHandler, c.toString())
             if(clients.size == 0){

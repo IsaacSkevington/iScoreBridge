@@ -1,7 +1,5 @@
 package com.example.iscorebridge
 
-import android.bluetooth.BluetoothDevice
-
 @Volatile var match : Match = Match()
 
 class Match {
@@ -60,6 +58,8 @@ class Match {
         }
         return scores
     }
+
+
 
     fun addGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
         if(!boards.containsKey(boardNumber)){

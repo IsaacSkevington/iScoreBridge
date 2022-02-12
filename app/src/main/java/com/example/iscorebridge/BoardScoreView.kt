@@ -2,7 +2,6 @@ package com.example.iscorebridge
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 
@@ -35,6 +35,14 @@ class BoardScoreView : Fragment() {
         return inflater.inflate(R.layout.fragment_board_score_view, container, false)
     }
 
+    private fun makeText(text : String, view : View) : TextView{
+        var textView = TextView(view.context)
+        textView.text = text
+        textView.setPadding(10,10,10,10)
+        return textView
+
+    }
+
     private fun display(view : View){
         var tableLayout = view.findViewById<TableLayout>(R.id.ScoreViewTable)
         var currentScores : MutableMap<Int,Int?>
@@ -47,30 +55,24 @@ class BoardScoreView : Fragment() {
             view.findViewById<TextView>(R.id.ScoreTitle).text = "MPs (NS)"
         }
 
-        for(game in match.boards[boardNumber]!!.games){
+        var gamesSorted = match.boards[boardNumber]!!.sortGamesByScore()
+
+        for(game in gamesSorted){
             var tableRow = TableRow(view.context)
             if(game.pairNS == pairNS && game.pairEW == pairEW){
                 tableRow.setBackgroundColor(Color.parseColor("#A6DAF2"))
             }
-            var contractView = TextView(view.context)
-            contractView.text = game.contract.toDisplayString()
-            var leadView = TextView(view.context)
-            leadView.text = game.lead.toString()
-            var tricksView = TextView(view.context)
-            tricksView.text = game.tricks.toString()
-            var pointsView = TextView(view.context)
-            pointsView.text = game.score.toString()
-            var scoreView = TextView(view.context)
+            tableRow.addView(makeText(game.contract.toDisplayString(), view))
+            tableRow.addView(makeText(game.lead.toString(), view))
+            tableRow.addView(makeText(game.tricks.toString(), view))
+            tableRow.addView(makeText(game.score.toString(), view))
+
             if(currentScores.containsKey(game.pairNS)){
-                scoreView.text = currentScores[game.pairNS].toString()
+                tableRow.addView(makeText(currentScores[game.pairNS].toString(), view))
             }
             else{
-                scoreView.text = "?"
+                tableRow.addView(makeText("?", view))
             }
-            tableRow.addView(contractView)
-            tableRow.addView(tricksView)
-            tableRow.addView(pointsView)
-            tableRow.addView(scoreView)
             tableLayout.addView(tableRow)
         }
     }

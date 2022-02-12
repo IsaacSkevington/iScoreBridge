@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:text="000"
         android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -42,16 +43,16 @@
         android:id="@+id/StartPlayingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="Start Game"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/StartPlayingButton">
@@ -67,22 +68,43 @@
             app:layout_constraintTop_toBottomOf="@+id/arrowSwitchCheck" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/numberTablesLayout"
-            android:layout_width="601dp"
+            android:id="@+id/numberBoardsLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/movementGroup"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/numberBoardsEntry"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Number of boards"
+                android:numeric="integer" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/numberTablesLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:errorEnabled="true"
+            app:layout_constraintEnd_toStartOf="@+id/movementGroup"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/numberTablesEntry"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:hint="Number of tables" />
+                android:hint="Number of tables"
+                android:numeric="integer" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <RadioGroup
@@ -94,7 +116,7 @@
             android:paddingBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numberTablesLayout">
+            app:layout_constraintTop_toBottomOf="@+id/numberBoardsLayout">
 
             <RadioButton
                 android:id="@+id/movementNone"

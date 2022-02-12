@@ -10,23 +10,41 @@ class Movement {
 
     var rounds : MutableMap<Int, Round>
 
-    constructor(tables : Int, gameMode : Int, selectedMovement : Int){
+    constructor(tables : Int, gameMode : Int, boards: Int, selectedMovement : Int){
         rounds = HashMap<Int, Round>()
-        createMovement(tables, gameMode, selectedMovement)
+        createMovement(tables, gameMode, boards, selectedMovement)
     }
-    constructor(s:String){
+    constructor(s:String) {
+
         rounds = HashMap<Int, Round>()
-        var roundsString = s.split(dlm)
-        for(round in roundsString){
-            var r = Round(round)
-            rounds[r.roundNumber] = r
+        if (s.isNotEmpty()) {
+            var roundsString = s.split(dlm)
+            for (round in roundsString) {
+                var r = Round(round)
+                rounds[r.roundNumber] = r
+            }
+        }
+    }
+
+    fun mitchell(tables : Int, boards : Int){
+        if(tables % 2 == 0){
+
+        }
+        else{
+
         }
     }
 
 
-    fun createMovement(tables : Int, gameMode : Int, movement : Int){
+    fun createMovement(tables : Int, boards : Int, gameMode : Int, movement : Int){
         if(movement == MOVEMENT_NONE){
             return
+        }
+        if(movement == MOVEMENT_HOWELL){
+
+        }
+        if(movement == MOVEMENT_MITCHELL){
+
         }
     }
 
@@ -35,7 +53,10 @@ class Movement {
         for(round in rounds.values){
             out += round.toString() + dlm
         }
-        out.substring(0, out.length - dlm.length)
+        if(rounds.values.isNotEmpty()){
+            out.substring(0, out.length - dlm.length)
+        }
+
         return out
     }
 }

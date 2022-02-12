@@ -3,28 +3,22 @@ package com.example.iscorebridge
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.*
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import org.w3c.dom.Text
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [JoinGame.newInstance] factory method to
- * create an instance of this fragment.
- */
 
 @Volatile var startGame = false
 class JoinGame : Fragment() {
@@ -39,7 +33,6 @@ class JoinGame : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_join_game, container, false)
     }
@@ -74,7 +67,7 @@ class JoinGame : Fragment() {
 
                         val requestCode = ENABLE_DISCOVERABLE
                         val discoverableIntent: Intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
-                            putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0)
+                            putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3600)
                         }
                         startActivityForResult(discoverableIntent, requestCode)
 
@@ -95,8 +88,6 @@ class JoinGame : Fragment() {
             override fun onReceive(context: Context, intent: Intent) {
                 when(intent.action) {
                     BluetoothDevice.ACTION_FOUND -> {
-                        // Discovery has found a device. Get the BluetoothDevice
-                        // object and its info from the Intent.
                         val device: BluetoothDevice? =
                             intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
                         if(device != null){
@@ -128,11 +119,52 @@ class JoinGame : Fragment() {
         bluetoothAdapter.startDiscovery()
     }
 
+    fun tableCheck(view:View) : Boolean{
+        var table = view.findViewById<TextInputEditText>(R.id.tableEntry).text.toString()
+        if(table == ""){
+            view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "Table must be specified"
+            return false
+        }
+        try{
+            var x = table.toInt()
+            if(x < 1){
+                view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "Table must be greater than 0"
+                return false
+            }
+        }
+        catch (e : Exception){
+            view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "Table must be a number"
+            return false
+        }
+        return true
+    }
+
+    fun idCheck(view:View) : Boolean{
+        var id = view.findViewById<TextInputEditText>(R.id.idEntry).text.toString()
+        if(id == ""){
+            view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "ID must be specified"
+            return false
+        }
+        return true
+    }
+
+
+    fun errorCheck(view : View) : Boolean{
+        view.findViewById<TextInputLayout>(R.id.tableEntryLayout).isErrorEnabled = false
+        view.findViewById<TextInputLayout>(R.id.idEntryLayout).isErrorEnabled = false
+        var ret = tableCheck(view)
+        return idCheck(view) && ret
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.joinButton).setOnClickListener {
-            joinGame(view)
+            if(errorCheck(view)){
+                joinGame(view)
+            }
+
         }
     }
 }

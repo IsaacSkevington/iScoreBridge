@@ -1,7 +1,6 @@
 package com.example.iscorebridge
 
 import android.app.Activity
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
@@ -12,8 +11,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import java.util.*
-
-
 
 
 @Volatile lateinit var bluetoothService : BluetoothService
@@ -237,8 +234,6 @@ class BluetoothService() {
                 when(intent.action) {
                     BluetoothDevice.ACTION_FOUND -> {
                         bluetoothAdapter.cancelDiscovery()
-                        // Discovery has found a device. Get the BluetoothDevice
-                        // object and its info from the Intent.
                         val device: BluetoothDevice =
                             intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)!!
                         if(device.address == readerID){
