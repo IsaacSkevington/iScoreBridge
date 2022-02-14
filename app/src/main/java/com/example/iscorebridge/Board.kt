@@ -80,12 +80,11 @@ class Board {
         return game
     }
 
-    fun addGame(pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
+    fun getGame(pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
 
         var contract : Contract = Contract(suit, trickNumbers, declarer, doubled, redoubled)
         var leadCard = Card(lead)
         var g : Game = Game(boardNumber, contract, pairNS, pairEW, tricksMade, leadCard, vulnerability)
-        this.games.add(g)
         return g
     }
 

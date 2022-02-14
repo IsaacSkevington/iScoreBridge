@@ -1,8 +1,7 @@
 package com.example.iscorebridge
 
 import java.util.*
-
-
+import kotlin.collections.ArrayList
 
 
 val MESSAGE_READ = 0
@@ -26,7 +25,7 @@ val MESSAGE_READER_DISCONNECTED = 10
 val MESSAGE_WRITER_DISCONNECTED = 11
 val MESSAGE_CLIENT_CONNECTED = 12
 
-public lateinit var gameInfo : GameInfo
+public var gameInfo : GameInfo = GameInfo(2, GAMEMODE_TEAMS, 10, MOVEMENT_NONE, ArrayList<String>())
 
 
 

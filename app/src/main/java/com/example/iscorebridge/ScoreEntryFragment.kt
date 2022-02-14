@@ -1,6 +1,5 @@
 package com.example.iscorebridge
 
-import android.app.Dialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -26,8 +24,9 @@ var round = 0
 
 
 
+class ScoreEntryFragment() : Fragment(){
 
-class ScoreEntryFragment() : Fragment() {
+    lateinit var game : Game
 
     private var contractNumber: Int = 0
     var contractSuit: Char = ' '
@@ -232,7 +231,7 @@ class ScoreEntryFragment() : Fragment() {
         pairNS = view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
         pairEW = view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
         boardNumber = view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
-        return match.addGame(  boardNumber,
+        return match.getGame(  boardNumber,
             pairNS,
             pairEW,
             contractSuit,
@@ -247,7 +246,7 @@ class ScoreEntryFragment() : Fragment() {
 
     private fun submit(game : Game){
 
-
+        match.addGame(game)
         bluetoothService.send(SENDGAME, game.toString())
         round++
         findNavController().navigate(R.id.scoreEntryToScoreView)
@@ -263,24 +262,9 @@ class ScoreEntryFragment() : Fragment() {
         return inflater.inflate(R.layout.fragment_score_entry, container, false)
     }
 
-    inner class ConfirmDialog(var game : Game) : DialogFragment() {
 
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            return activity?.let {
-                val builder = AlertDialog.Builder(it)
-                builder.setMessage("Confirmation required! Contract: " + game.contract.toDisplayString() + " by " + game.contract.declarer + " Score: " + game.score.toString())
-                    .setPositiveButton("Confirm",
-                        DialogInterface.OnClickListener { dialog, id ->
-                            submit(game)
-                        })
-                    .setNegativeButton("Reject",
-                        DialogInterface.OnClickListener { dialog, id ->
 
-                        })
-                builder.create()
-            } ?: throw IllegalStateException("Activity cannot be null")
-        }
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -349,8 +333,20 @@ class ScoreEntryFragment() : Fragment() {
         view.findViewById<Button>(R.id.submitResult).setOnClickListener{
             if(errorCheck(view)) {
                 if(logicCheck(view)){
-                    var game = getGame(view)
-                    ConfirmDialog(game).show(fragmentManager!!, "ConfirmDialog")
+                    game = getGame(view)
+                    val builder = AlertDialog.Builder(view.context)
+                    builder.setMessage("Confirmation required! Contract: " + game.contract.toDisplayString() + " by " + game.contract.declarer + " Score: " + game.score.toString())
+                        .setPositiveButton("Confirm",
+                            DialogInterface.OnClickListener { dialog, id ->
+                                submit(game)
+
+                            })
+                        .setNegativeButton("Reject",
+                            DialogInterface.OnClickListener { dialog, id ->
+
+                            })
+                    builder.create()
+                    builder.show()
                 }
             }
         }

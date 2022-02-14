@@ -24,13 +24,21 @@ class HomePage : Fragment() {
     val START = "START"
     val JOIN = "JOIN"
     var buttonPress : String = ""
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == REQUEST_ENABLE_BT){
             if(resultCode == RESULT_OK){
-                findNavController().navigate(R.id.homeToStart)
+                if(buttonPress == START){
+                    findNavController().navigate(R.id.homeToStart)
+                }
+                else{
+
+                }
+
             }
             else{
-                Toast.makeText(context, "Bluetooth permissions incorrect", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Bluetooth permissions incorrect", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -44,6 +52,9 @@ class HomePage : Fragment() {
     ) {
         if(requestCode == BLUETOOTH_PERMISSIONS_GRANTED){
             setupBluetooth()
+        }
+        else{
+            Toast.makeText(context, "Permissions Denied, please try again", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -70,7 +81,7 @@ class HomePage : Fragment() {
         if(bluetoothAdapter == null){
             return
         }
-        if (!bluetoothAdapter?.isEnabled) {
+        if (!bluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }

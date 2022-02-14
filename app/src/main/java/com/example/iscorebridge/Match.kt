@@ -61,11 +61,9 @@ class Match {
 
 
 
-    fun addGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
-        if(!boards.containsKey(boardNumber)){
-            boards[boardNumber] = Board(boardNumber)
-        }
-        return boards[boardNumber]!!.addGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
+    fun getGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
+        var b = Board(boardNumber)
+        return b.getGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
     }
 
     fun merge(other : Match){
