@@ -1,0 +1,2 @@
+com/OS3/iscorebridge/BuildConfig.java
+ com.OS3.iscorebridge.BuildConfig

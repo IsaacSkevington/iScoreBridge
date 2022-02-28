@@ -1,0 +1,86 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.OS3.iscorebridge"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+7-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+8        android:minSdkVersion="16"
+8-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:15-41
+9        android:targetSdkVersion="32" />
+9-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+10
+11    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+11-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:6:5-79
+11-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:6:22-76
+12    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS" />
+12-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:7:5-8:47
+12-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:7:22-73
+13    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+13-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:31:5-76
+13-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:31:22-73
+14    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+14-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:32:5-76
+14-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:32:22-73
+15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+15-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:6:5-79
+15-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:6:22-76
+16    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+16-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:34:5-79
+16-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:34:22-76
+17    <uses-permission android:name="android.permission.INTERNET" />
+17-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:35:5-67
+17-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:35:22-64
+18    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+18-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:36:5-79
+18-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:36:22-76
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:37:5-80
+19-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:37:22-78
+20    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+20-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:38:5-79
+20-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:38:22-77
+21
+22    <application
+22-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:9:5-28:19
+23        android:allowBackup="true"
+23-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:10:9-35
+24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+24-->[androidx.core:core:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\3724cf4345545879e6a6d5b0dad855e5\core-1.1.0\AndroidManifest.xml:24:18-86
+25        android:debuggable="true"
+26        android:icon="@mipmap/appic_screenlauncher"
+26-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:12:9-52
+27        android:label="@string/app_name"
+27-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:13:9-41
+28        android:roundIcon="@mipmap/appic_screenlauncher_round"
+28-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:14:9-63
+29        android:supportsRtl="true"
+29-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:15:9-35
+30        android:testOnly="true"
+31        android:theme="@style/AppTheme" >
+31-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:16:9-40
+32        <activity
+32-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:17:9-27:20
+33            android:name="com.OS3.iscorebridge.MainActivity"
+33-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:18:13-61
+34            android:exported="true"
+34-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:19:13-36
+35            android:label="@string/app_name"
+35-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:20:13-45
+36            android:theme="@style/AppTheme.NoActionBar" >
+36-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:21:13-56
+37            <intent-filter>
+37-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:22:13-26:29
+38                <action android:name="android.intent.action.MAIN" />
+38-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:23:17-69
+38-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:23:25-66
+39
+40                <category android:name="android.intent.category.LAUNCHER" />
+40-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:25:17-77
+40-->D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:25:27-74
+41            </intent-filter>
+42        </activity>
+43    </application>
+44
+45</manifest>

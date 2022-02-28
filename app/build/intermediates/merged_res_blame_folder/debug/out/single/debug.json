@@ -1,0 +1,282 @@
+[
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_ic_settings.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable-mdpi\\ic_settings.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable_diamond.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable\\diamond.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-xhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_appic_launcher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\appic_launcher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_appic_screenlauncher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-hdpi\\appic_screenlauncher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_appic_launcher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-hdpi\\appic_launcher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_appic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\appic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_appic_screenlauncher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxxhdpi\\appic_screenlauncher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\navigation_nav_graph.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\navigation\\nav_graph.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_appic_screenlauncher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\appic_screenlauncher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi-v21_ic_launcher_background.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-anydpi-v21\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_settings.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable-xhdpi\\ic_settings.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_appic_screenlauncher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\appic_screenlauncher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_join_game.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_join_game.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_appic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\appic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_final_score_screen.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_final_score_screen.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-anydpi-v24_ic_launcher_foreground.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-anydpi-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_appic_screenlauncher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxxhdpi\\appic_screenlauncher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_appic_screenlauncher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-hdpi\\appic_screenlauncher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_appic_screenlauncher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\appic_screenlauncher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_second.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_second.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable_spade.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable\\spade.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-mdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_appic_screenlauncher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\appic_screenlauncher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_appic_launcher_round.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-anydpi-v26\\appic_launcher_round.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable_heart.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable\\heart.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_appic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\appic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_appic_launcher.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-anydpi-v26\\appic_launcher.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_appic_launcher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxxhdpi\\appic_launcher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_appic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-hdpi\\appic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_wait_to_start.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_wait_to_start.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_ic_settings.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable-xxhdpi\\ic_settings.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_appic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\appic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_appic_screenlauncher.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-anydpi-v26\\appic_screenlauncher.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_appic_screenlauncher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-hdpi\\appic_screenlauncher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable_club.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable\\club.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_appic_screenlauncher_round.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-anydpi-v26\\appic_screenlauncher_round.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_board_score_view.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_board_score_view.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi_ic_launcher_background.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-ldpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_score_entry.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_score_entry.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_home_page.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_home_page.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_appic_screenlauncher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\appic_screenlauncher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_appic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\appic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_appic_screenlauncher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\appic_screenlauncher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_appic_screenlauncher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\appic_screenlauncher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable_cog.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable\\cog.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_content_main.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\content_main.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi_ic_settings.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_settings.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_appic_screenlauncher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\appic_screenlauncher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_start_game_screen.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\layout\\fragment_start_game_screen.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_settings.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\drawable-hdpi\\ic_settings.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_appic_screenlauncher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxxhdpi\\appic_screenlauncher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_appic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxxhdpi\\appic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_appic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-hdpi\\appic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\generated\\res\\pngs\\debug\\drawable-hdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_appic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxxhdpi\\appic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_appic_screenlauncher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xxhdpi\\appic_screenlauncher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\menu_menu_main.xml.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\menu\\menu_main.xml"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_appic_launcher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-xhdpi\\appic_launcher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_appic_launcher_foreground.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\appic_launcher_foreground.png"
+    },
+    {
+        "merged": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_appic_launcher.png.flat",
+        "source": "D:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\src\\main\\res\\mipmap-mdpi\\appic_launcher.png"
+    }
+]

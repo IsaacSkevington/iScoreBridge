@@ -1,0 +1,265 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+MERGED from [androidx.core:core-ktx:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f50be9ec05039393c0b16006f4e731ae\jetified-core-ktx-1.1.0\AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.navigation:navigation-fragment-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ea4d246025143d1b7f4b6540eae44881\navigation-fragment-ktx-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.navigation:navigation-ui-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\05bec419f28952e7758aee7d8705889c\navigation-ui-ktx-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\847855b0d1489eed1e62807beac618b6\navigation-runtime-ktx-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment-ktx:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\0d8bf211bc31673f8eac61112543c309\jetified-fragment-ktx-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity-ktx:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\df62badd034223180a2c161bb660d881\jetified-activity-ktx-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\7df838f833caa8abbfb41905f6c426bb\jetified-lifecycle-viewmodel-ktx-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-common-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\30221138824b285a5594de890dd340b0\navigation-common-ktx-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.navigation:navigation-ui:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\4f8886553ce7f446cd870080ade20673\navigation-ui-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\04ae286d688141d9b936f8a0adf005c8\material-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f10af8c30e41bdc140b89e370b84d0cf\appcompat-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d5acab762106c59aca4453e3f8cbfb6e\constraintlayout-1.1.3\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ab9fd70fbedac4cce34a476c06343b46\legacy-support-v4-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-fragment:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ac48f5fe4d1e51d7eee62ca8c98dcd70\navigation-fragment-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\0c0f616b9d9873c40c6d6bd551c0e8e1\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6b58bbf10b201441d5efe889b609fc76\jetified-appcompat-resources-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\fdfe9e65f67977a91b7c3d2a8f2e2db4\recyclerview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\dd902154348aeb48ad5da4868696242b\legacy-support-core-ui-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\64f8f6d370ef98401d976c374454bdb3\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\9cc754e8673487efcf2ca6fe9f57eae1\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.media:media:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\52d7f7a9999a751ffb6b45f0d5375e3b\media-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6c60370edd5d9bd8e17ebf6aaa9d645f\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\b4f2486d14a74a9aa4a340cb6b9f9829\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-runtime:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\cff1012beeef154c812ee4fed5a22235\navigation-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\adafa91cd7cefe57d74c63124cd7fd5c\jetified-activity-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\79aa47ec9036b30fdfcb85db72dd413c\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\27f8833e64eb428a04805ada3e711e6a\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\c694683240e743788304f62f304a8583\coordinatorlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\819df0b8f8b6f396b4831457b9bdc128\slidingpanelayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\861ea3cd1368d4b1d1869307448a9ea4\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\db506f5e6a962a4d6d076e0250b931de\swiperefreshlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\c9449c43e56f998f77000319bcb962a4\asynclayoutinflater-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.0.1] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d80bf22f1aa5e6690b91b186ec3abbb0\transition-1.0.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-common:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\da55b559930ea827e624cb9edb7d8d9c\navigation-common-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\3724cf4345545879e6a6d5b0dad855e5\core-1.1.0\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\a7e6bafeae93933cbda713bb73c5c983\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\8fd462f163767c6e3111c82ba624414e\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\e9ad31517d32eec25831f571d96ce432\versionedparcelable-1.1.0\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\06cf1df9ea1aee40f7ab1ea9de92a1c5\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\43411207cb33efaee12eeadae1af9f50\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f98d84a8da935cb0698bdd52750b350d\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\485616ff65bbe4cf2d916d94fc565899\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\cf70fa3101b84a663ed6dcf55aa48add\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ef58d6bef5f4c13633e229b5be1e31af\lifecycle-runtime-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\7d5c40d887015fddb34e98e5eda46932\jetified-savedstate-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\141482a6a61bc2590de3c7c0d764a0af\lifecycle-livedata-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\2f0f3b141a856942fcc019a4339e1389\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6618cafcb2779438271b09edd38fa99e\core-runtime-2.0.0\AndroidManifest.xml:17:1-22:12
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+	package
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:4:5-35
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:1-40:12
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:6:5-79
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:6:22-76
+uses-permission#android.permission.LOCAL_MAC_ADDRESS
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:7:5-8:47
+	tools:ignore
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:8:9-44
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:7:22-73
+application
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:9:5-28:19
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\04ae286d688141d9b936f8a0adf005c8\material-1.0.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\04ae286d688141d9b936f8a0adf005c8\material-1.0.0\AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d5acab762106c59aca4453e3f8cbfb6e\constraintlayout-1.1.3\AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d5acab762106c59aca4453e3f8cbfb6e\constraintlayout-1.1.3\AndroidManifest.xml:9:5-20
+MERGED from [androidx.core:core:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\3724cf4345545879e6a6d5b0dad855e5\core-1.1.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\3724cf4345545879e6a6d5b0dad855e5\core-1.1.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\e9ad31517d32eec25831f571d96ce432\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\e9ad31517d32eec25831f571d96ce432\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\3724cf4345545879e6a6d5b0dad855e5\core-1.1.0\AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:15:9-35
+	android:label
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:13:9-41
+	android:roundIcon
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:14:9-63
+	android:icon
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:12:9-52
+	android:allowBackup
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:10:9-35
+	android:theme
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:16:9-40
+activity#com.OS3.iscorebridge.MainActivity
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:17:9-27:20
+	android:label
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:20:13-45
+	android:exported
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:19:13-36
+	android:theme
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:21:13-56
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:18:13-61
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:22:13-26:29
+action#android.intent.action.MAIN
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:23:17-69
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:23:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:25:17-77
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:25:27-74
+uses-sdk
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+MERGED from [androidx.core:core-ktx:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f50be9ec05039393c0b16006f4e731ae\jetified-core-ktx-1.1.0\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.core:core-ktx:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f50be9ec05039393c0b16006f4e731ae\jetified-core-ktx-1.1.0\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.navigation:navigation-fragment-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ea4d246025143d1b7f4b6540eae44881\navigation-fragment-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-fragment-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ea4d246025143d1b7f4b6540eae44881\navigation-fragment-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-ui-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\05bec419f28952e7758aee7d8705889c\navigation-ui-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-ui-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\05bec419f28952e7758aee7d8705889c\navigation-ui-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\847855b0d1489eed1e62807beac618b6\navigation-runtime-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\847855b0d1489eed1e62807beac618b6\navigation-runtime-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment-ktx:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\0d8bf211bc31673f8eac61112543c309\jetified-fragment-ktx-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment-ktx:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\0d8bf211bc31673f8eac61112543c309\jetified-fragment-ktx-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity-ktx:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\df62badd034223180a2c161bb660d881\jetified-activity-ktx-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity-ktx:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\df62badd034223180a2c161bb660d881\jetified-activity-ktx-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\7df838f833caa8abbfb41905f6c426bb\jetified-lifecycle-viewmodel-ktx-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\7df838f833caa8abbfb41905f6c426bb\jetified-lifecycle-viewmodel-ktx-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\30221138824b285a5594de890dd340b0\navigation-common-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-common-ktx:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\30221138824b285a5594de890dd340b0\navigation-common-ktx-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-ui:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\4f8886553ce7f446cd870080ade20673\navigation-ui-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-ui:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\4f8886553ce7f446cd870080ade20673\navigation-ui-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\04ae286d688141d9b936f8a0adf005c8\material-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\04ae286d688141d9b936f8a0adf005c8\material-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f10af8c30e41bdc140b89e370b84d0cf\appcompat-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f10af8c30e41bdc140b89e370b84d0cf\appcompat-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d5acab762106c59aca4453e3f8cbfb6e\constraintlayout-1.1.3\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d5acab762106c59aca4453e3f8cbfb6e\constraintlayout-1.1.3\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ab9fd70fbedac4cce34a476c06343b46\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ab9fd70fbedac4cce34a476c06343b46\legacy-support-v4-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-fragment:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ac48f5fe4d1e51d7eee62ca8c98dcd70\navigation-fragment-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-fragment:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ac48f5fe4d1e51d7eee62ca8c98dcd70\navigation-fragment-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\0c0f616b9d9873c40c6d6bd551c0e8e1\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\0c0f616b9d9873c40c6d6bd551c0e8e1\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6b58bbf10b201441d5efe889b609fc76\jetified-appcompat-resources-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6b58bbf10b201441d5efe889b609fc76\jetified-appcompat-resources-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\fdfe9e65f67977a91b7c3d2a8f2e2db4\recyclerview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\fdfe9e65f67977a91b7c3d2a8f2e2db4\recyclerview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\dd902154348aeb48ad5da4868696242b\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\dd902154348aeb48ad5da4868696242b\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\64f8f6d370ef98401d976c374454bdb3\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\64f8f6d370ef98401d976c374454bdb3\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\9cc754e8673487efcf2ca6fe9f57eae1\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\9cc754e8673487efcf2ca6fe9f57eae1\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\52d7f7a9999a751ffb6b45f0d5375e3b\media-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\52d7f7a9999a751ffb6b45f0d5375e3b\media-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6c60370edd5d9bd8e17ebf6aaa9d645f\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6c60370edd5d9bd8e17ebf6aaa9d645f\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\b4f2486d14a74a9aa4a340cb6b9f9829\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\b4f2486d14a74a9aa4a340cb6b9f9829\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\cff1012beeef154c812ee4fed5a22235\navigation-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-runtime:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\cff1012beeef154c812ee4fed5a22235\navigation-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\adafa91cd7cefe57d74c63124cd7fd5c\jetified-activity-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\adafa91cd7cefe57d74c63124cd7fd5c\jetified-activity-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\79aa47ec9036b30fdfcb85db72dd413c\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\79aa47ec9036b30fdfcb85db72dd413c\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\27f8833e64eb428a04805ada3e711e6a\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\27f8833e64eb428a04805ada3e711e6a\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\c694683240e743788304f62f304a8583\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\c694683240e743788304f62f304a8583\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\819df0b8f8b6f396b4831457b9bdc128\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\819df0b8f8b6f396b4831457b9bdc128\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\861ea3cd1368d4b1d1869307448a9ea4\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\861ea3cd1368d4b1d1869307448a9ea4\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\db506f5e6a962a4d6d076e0250b931de\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\db506f5e6a962a4d6d076e0250b931de\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\c9449c43e56f998f77000319bcb962a4\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\c9449c43e56f998f77000319bcb962a4\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.1] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d80bf22f1aa5e6690b91b186ec3abbb0\transition-1.0.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.1] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\d80bf22f1aa5e6690b91b186ec3abbb0\transition-1.0.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\da55b559930ea827e624cb9edb7d8d9c\navigation-common-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.navigation:navigation-common:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\da55b559930ea827e624cb9edb7d8d9c\navigation-common-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\3724cf4345545879e6a6d5b0dad855e5\core-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\3724cf4345545879e6a6d5b0dad855e5\core-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\a7e6bafeae93933cbda713bb73c5c983\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\a7e6bafeae93933cbda713bb73c5c983\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\8fd462f163767c6e3111c82ba624414e\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\8fd462f163767c6e3111c82ba624414e\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\e9ad31517d32eec25831f571d96ce432\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\e9ad31517d32eec25831f571d96ce432\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\06cf1df9ea1aee40f7ab1ea9de92a1c5\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\06cf1df9ea1aee40f7ab1ea9de92a1c5\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\43411207cb33efaee12eeadae1af9f50\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\43411207cb33efaee12eeadae1af9f50\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f98d84a8da935cb0698bdd52750b350d\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\f98d84a8da935cb0698bdd52750b350d\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\485616ff65bbe4cf2d916d94fc565899\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\485616ff65bbe4cf2d916d94fc565899\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\cf70fa3101b84a663ed6dcf55aa48add\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\cf70fa3101b84a663ed6dcf55aa48add\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ef58d6bef5f4c13633e229b5be1e31af\lifecycle-runtime-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\ef58d6bef5f4c13633e229b5be1e31af\lifecycle-runtime-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\7d5c40d887015fddb34e98e5eda46932\jetified-savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\7d5c40d887015fddb34e98e5eda46932\jetified-savedstate-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\141482a6a61bc2590de3c7c0d764a0af\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\141482a6a61bc2590de3c7c0d764a0af\lifecycle-livedata-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\2f0f3b141a856942fcc019a4339e1389\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\2f0f3b141a856942fcc019a4339e1389\lifecycle-livedata-core-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6618cafcb2779438271b09edd38fa99e\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\SSAPP\.gradle\caches\transforms-2\files-2.1\6618cafcb2779438271b09edd38fa99e\core-runtime-2.0.0\AndroidManifest.xml:20:5-44
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+	android:targetSdkVersion
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:5-44
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:30:15-41
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:31:5-76
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:31:22-73
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:32:5-76
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:32:22-73
+uses-permission#android.permission.CHANGE_NETWORK_STATE
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:34:5-79
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:34:22-76
+uses-permission#android.permission.INTERNET
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:35:5-67
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:35:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:36:5-79
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:36:22-76
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:37:5-80
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:37:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:38:5-79
+	android:name
+		ADDED from D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\AndroidManifest.xml:38:22-77
