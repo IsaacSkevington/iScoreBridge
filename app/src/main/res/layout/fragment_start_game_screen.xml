@@ -71,6 +71,7 @@
             android:id="@+id/numberBoardsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="start"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             app:errorEnabled="true"
@@ -82,6 +83,7 @@
                 android:id="@+id/numberBoardsEntry"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_horizontal"
                 android:hint="Number of boards"
                 android:numeric="integer" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -90,6 +92,7 @@
             android:id="@+id/numberTablesLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="end"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             app:errorEnabled="true"

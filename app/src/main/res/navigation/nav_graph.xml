@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HomePage"
-        android:name="com.example.iscorebridge.HomePage"
+        android:name="com.OS3.iscorebridge.HomePage"
         android:label="Home Page"
         tools:layout="@layout/fragment_home_page">
 
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/StartGameScreen"
-        android:name="com.example.iscorebridge.StartGameScreen"
+        android:name="com.OS3.iscorebridge.StartGameScreen"
         android:label="Start Game"
         tools:layout="@layout/fragment_start_game_screen">
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/JoinGame"
-        android:name="com.example.iscorebridge.JoinGame"
+        android:name="com.OS3.iscorebridge.JoinGame"
         android:label="Join game"
         tools:layout="@layout/fragment_join_game">
 
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/WaitToStart"
-        android:name="com.example.iscorebridge.WaitToStart"
+        android:name="com.OS3.iscorebridge.WaitToStart"
         android:label="Wait for start"
         tools:layout="@layout/fragment_wait_to_start">
 
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/ScoreEntryFragment"
-        android:name="com.example.iscorebridge.ScoreEntryFragment"
+        android:name="com.OS3.iscorebridge.ScoreEntryFragment"
         android:label="Score Entry"
         tools:layout="@layout/fragment_score_entry">
 
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/ScoreViewWindow"
-        android:name="com.example.iscorebridge.BoardScoreView"
+        android:name="com.OS3.iscorebridge.BoardScoreView"
         android:label="Board Score View"
         tools:layout="@layout/fragment_board_score_view">
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/FinalScore"
-        android:name="com.example.iscorebridge.FinalScoreScreen"
+        android:name="com.OS3.iscorebridge.FinalScoreScreen"
         android:label="Final Score View"
         tools:layout="@layout/fragment_final_score_screen">
 
