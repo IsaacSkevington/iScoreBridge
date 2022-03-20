@@ -105,6 +105,7 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/spade"
+                        android:tint="#000000"
                         app:layout_constraintBottom_toTopOf="@+id/noTrumpButton"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -115,6 +116,7 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/heart"
+                        android:tint="#FF0000"
                         app:layout_constraintBottom_toTopOf="@+id/spadeButton"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -125,6 +127,7 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/diamond"
+                        android:tint="#FF0000"
                         app:layout_constraintBottom_toTopOf="@+id/heartButton"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -135,6 +138,7 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/club"
+                        android:tint="#000000"
                         app:layout_constraintBottom_toTopOf="@+id/diamondButton"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />

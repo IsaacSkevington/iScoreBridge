@@ -1,7 +1,18 @@
 package com.OS3.iscorebridge
 
+import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import android.os.Build
+import androidx.annotation.RequiresApi
 import kotlin.math.abs
+
+public fun scoringModeToString(scoringMode: Int) : String{
+    return when(scoringMode) {
+        GAMEMODE_TEAMS -> "IMPs"
+        GAMEMODE_PAIRS -> "MPs"
+        else -> ""
+    }
+}
 
 val TEAMS : Int = 0
 val PAIRS : Int = 1
@@ -120,7 +131,7 @@ class Board {
     }
 
     fun pairScoreToPercent(score: Int) : Int{
-        return ((score as Double / (games.size - 1) as Double) * 100.0) as Int
+        return ((score.toDouble() / (games.size - 1).toDouble()) * 100.0).toInt()
     }
 
     fun pairScore() : MutableMap<Int, Int?>{
@@ -171,7 +182,26 @@ class Board {
         }
     }
 
-    public fun toPDF(page : PdfDocument.Page){
+
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    fun toPDF(page : PdfDocument.Page, scoringMode: Int){
+
+        var scoringString = scoringModeToString(scoringMode) + " (N/S)"
+        var scoringMap = calculateScores(scoringMode)
+        var table = TablePage(arrayOf("N/S", "E/W", "Contract", "Lead", "Tricks", "Score", scoringString))
+        for(game in games){
+            var valuesArray : ArrayList<String> = game.toArray()
+            var toAdd = scoringMap[valuesArray[0].toInt()]!!.toString()
+            valuesArray.add(toAdd)
+            table.addRow(valuesArray.toTypedArray())
+        }
+        var titleText = Paint()
+        titleText.textAlign = Paint.Align.CENTER
+        titleText.isUnderlineText = true
+        titleText.textSize = 30F
+        page.canvas.drawText("Board $boardNumber", (page.canvas.width/2).toFloat(), 70f, titleText)
+        table.draw(page, 200f, 200f, false)
 
     }
 }

@@ -1,24 +1,43 @@
 package com.OS3.iscorebridge
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.net.wifi.p2p.*
+import android.net.wifi.WpsInfo
+import android.net.wifi.p2p.WifiP2pConfig
+import android.net.wifi.p2p.WifiP2pDevice
+import android.net.wifi.p2p.WifiP2pInfo
+import android.net.wifi.p2p.WifiP2pManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.annotation.RequiresApi
+import java.net.InetSocketAddress
 import java.net.ServerSocket
-import java.util.*
+import java.net.Socket
 
 
 @Volatile lateinit var wifiService : WifiService
+@Volatile lateinit var wifiClient : WifiClient
+@Volatile public var clientConnected = false
 
-val hostport = 8888
-val readwriteport1 = 8889
-var readwriteport2 = 8890
+@Volatile public var peers : ArrayList<WifiP2pDevice> = ArrayList<WifiP2pDevice>()
+@Volatile public var peersChanged = false
+public val peerListListener = WifiP2pManager.PeerListListener { peerList ->
+    val refreshedPeers = peerList.deviceList
+    if (refreshedPeers != peers) {
+        peers.clear()
+        peers.addAll(refreshedPeers)
+    }
+
+    if (peers.isEmpty()) {
+        return@PeerListListener
+    }
+    peersChanged = true
+}
+
+
 
 fun getReaderPort(clientNumber : Int) : Int{
     return if(clientNumber % 2 == 0){
@@ -38,54 +57,17 @@ fun getWriterPort(clientNumber : Int) : Int{
 }
 
 
-fun connectWifi(address : String, manager: WifiP2pManager, channel: WifiP2pManager.Channel){
-    var info = WifiP2pConfig().apply{
-        this.deviceAddress = address
-    }
-    try {
-        manager.connect(channel, info, object : WifiP2pManager.ActionListener {
-            override fun onSuccess() {
-
-            }
-
-            override fun onFailure(reason: Int) {
-                if(reason == WifiP2pManager.BUSY || reason == WifiP2pManager.ERROR) {
-                    connectWifi(address, manager, channel)
-                }
-            }
-        })
-    }
-    catch (e : SecurityException){
-
-    }
-}
-
-
-
-
-
-const val MESSAGE_SEND = 6
-const val MESSAGE_SEND_MATCH = 11
-const val MESSAGE_READ_MATCH = 12
-const val ENABLE_DISCOVERABLE = 4
-const val MESSAGE_MATCHUPDATE = 5
-
-
-
 class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Channel) : BroadcastReceiver(){
 
-    @Volatile var discover = false
     @Volatile lateinit var clientList : ArrayList<String>
-    @Volatile lateinit public var activity : Activity
     @Volatile lateinit var writer : WifiWriter
     @Volatile lateinit var reader : WifiReader
     @Volatile var writerSet : Boolean = false
     @Volatile var readerSet : Boolean = false
-    @Volatile lateinit var childHandler : Handler
     lateinit var readerID : String
+    lateinit var info : WifiP2pInfo
     @Volatile lateinit var parentHandler : Handler
     @Volatile lateinit var serviceHandler : Handler
-    @Volatile var connecting = false
 
     init{
         RunningThread().start()
@@ -95,104 +77,58 @@ class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Cha
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action!!) {
-            WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION -> {
-
-            }
+            WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION -> {}
             WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION -> {
-                if(discover) {
-                    try {
-                        manager.requestPeers(channel) { peers: WifiP2pDeviceList ->
-                            var peersList = peers.deviceList
-                            for (device in peersList) {
-                                if (encodeID(device.deviceName) == readerID || device.deviceAddress == readerID) {
-                                    ConnectReaderThread(device.deviceAddress).start()
-                                    discover = false
-                                }
-                            }
-
-                        }
-                    } catch (e: SecurityException) {
-
-                    }
+                try {
+                    manager.requestPeers(channel, peerListListener)
                 }
+                catch (e: SecurityException) {}
             }
             WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION -> {
-                val info: WifiP2pInfo? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO)
-                if (amHost) {
-                    if (info!!.groupFormed) {
-                        val info: WifiP2pGroup? =
-                            intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_GROUP)
-                        var connectionAddress = info!!.owner.deviceAddress
-                        var config = WifiP2pConfig()
-                        config.deviceAddress = connectionAddress
-                        try {
-                            manager.connect(
-                                channel,
-                                config,
-                                object : WifiP2pManager.ActionListener {
-                                    override fun onSuccess() {
-
-                                    }
-
-                                    override fun onFailure(reason: Int) {
-
-                                    }
-                                })
-                        } catch (e: SecurityException) {
-
-                        }
+                info = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO)!!
+                if(amHost && info.groupFormed){
+                    if(info.isGroupOwner){
+                        wifiHost.ConnectThread().start()
                     }
-                } else {
-                    if(info!!.groupFormed) {
-                        var address = info!!.groupOwnerAddress.hostAddress.toString()
-                        if (!readerSet) {
-                            var handler = object : Handler(Looper.myLooper()!!){
-                                override fun handleMessage(msg: Message) {
-                                    when(msg.what){
-                                        MESSAGE_ONETIMEREADER_DATAAVAILABLE->{
-                                            var communication = msg.obj as Communication
-                                            var assignment = ClientAssignment(communication.msg)
-                                            clientNumber = assignment.myNumber
-                                            reader = if (assignment.connectionAddress == ME) {
-                                                WifiReader(parentHandler, address, serviceHandler, getReaderPort(clientNumber))
-                                            } else {
-                                                WifiReader(parentHandler, assignment.connectionAddress, serviceHandler, getReaderPort(clientNumber))
-                                            }
-                                            while (!reader.connected) {
-                                            }
-                                            readerSet = true
-                                            if (writerSet) {
-                                                reader.forwardHandlerSet(writer.sendHandler)
-                                            }
-                                            parentHandler.obtainMessage(MESSAGECONNECTEDREADER).sendToTarget()
-                                        }
-
-                                    }
-                                }
-                            }
-                            OneTimeWifiReader(handler, address, serviceHandler, hostport).start()
-
-                        } else {
-                            reader = WifiReader(parentHandler, address, serviceHandler, getReaderPort(clientNumber))
-                            while (!reader.connected) {
-                            }
-                            if (writerSet) {
-                                reader.forwardHandlerSet(writer.sendHandler)
-                            }
-                            readerSet = true
-                            parentHandler.obtainMessage(MESSAGECONNECTEDREADER).sendToTarget()
-
-                        }
-
+                    else{
+                        wifiHost.ConnectThread(info.groupOwnerAddress.hostAddress.toString()).start()
+                    }
+                    clientConnected = true
+                }
+                else if (info.groupFormed) {
+                    if(info.isGroupOwner){
+                        wifiClient.ConnectThread().start()
+                    }
+                    else{
+                        wifiClient.ConnectThread(info.groupOwnerAddress.hostAddress.toString()).start()
                     }
                 }
             }
+
             WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION -> {
-                //val device: WifiP2pDevice? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE)
-                //deviceID = device!!.deviceName
+                val device: WifiP2pDevice =
+                    intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE)!!
+                deviceID = device!!.deviceName
             }
         }
 
+    }
+
+    fun processStartData(assignment : ClientAssignment, hostSoc : Socket){
+        if (assignment.connectionAddress == ME) {
+            ConnectReaderThread(hostSoc.inetAddress.hostAddress).start()
+        } else {
+            connectP2p(assignment.connectionAddress)
+        }
+    }
+
+    fun connectP2p(address:String){
+        val config = WifiP2pConfig().apply {
+            deviceAddress = address
+            wps.setup = WpsInfo.PBC
+        }
+
+        wifiService.manager.connect(wifiService.channel, config, null)
     }
 
 
@@ -211,6 +147,7 @@ class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Cha
         public override fun run(){
             Looper.prepare()
             serviceHandler = object : Handler(Looper.myLooper()!!) {
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun handleMessage(msg: Message) {
                     when (msg.what) {
                         MESSAGE_READER_DISCONNECTED -> {
@@ -252,6 +189,20 @@ class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Cha
     }
 
 
+    public inner class WifiDirectScanner() : Thread(){
+
+        override fun run() {
+            while(true) {
+                try {
+                    wifiService.manager.discoverPeers(wifiService.channel, null)
+                } catch (e: SecurityException) {
+
+                }
+                sleep(5000)
+            }
+        }
+    }
+
     public fun setHandler(handler: Handler){
         this.parentHandler = handler
         if(readerSet) {
@@ -261,15 +212,10 @@ class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Cha
 
     inner class ConnectWriterThread() : Thread(){
         public override fun run(){
-            initialiseWriter()
-        }
-        public fun initialiseWriter(){
             var serverSoc = ServerSocket(getWriterPort(clientNumber))
             val writerSoc = serverSoc.accept()
             writer = WifiWriter(writerSoc, serviceHandler)
-            while (!writer.sendHandlerSet) {
-
-            }
+            while (!writer.sendHandlerSet) {}
             writerSet = true
             if(readerSet) {
                 reader.forwardHandlerSet(writer.sendHandler)
@@ -285,19 +231,15 @@ class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Cha
     private inner class ConnectReaderThread(val address : String) : Thread() {
 
         public override fun run() {
-            var info = WifiP2pConfig()
-            info.deviceAddress = address
-            try {
-                manager.connect(channel, info, object : WifiP2pManager.ActionListener {
-                    override fun onSuccess() {
-                    }
-                    override fun onFailure(reason: Int) {
-                    }
-                })
+            var readerSocket = Socket()
+            readerSocket.bind(null)
+            readerSocket.connect(InetSocketAddress(address, getReaderPort(clientNumber)), 10000)
+            reader = WifiReader(readerSocket, parentHandler, serviceHandler)
+            readerSet = true
+            if(writerSet) {
+                reader.forwardHandlerSet(writer.sendHandler)
             }
-            catch(e : SecurityException){
-
-            }
+            parentHandler.obtainMessage(MESSAGECONNECTEDREADER).sendToTarget()
         }
     }
 
@@ -306,23 +248,41 @@ class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Cha
 
         this.reader = r
         readerSet = true
+        if(writerSet){
+            reader.forwardHandlerSet(writer.sendHandler)
+        }
     }
 
 
     fun addWriter(w : WifiWriter){
         writerSet = true
         this.writer = w
+        if(readerSet){
+            reader.forwardHandlerSet(writer.sendHandler)
+        }
     }
 
     fun connectWriter(){
         ConnectWriterThread().start()
     }
 
+    fun kill(){
+        try {
+            reader.kill()
+        }
+        catch (e:Exception){}
+        try {
+            writer.kill()
+        }
+        catch (e:Exception){}
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun connectReader(readerID: String){
         this.readerID = readerID
         if(writerSet){
             if(wifiHost.clients.size == 1){
-                reader = WifiReader(parentHandler, writer.socket.inetAddress.hostAddress, serviceHandler, getReaderPort(0))
+                reader = WifiReader(writer.socket, parentHandler, serviceHandler)
                 while (!reader.connected) {
                 }
                 readerSet = true
@@ -331,21 +291,8 @@ class WifiService(val manager : WifiP2pManager, val channel : WifiP2pManager.Cha
                 return
             }
         }
-        try {
-            discover = true
-            connecting = true
-            manager.discoverPeers(channel, object : WifiP2pManager.ActionListener {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onSuccess() {
 
-                }
 
-                override fun onFailure(reason: Int) {
-                }
-            })
-        } catch (e: SecurityException) {
-
-        }
     }
 
 

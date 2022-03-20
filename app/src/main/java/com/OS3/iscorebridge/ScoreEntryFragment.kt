@@ -2,6 +2,9 @@ package com.OS3.iscorebridge
 
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -32,6 +36,7 @@ class ScoreEntryFragment() : Fragment(){
     var contractSuit: Char = ' '
     var doubled: Boolean = false
     var redoubled: Boolean = false
+    lateinit var background : Drawable
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +49,9 @@ class ScoreEntryFragment() : Fragment(){
             text = "No contract selected"
         }
         else{
-            text = contractNumber.toString() + contractSuit
+            var suit = if(contractSuit == 'N') "NT"
+            else contractSuit.toString()
+            text = contractNumber.toString() + suit
             if(doubled){
                 text+= 'X'
             }
@@ -56,29 +63,57 @@ class ScoreEntryFragment() : Fragment(){
         contractView.text = text
     }
 
-    private fun setSuit(suit: Char){
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    private fun setSuit(suit: Char, button: View, view: View){
+        view.findViewById<ImageButton>(R.id.clubButton).background = background
+        view.findViewById<ImageButton>(R.id.diamondButton).background = background
+        view.findViewById<ImageButton>(R.id.heartButton).background = background
+        view.findViewById<ImageButton>(R.id.spadeButton).background = background
+        view.findViewById<Button>(R.id.noTrumpButton).background = background
+        button.background = ColorDrawable(Color.CYAN)
         contractSuit = suit
         displayContract()
     }
 
-    private fun setNumber(number: Int){
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    private fun setNumber(number: Int, button : View, view: View){
+        view.findViewById<Button>(R.id.button1).background = background
+        view.findViewById<Button>(R.id.button2).background = background
+        view.findViewById<Button>(R.id.button3).background = background
+        view.findViewById<Button>(R.id.button4).background = background
+        view.findViewById<Button>(R.id.button5).background = background
+        view.findViewById<Button>(R.id.button6).background = background
+        view.findViewById<Button>(R.id.button7).background = background
+        button.background = ColorDrawable(Color.CYAN)
         contractNumber = number
         displayContract()
     }
 
-    private fun setDouble(){
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    private fun setDouble(button: View, view: View){
+        view.findViewById<Button>(R.id.undoublebutton).background = background
+        view.findViewById<Button>(R.id.reDoubleButton).background = background
+        button.background = ColorDrawable(Color.CYAN)
         redoubled = false
         doubled = true
         displayContract()
     }
 
-    private fun setreDouble(){
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    private fun setreDouble(button: View, view: View){
+        view.findViewById<Button>(R.id.undoublebutton).background = background
+        view.findViewById<Button>(R.id.DoubleButton).background = background
+        button.background = ColorDrawable(Color.CYAN)
         redoubled = true
         doubled = false
         displayContract()
     }
 
-    private fun setunDouble(){
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+    private fun setunDouble(button: View, view: View){
+        view.findViewById<Button>(R.id.DoubleButton).background = background
+        view.findViewById<Button>(R.id.reDoubleButton).background = background
+        button.background = ColorDrawable(Color.CYAN)
         redoubled = false
         doubled = false
         displayContract()
@@ -265,10 +300,12 @@ class ScoreEntryFragment() : Fragment(){
 
 
 
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.undoublebutton).background = ColorDrawable(Color.CYAN)
 
-        if(gameInfo.gameMode == MOVEMENT_NONE){
+        if(gameInfo.movementType == MOVEMENT_NONE){
             if(pairNS != 0 && pairEW != 0 && boardNumber != 0){
                 view!!.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
                 view!!.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
@@ -280,71 +317,74 @@ class ScoreEntryFragment() : Fragment(){
             //Implement movement display here
         }
 
+        background = view.findViewById<ImageButton>(R.id.clubButton).background
 
         view.findViewById<ImageButton>(R.id.clubButton).setOnClickListener{
-            setSuit('C')
+            setSuit('C', it, view)
         }
         view.findViewById<ImageButton>(R.id.diamondButton).setOnClickListener{
-            setSuit('D')
+            setSuit('D', it, view)
         }
         view.findViewById<ImageButton>(R.id.heartButton).setOnClickListener{
-            setSuit('H')
+            setSuit('H', it, view)
         }
         view.findViewById<ImageButton>(R.id.spadeButton).setOnClickListener{
-            setSuit('S')
+            setSuit('S', it, view)
         }
         view.findViewById<Button>(R.id.noTrumpButton).setOnClickListener{
-            setSuit('N')
+            setSuit('N', it, view)
         }
         view.findViewById<Button>(R.id.button1).setOnClickListener{
-            setNumber(1)
+            setNumber(1, it, view)
         }
         view.findViewById<Button>(R.id.button2).setOnClickListener{
-            setNumber(2)
+            setNumber(2, it, view)
         }
         view.findViewById<Button>(R.id.button3).setOnClickListener{
-            setNumber(3)
+            setNumber(3, it, view)
         }
         view.findViewById<Button>(R.id.button4).setOnClickListener{
-            setNumber(4)
+            setNumber(4, it, view)
         }
         view.findViewById<Button>(R.id.button5).setOnClickListener{
-            setNumber(5)
+            setNumber(5, it, view)
         }
         view.findViewById<Button>(R.id.button6).setOnClickListener{
-            setNumber(6)
+            setNumber(6, it, view)
         }
         view.findViewById<Button>(R.id.button7).setOnClickListener{
-            setNumber(7)
-        }
-        view.findViewById<Button>(R.id.button7).setOnClickListener{
-            setNumber(7)
+            setNumber(7, it, view)
         }
         view.findViewById<Button>(R.id.DoubleButton).setOnClickListener{
-            setDouble()
+            setDouble(it, view)
         }
         view.findViewById<Button>(R.id.reDoubleButton).setOnClickListener{
-            setreDouble()
+            setreDouble(it, view)
         }
         view.findViewById<Button>(R.id.undoublebutton).setOnClickListener{
-            setunDouble()
+            setunDouble(it, view)
         }
         view.findViewById<Button>(R.id.submitResult).setOnClickListener{
             if(errorCheck(view)) {
                 if(logicCheck(view)){
                     game = getGame(view)
                     val builder = AlertDialog.Builder(view.context)
-                    var resultString : String
-                    resultString = if(game.tricks - (game.contract.number + 6) == 0){
-                        "="
-                    } else{
-                        (game.tricks - (game.contract.number + 6)).toString()
+                    var resultString = when {
+                        game.tricks - (game.contract.number + 6) == 0 -> {
+                            "="
+                        }
+                        game.tricks - (game.contract.number + 6) < 0 -> {
+                            (game.tricks - (game.contract.number + 6)).toString()
+                        }
+                        else -> {
+                            "+" + (game.tricks - (game.contract.number + 6)).toString()
+                        }
                     }
 
                     builder.setMessage("Confirmation required!" +
                             "\nBoard: " + game.boardNumber.toString() + " (NS " + game.pairNS.toString() + " vs EW " + game.pairEW.toString() + ")" +
                             "\nContract: " + game.contract.toDisplayString() + " by " + game.contract.declarer +
-                            "\nTricks: " + game.tricks.toString() + "(" + resultString + ")" +
+                            "\nTricks: " + game.tricks.toString() + " (" + resultString + ")" +
                             "\nScore: " + game.score.toString())
                         .setPositiveButton("Confirm",
                             DialogInterface.OnClickListener { dialog, id ->

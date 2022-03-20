@@ -1,4 +1,0 @@
-#Mon Feb 28 19:35:54 GMT 2022
-base.0=D\:\\Users\\SSAPP\\Documents\\code\\Java\\iScoreBridge\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex

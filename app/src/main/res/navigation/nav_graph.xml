@@ -13,14 +13,14 @@
 
         <action
             android:id="@+id/homeToJoin"
-            app:destination="@id/JoinGame" />
+            app:destination="@id/JoinGameFragment" />
         <action
             android:id="@+id/homeToStart"
-            app:destination="@id/StartGameScreen" />
+            app:destination="@id/StartGameFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/StartGameScreen"
+        android:id="@+id/StartGameFragment"
         android:name="com.OS3.iscorebridge.StartGameScreen"
         android:label="Start Game"
         tools:layout="@layout/fragment_start_game_screen">
@@ -30,18 +30,18 @@
 
     </fragment>
     <fragment
-        android:id="@+id/JoinGame"
+        android:id="@+id/JoinGameFragment"
         android:name="com.OS3.iscorebridge.JoinGame"
         android:label="Join game"
         tools:layout="@layout/fragment_join_game">
 
         <action
             android:id="@+id/joinGameToWaitToStart"
-            app:destination="@id/WaitToStart" />
+            app:destination="@id/WaitToStartFragment" />
     </fragment>
     <fragment
-        android:id="@+id/WaitToStart"
-        android:name="com.OS3.iscorebridge.WaitToStart"
+        android:id="@+id/WaitToStartFragment"
+        android:name="com.OS3.iscorebridge.WaitToStartFragment"
         android:label="Wait for start"
         tools:layout="@layout/fragment_wait_to_start">
 
@@ -56,15 +56,12 @@
         tools:layout="@layout/fragment_score_entry">
 
         <action
-            android:id="@+id/scoreEntryToScoreEntry"
-            app:destination="@id/ScoreEntryFragment" />
-        <action
             android:id="@+id/scoreEntryToScoreView"
-            app:destination="@id/ScoreViewWindow" />
+            app:destination="@id/ScoreViewFragment" />
     </fragment>
     <fragment
-        android:id="@+id/ScoreViewWindow"
-        android:name="com.OS3.iscorebridge.BoardScoreView"
+        android:id="@+id/ScoreViewFragment"
+        android:name="com.OS3.iscorebridge.BoardScoreFragment"
         android:label="Board Score View"
         tools:layout="@layout/fragment_board_score_view">
         <action
@@ -72,13 +69,11 @@
             app:destination="@id/ScoreEntryFragment" />
         <action
             android:id="@+id/scoreViewToFinalScore"
-            app:destination="@id/FinalScore" />
+            app:destination="@id/FinalScoreFragment" />
     </fragment>
     <fragment
-        android:id="@+id/FinalScore"
-        android:name="com.OS3.iscorebridge.FinalScoreScreen"
+        android:id="@+id/FinalScoreFragment"
+        android:name="com.OS3.iscorebridge.FinalScoreFragment"
         android:label="Final Score View"
-        tools:layout="@layout/fragment_final_score_screen">
-
-    </fragment>
+        tools:layout="@layout/fragment_final_score_screen" />
 </navigation>

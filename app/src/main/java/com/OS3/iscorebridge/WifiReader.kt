@@ -3,32 +3,29 @@ package com.OS3.iscorebridge
 import android.os.Handler
 import java.io.IOException
 import java.io.InputStream
-import java.net.ConnectException
-import java.net.InetSocketAddress
 import java.net.Socket
 
 
-
-class OneTimeWifiReader(@Volatile var handler : Handler, val readerAddress : String, @Volatile var serviceHandler: Handler, val portNumber : Int) : Thread(){
+class OneTimeWifiReader(val socket: Socket, @Volatile var handler : Handler, @Volatile var serviceHandler: Handler){
     @Volatile
-    lateinit var data : Communication
+    var data : Communication
 
-
-    override fun run(){
-        var reader = WifiReader(handler, readerAddress, serviceHandler, portNumber)
-        do{}while(!reader.messageWaiting)
+    init {
+        var reader = WifiReader(socket, handler, serviceHandler, true)
+        do {
+        } while (!reader.messageWaiting)
         data = reader.getMessage()
         reader.kill()
-        handler.obtainMessage(MESSAGE_ONETIMEREADER_DATAAVAILABLE, data).sendToTarget()
     }
 }
 
 
-class WifiReader (@Volatile var handler : Handler, val readerAddress : String, @Volatile var serviceHandler: Handler, val portNumber : Int) : Thread(){
+class WifiReader (val socket: Socket, @Volatile var handler : Handler, @Volatile var serviceHandler: Handler, var oneTime : Boolean) : Thread(){
+
+    constructor(socket: Socket, handler : Handler, serviceHandler: Handler) : this(socket, handler, serviceHandler, false)
 
 
     @Volatile var connected = false
-    lateinit var socket : Socket
     private lateinit var inputStream: InputStream
     private val buffer: ByteArray = ByteArray(10000)
     @Volatile lateinit var forwardHandler : Handler
@@ -38,7 +35,6 @@ class WifiReader (@Volatile var handler : Handler, val readerAddress : String, @
     @Volatile private lateinit var waitingMessage : Communication
 
     init{
-
         start()
     }
 
@@ -56,19 +52,6 @@ class WifiReader (@Volatile var handler : Handler, val readerAddress : String, @
 
     override fun run() {
         var numBytes: Int = 0
-        socket = Socket()
-        socket.bind(null)
-        var address = InetSocketAddress(readerAddress, portNumber)
-        while(true) {
-            try {
-                socket.connect(address, 10000)
-                break
-            }
-            catch(e:ConnectException){
-                socket = Socket()
-                socket.bind(null)
-            }
-        }
         this.inputStream = socket.inputStream
         this.connected = true
         while (!killFlag) {
@@ -89,7 +72,9 @@ class WifiReader (@Volatile var handler : Handler, val readerAddress : String, @
             }
             waitingMessage = c
             messageWaiting = true
-
+            if(oneTime){
+                break
+            }
             if (c.purpose == SENDGAME) {
                 if (c.deviceID != deviceID) {
                     var newGame = Game(c.msg)
@@ -105,11 +90,10 @@ class WifiReader (@Volatile var handler : Handler, val readerAddress : String, @
                 if (!gameInfo.clientList.contains(socket.inetAddress.hostAddress)) {
                     gameInfo.clientList.add(0, socket.inetAddress.hostAddress)
                     c.msg = gameInfo.toString()
-                    while (!forwardHandlerSet) {
-                        var x = 0
+                    if (forwardHandlerSet && !amHost) {
+                        forwardHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString())
+                            .sendToTarget()
                     }
-                    forwardHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString())
-                        .sendToTarget()
                     handler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
                     continue
 

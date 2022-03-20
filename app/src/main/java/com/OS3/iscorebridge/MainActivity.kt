@@ -22,6 +22,12 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, "Cannot go back", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        wifiService.kill()
+    }
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

@@ -5,13 +5,14 @@ import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfDocument.PageInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.io.FileOutputStream
 
 @Volatile var match : Match = Match()
 
 class Match {
 
-    val pageWidth = 1120
-    val pageHeight = 792
+    val pageWidth = 792
+    val pageHeight = 1120
 
     var boards : MutableMap<Int, Board?>
     var dlm = "||||"
@@ -91,32 +92,46 @@ class Match {
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    fun drawScores(page : PdfDocument.Page){
+    fun drawScores(page : PdfDocument.Page, scoringMode: Int){
         var title = Paint()
         title.textAlign = Paint.Align.CENTER
         title.isUnderlineText = true
         title.textSize = 30F
         var canvas = page.canvas
-        canvas.drawText("Overall scores", (pageWidth/2).toFloat(), 30F, title)
+        canvas.drawText("Overall scores", (pageWidth/2).toFloat(), 70F, title)
+
+        var scores = getScores(scoringMode)
+        var table = if(scoringMode == GAMEMODE_PAIRS){
+            TablePage(arrayOf("Position", "Pair", "Final Score (MPs)"))
+        } else{
+            TablePage(arrayOf("Position", "Team", "Final Score (IMPs)"))
+        }
+        var scoresImmut = scores as Map<Int, Int>
+        var sortedScores = scoresImmut.toSortedMap()
+        var i = 0
+        for(pair in sortedScores.keys.reversed()){
+            i++
+            table.addRow(arrayOf(i.toString(), pair.toString(), sortedScores[pair]!!.toString()))
+        }
+        table.draw(page, 200f, 200f, false)
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    fun toPDF(filename : String){
+    fun toPDF(scoringMode : Int, output : FileOutputStream){
         var document = PdfDocument()
         val pageInfo = PageInfo.Builder(pageWidth, pageHeight, 1).create()
 
         val pageScores: PdfDocument.Page = document.startPage(pageInfo)
-        drawScores(pageScores)
+        drawScores(pageScores, scoringMode)
         document.finishPage(pageScores)
 
-        for(i in 1..boards.size + 1){
+        for(i in 1..boards.size){
             val pageInfo = PageInfo.Builder(pageWidth, pageHeight, pageInfo.pageNumber + 1).create()
             var boardPage = document.startPage(pageInfo)
-            boards[i]!!.toPDF(boardPage)
+            boards[i]!!.toPDF(boardPage, scoringMode)
             document.finishPage(boardPage)
         }
-
-
+        document.writeTo(output)
     }
 
 

@@ -1,5 +1,6 @@
 package com.OS3.iscorebridge
 
+
 class Table {
     val dlm = "&"
     var board : Int

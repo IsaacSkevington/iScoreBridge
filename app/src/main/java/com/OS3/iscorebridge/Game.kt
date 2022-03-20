@@ -170,4 +170,8 @@ class Game {
         }
         return score
     }
+
+    fun toArray() : ArrayList<String>{
+        return arrayListOf(pairNS.toString(), pairEW.toString(), contract.toDisplayString(), lead.toString(), tricks.toString(), score.toString())
+    }
 }

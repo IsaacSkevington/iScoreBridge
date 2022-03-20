@@ -38,7 +38,9 @@ class Contract {
     }
 
     public fun toDisplayString() : String{
-        var out = this.number.toString() + this.suit.toString()
+        var displaySuit = if(suit == 'N') "NT"
+        else{suit.toString()}
+        var out = this.number.toString() + displaySuit
         if(doubled){
             out += "X"
         }

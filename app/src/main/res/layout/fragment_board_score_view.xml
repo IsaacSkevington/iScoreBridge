@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BoardScoreView">
+    tools:context=".BoardScoreFragment">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/ScoreViewWindow"
+            android:id="@+id/ScoreViewFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
