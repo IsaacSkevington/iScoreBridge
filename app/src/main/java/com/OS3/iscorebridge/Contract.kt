@@ -37,7 +37,11 @@ class Contract {
         return suit == 'N'
     }
 
-    public fun toDisplayString() : String{
+    public fun toDisplayString(): String{
+        return toDisplayString(true)
+    }
+
+    public fun toDisplayString(displayDeclarer : Boolean) : String{
         var displaySuit = if(suit == 'N') "NT"
         else{suit.toString()}
         var out = this.number.toString() + displaySuit
@@ -47,6 +51,7 @@ class Contract {
         else if(redoubled){
             out += "XX"
         }
+        if(displayDeclarer) out += " ($declarer)"
         return out
     }
 

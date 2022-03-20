@@ -113,7 +113,7 @@ class Match {
             i++
             table.addRow(arrayOf(i.toString(), pair.toString(), sortedScores[pair]!!.toString()))
         }
-        table.draw(page, 200f, 200f, false)
+        table.draw(page, 20f, 200f, false)
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

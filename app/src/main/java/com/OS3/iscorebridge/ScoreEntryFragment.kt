@@ -383,7 +383,7 @@ class ScoreEntryFragment() : Fragment(){
 
                     builder.setMessage("Confirmation required!" +
                             "\nBoard: " + game.boardNumber.toString() + " (NS " + game.pairNS.toString() + " vs EW " + game.pairEW.toString() + ")" +
-                            "\nContract: " + game.contract.toDisplayString() + " by " + game.contract.declarer +
+                            "\nContract: " + game.contract.toDisplayString(false) + " by " + game.contract.declarer +
                             "\nTricks: " + game.tricks.toString() + " (" + resultString + ")" +
                             "\nScore: " + game.score.toString())
                         .setPositiveButton("Confirm",

@@ -102,7 +102,7 @@ class Board {
 
     fun IMPConversion(score: Int) : Int{
         for(i in 0 until IMPCONVERSION.size - 1){
-            if(score > IMPCONVERSION[i] && score < IMPCONVERSION[i+1]){
+            if(score >= IMPCONVERSION[i] && score <= IMPCONVERSION[i+1]){
                 return i
             }
         }
@@ -201,7 +201,7 @@ class Board {
         titleText.isUnderlineText = true
         titleText.textSize = 30F
         page.canvas.drawText("Board $boardNumber", (page.canvas.width/2).toFloat(), 70f, titleText)
-        table.draw(page, 200f, 200f, false)
+        table.draw(page, 20f, 200f, false)
 
     }
 }
