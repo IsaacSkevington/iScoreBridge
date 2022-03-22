@@ -2,15 +2,12 @@ package com.OS3.iscorebridge
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.net.wifi.p2p.WifiP2pDevice
 import android.net.wifi.p2p.WifiP2pManager
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,26 +17,11 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-public val idReceiver = DeviceIDReceiver()
-class DeviceIDReceiver : BroadcastReceiver(){
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onReceive(context: Context, intent: Intent) {
-        when (intent.action!!) {
-            WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION -> {
-                val device: WifiP2pDevice =
-                    intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE)!!
-                deviceID = device!!.deviceName
-            }
-        }
-    }
-
-}
-
-@Volatile lateinit var wifiManager : WifiP2pManager
 class HomePage : Fragment() {
     val START = "START"
     val JOIN = "JOIN"
+    var idSet = false
     var buttonPress : String = ""
     val manager: WifiP2pManager? by lazy(LazyThreadSafetyMode.NONE) {
         activity!!.getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
@@ -102,44 +84,42 @@ class HomePage : Fragment() {
 
     private fun setupWifi() {
 
-        activity!!.registerReceiver(idReceiver, intentFilter)
-        var channel = manager!!.initialize(context, activity!!.mainLooper, null)
-        manager!!.removeGroup(channel, object : WifiP2pManager.ActionListener {
-            override fun onSuccess() {
-
-            }
-
-            override fun onFailure(p0: Int) {
-
-            }
-        })
-
-
-
-        wifiService = WifiService(manager!!, channel)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            try {
-                manager!!.requestDeviceInfo(channel, object : WifiP2pManager.DeviceInfoListener {
-                    override fun onDeviceInfoAvailable(device: WifiP2pDevice?) {
-                        deviceID = device!!.deviceName
-                        if (buttonPress == JOIN) {
-
-                            findNavController().navigate(R.id.homeToJoin)
-                        } else {
-                            findNavController().navigate(R.id.homeToStart)
+        var handler = object : Handler(Looper.myLooper()!!) {
+            override fun handleMessage(msg: Message) {
+                when (msg.what) {
+                    MESSAGE_DEVICE_ID_CHANGED -> {
+                        if(!idSet) {
+                            idSet = true
+                            next()
                         }
                     }
-                })
-            } catch (e: SecurityException) {
+                }
+            }
+        }
+        var channel = manager!!.initialize(context, activity!!.mainLooper, null)
+        wifiService = WifiService(handler)
+        activity!!.registerReceiver(wifiService, intentFilter)
+        wifiService.setup(manager!!, channel)
+        wifiService.disconnect()
+        wifiService.WifiDirectScanner().start()
 
-            }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            manager!!.requestDeviceInfo(channel, WifiP2pManager.DeviceInfoListener {
+                if(!idSet) {
+                    deviceID = it!!.deviceName
+                    idSet = true
+                    next()
+                }
+            })
+        }
+    }
+
+    public fun next(){
+        if (buttonPress == JOIN) {
+            findNavController().navigate(R.id.homeToJoin)
         } else {
-            if (buttonPress == START) {
-                findNavController().navigate(R.id.homeToStart)
-            } else {
-                findNavController().navigate(R.id.homeToJoin)
-            }
+            findNavController().navigate(R.id.homeToStart)
         }
     }
 

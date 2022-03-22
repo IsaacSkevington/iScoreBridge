@@ -34,22 +34,48 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36d63adb-8de6-4bae-a886-a7a548e65d70" name="Default Changelist" comment="Wifi direct bugs fixed">
+    <list default="true" id="36d63adb-8de6-4bae-a886-a7a548e65d70" name="Default Changelist" comment="IMP bugs fixed">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Client.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_core_1_2_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_core_3_2_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_idling_resource_3_2_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_ext_junit_1_1_1_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_monitor_1_2_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_runner_1_2_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_2_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_javawriter_2_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_inject_javax_inject_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_sf_kxml_kxml2_2_3_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_integration_1_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_library_1_3.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/iScoreBridge.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/iScoreBridge.app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Board.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Board.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Contract.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Contract.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Match.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Match.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/ScoreEntryFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/ScoreEntryFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Communication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Communication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/HomePageFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/HomePageFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/JoinGameFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/JoinGameFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StartGameFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StartGameFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WaitToStartFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WaitToStartFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiHost.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiReader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiReader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiWriter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiWriter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/baseInts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BaseInts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_join_game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_join_game.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[4200d4c2e0d6155d, bfef68c]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[4200d4c2e0d6155d]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -72,6 +98,12 @@
       </list>
     </option>
   </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="EXPORT_PRIVATE_KEY" value="false" />
+    <option name="KEY_STORE_PATH" value="D:\Users\SSAPP\Documents\code\Java\iScoreBridge\AppKeys\releaseKey.jks" />
+    <option name="KEY_ALIAS" value="iScoreBridgeRelease" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+  </component>
   <component name="Git.Settings">
     <favorite-branches>
       <branch-storage>
@@ -93,6 +125,17 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
   <component name="ProjectId" id="24TRzAQPQiYyPvuz2P9HDZtc7ws" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -103,11 +146,14 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="BundleExportedModule" value="iScoreBridge.app" />
     <property name="DEBUGGABLE_DEVICE" value="xiaomi-redmi_7a-acdaa46f0406" />
     <property name="DEBUGGABLE_PROCESS" value="com.example.iscorebridge" />
     <property name="DEBUGGER_ID" value="Hybrid" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="SerialNumber@bfef68c" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2022-03-01T08:38:43.091674Z" />
+    <property name="ExportApk.ApkPath" value="D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app" />
+    <property name="ExportApk.BuildVariants" value="release" />
     <property name="ResourceManagerPrefKey.ResourceType" value="DRAWABLE" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -117,8 +163,15 @@
     <property name="SelectDeploymentTargetsDialog.selectedDevices" value="SerialNumber@acdaa46f0406&#10;SerialNumber@bfef68c" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Downloads/wifip2pdemp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/AppKeys" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+  </component>
+  <component name="PsdUISettings">
+    <option name="MODULE_TAB" value="Signing Configs" />
+    <option name="LAST_EDITED_SIGNING_CONFIG" value="debug" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -261,7 +314,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647782501417</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="IMP bugs fixed">
+      <created>1647783214825</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1647783214825</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -284,36 +344,51 @@
     <MESSAGE value="Commit before change to wifi direct" />
     <MESSAGE value="Commit after change to wifi direct" />
     <MESSAGE value="Wifi direct bugs fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wifi direct bugs fixed" />
+    <MESSAGE value="IMP bugs fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="IMP bugs fixed" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/ScoreEntryFragment.kt</url>
-          <line>307</line>
-          <option name="timeStamp" value="221" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiClient.kt</url>
+          <line>77</line>
+          <option name="timeStamp" value="247" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiService.kt</url>
+          <line>119</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiClient.kt</url>
+          <line>76</line>
+          <option name="timeStamp" value="260" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StartGameFragment.kt</url>
-          <line>180</line>
-          <option name="timeStamp" value="223" />
+          <line>149</line>
+          <option name="timeStamp" value="261" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StartGameFragment.kt</url>
+          <line>130</line>
+          <option name="timeStamp" value="262" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StartGameFragment.kt</url>
+          <line>188</line>
+          <option name="timeStamp" value="263" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="app">
-        <watch expression="deviceID" language="kotlin" />
-        <watch expression="getWriterPort(1)" language="kotlin" />
+        <watch expression="peers[i]" language="kotlin" />
+        <watch expression="peers[i].deviceName" language="kotlin" />
+        <watch expression="info.groupFormed" language="kotlin" />
         <watch expression="info" language="kotlin" />
-        <watch expression="getReaderPort(0)" language="kotlin" />
-        <watch expression="peers" language="kotlin" />
-        <watch expression="encodeID(peers[0].deviceName)" language="kotlin" />
-        <watch expression="info!!.groupFormed" language="kotlin" />
-        <watch expression="e" language="kotlin" />
-        <watch expression="handler" language="kotlin" />
-        <watch expression="movementTypeSelection" language="kotlin" />
       </configuration>
     </watches-manager>
   </component>

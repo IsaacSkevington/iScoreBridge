@@ -8,9 +8,9 @@ import java.io.OutputStream
 import java.net.Socket
 
 
-class OneTimeWifiWriter(var socket : Socket, var serviceHandler: Handler, var message : String){
+class OneTimeWifiWriter(var socket : Socket, var handler: Handler, var message : String){
     init{
-        var writer = WifiWriter(socket, serviceHandler, firstMessage = message)
+        var writer = WifiWriter(socket, handler, firstMessage = message)
         while(!writer.firstMessageWritten){
 
         }

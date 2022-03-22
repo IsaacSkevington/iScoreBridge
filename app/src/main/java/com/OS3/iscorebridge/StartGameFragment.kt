@@ -1,7 +1,5 @@
 package com.OS3.iscorebridge
 
-import android.content.IntentFilter
-import android.net.wifi.p2p.WifiP2pManager
 import android.os.*
 import android.view.LayoutInflater
 import android.view.View
@@ -12,29 +10,26 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import java.util.*
 
-@Volatile lateinit var wifiHost: WifiHost
+
 @Volatile var amHost : Boolean = false
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun encodeID(ID : String) : String{
-    var b64Encoder = Base64.getEncoder()
-    var start= ID.length - 5
-    if(start < 0){
-        start = 0
+    var out = ""
+    for(char in ID){
+        out += char.toInt().toString()
     }
-    var ID64 = b64Encoder.encodeToString(ID.substring(start, ID.length).toByteArray())
-    return ID64.toString()
+    return if(out.length > 7){
+        out.substring(out.length - 7, out.length)
+    }
+    else{
+        out
+    }
 }
 class StartGameScreen : Fragment() {
 
-    val intentFilter = IntentFilter().apply {
-        addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
-        addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION)
-        addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
-        addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
-    }
+
     var start = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,39 +94,35 @@ class StartGameScreen : Fragment() {
         var ret = boardsCheck(view)
         ret = tablesCheck(view) && ret
         return ret && wifiHost.clients.size > 0
+
     }
     
 
 
     override fun onPause(){
         super.onPause()
-        activity!!.unregisterReceiver(wifiService)
     }
 
     override fun onResume() {
         super.onResume()
-        activity!!.registerReceiver(wifiService, intentFilter)
     }
 
     override fun onDestroy(){
         super.onDestroy()
         amHost = false
-        activity!!.unregisterReceiver(wifiService)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         amHost = true
-        while(deviceID == ""){}
-        activity!!.unregisterReceiver(idReceiver)
         view.findViewById<TextView>(R.id.idTextView).text = encodeID(deviceID)
         var handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
-                    MESSAGECONNECTEDREADER -> {
+                    MESSAGECONNECTEDHOST -> {
 
                     }
                     MESSAGE_START -> {
@@ -147,21 +138,18 @@ class StartGameScreen : Fragment() {
                     MESSAGE_CLIENT_CONNECTED ->{
                         Toast.makeText(view.context, msg.obj as String + " (" + (msg.arg1) + ") joined", Toast.LENGTH_LONG).show()
                     }
+                    MESSAGE_DEVICE_ID_CHANGED -> {
+                        Toast.makeText(view.context, "Device ID Changed!", Toast.LENGTH_LONG).show()
+                        view.findViewById<TextView>(R.id.idTextView).text = encodeID(deviceID)
+                    }
                 }
             }
         }
-
-        wifiService.setHandler(handler)
-        wifiHost = WifiHost(wifiService.manager, wifiService.channel, handler)
-        wifiService.WifiDirectScanner().start()
-
-        activity!!.registerReceiver(wifiService, intentFilter)
-        wifiService.setHandler(handler)
-
+        wifiService.createGroup()
+        wifiService.parentHandler = handler
+        wifiHost = WifiHost(handler)
+        wifiHostInitialised = true
         view.findViewById<Button>(R.id.StartPlayingButton).setOnClickListener {
-
-
-
             if(errorCheck(view)) {
 
                 var tables =
@@ -194,9 +182,9 @@ class StartGameScreen : Fragment() {
                     }
 
                     gameInfo =
-                        GameInfo(tables, gameMode, boards, movementType, wifiHost.clients)
+                        GameInfo(tables, gameMode, boards, movementType, wifiHost.getClientAddresses())
 
-                    wifiHost.startGame(handler, wifiService.serviceHandler)
+                    wifiHost.startGame(handler)
 
                 }
             }

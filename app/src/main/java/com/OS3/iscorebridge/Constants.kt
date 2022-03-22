@@ -25,15 +25,19 @@ const val MESSAGE_WRITER_DISCONNECTED = 11
 const val MESSAGE_CLIENT_CONNECTED = 12
 const val MESSAGE_ONETIMEREADER_DATAAVAILABLE = 13
 const val  MESSAGECONNECTEDWRITER = 15
-const val MESSAGECONNECTEDREADER = 16
+const val MESSAGECONNECTEDHOST = 16
 const val MESSAGE_START = 18
 
 
 const val CREATE_FILE = 19
+const val SENDCONNECTIONINFO = 20
+
+const val MESSAGE_CONNECTION_FAILED = 21
+const val MESSAGE_DEVICE_ID_CHANGED = 22
 
 public var gameInfo : GameInfo = GameInfo(2, GAMEMODE_TEAMS, 10, MOVEMENT_NONE, ArrayList<String>())
 
-
+const val HOSTIP = "192.168.49.1"
 
 @Volatile var deviceID : String = ""
 

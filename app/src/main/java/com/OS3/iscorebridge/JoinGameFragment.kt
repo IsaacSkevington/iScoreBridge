@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout
 class JoinGame : Fragment() {
 
     var joined = false
+    lateinit var handler : Handler
 
     val intentFilter = IntentFilter().apply {
         addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
@@ -51,32 +52,13 @@ class JoinGame : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun joinGame(view : View){
-        var id = view.findViewById<TextView>(R.id.idEntry).text
-        var handler = object : Handler(Looper.myLooper()!!) {
-            override fun handleMessage(msg: Message) {
-                when (msg.what) {
-                    MESSAGECONNECTEDREADER -> {
-                        if(!joined) {
-                            joined = true
-                            Toast.makeText(context, "Joined successfully", Toast.LENGTH_LONG).show()
-                            findNavController().navigate(R.id.joinGameToWaitToStart)
-                        }
-                    }
-                }
 
-            }
+        if(!wifiClientInitialised) {
+            var id = view.findViewById<TextView>(R.id.idEntry).text
+            wifiClient = WifiClient(id.toString(), handler)
+            wifiClient.start()
+            wifiClientInitialised = true
         }
-
-        wifiClient = WifiClient(id.toString(), handler)
-        wifiClient.start()
-        wifiService.WifiDirectScanner().start()
-
-        try {
-            activity!!.unregisterReceiver(wifiService)
-        }
-        catch (e : IllegalArgumentException){}
-        activity!!.registerReceiver(wifiService, intentFilter)
-        wifiService.setHandler(handler)
     }
 
     fun tableCheck(view:View) : Boolean{
@@ -118,18 +100,37 @@ class JoinGame : Fragment() {
 
     override fun onPause(){
         super.onPause()
-        activity!!.unregisterReceiver(wifiService)
     }
 
     override fun onDestroy(){
         super.onDestroy()
-        activity!!.unregisterReceiver(wifiService)
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handler = object : Handler(Looper.myLooper()!!) {
+            override fun handleMessage(msg: Message) {
+                when (msg.what) {
+                    MESSAGECONNECTEDHOST -> {
+                        if(!joined) {
+                            joined = true
+                            Toast.makeText(context, "Joined successfully", Toast.LENGTH_LONG).show()
+                            findNavController().navigate(R.id.joinGameToWaitToStart)
+                        }
+                    }
+                    MESSAGE_CONNECTION_FAILED -> {
+                        Toast.makeText(context, "Joining failed", Toast.LENGTH_LONG).show()
+                        view.findViewById<Button>(R.id.joinButton).visibility = View.VISIBLE
+                        view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = View.INVISIBLE
+                        view.findViewById<TextView>(R.id.joiningDisplay).text = ""
+                    }
+                }
+
+            }
+        }
+        wifiService.parentHandler = handler
         view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = View.INVISIBLE
         view.findViewById<Button>(R.id.joinButton).setOnClickListener {
             if(errorCheck(view)){

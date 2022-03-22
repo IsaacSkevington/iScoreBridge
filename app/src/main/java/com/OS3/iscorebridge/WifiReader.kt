@@ -6,12 +6,12 @@ import java.io.InputStream
 import java.net.Socket
 
 
-class OneTimeWifiReader(val socket: Socket, @Volatile var handler : Handler, @Volatile var serviceHandler: Handler){
+class OneTimeWifiReader(val socket: Socket, @Volatile var handler : Handler){
     @Volatile
     var data : Communication
 
     init {
-        var reader = WifiReader(socket, handler, serviceHandler, true)
+        var reader = WifiReader(socket, handler, true)
         do {
         } while (!reader.messageWaiting)
         data = reader.getMessage()
@@ -20,16 +20,14 @@ class OneTimeWifiReader(val socket: Socket, @Volatile var handler : Handler, @Vo
 }
 
 
-class WifiReader (val socket: Socket, @Volatile var handler : Handler, @Volatile var serviceHandler: Handler, var oneTime : Boolean) : Thread(){
+class WifiReader (val socket: Socket, @Volatile var handler : Handler, var oneTime : Boolean) : Thread(){
 
-    constructor(socket: Socket, handler : Handler, serviceHandler: Handler) : this(socket, handler, serviceHandler, false)
+    constructor(socket: Socket, handler : Handler) : this(socket, handler, false)
 
 
     @Volatile var connected = false
     private lateinit var inputStream: InputStream
     private val buffer: ByteArray = ByteArray(10000)
-    @Volatile lateinit var forwardHandler : Handler
-    @Volatile var forwardHandlerSet : Boolean = false
     @Volatile var messageWaiting : Boolean = false
     @Volatile var killFlag = false
     @Volatile private lateinit var waitingMessage : Communication
@@ -45,10 +43,6 @@ class WifiReader (val socket: Socket, @Volatile var handler : Handler, @Volatile
     }
 
 
-    fun forwardHandlerSet(handler : Handler){
-        this.forwardHandler = handler
-        this.forwardHandlerSet = true
-    }
 
     override fun run() {
         var numBytes: Int = 0
@@ -58,7 +52,7 @@ class WifiReader (val socket: Socket, @Volatile var handler : Handler, @Volatile
             try {
                 numBytes = inputStream.read(buffer)
             } catch (e: IOException) {
-                handler.obtainMessage(MESSAGE_READER_DISCONNECTED).sendToTarget()
+                handler.obtainMessage(MESSAGE_READER_DISCONNECTED, socket.inetAddress).sendToTarget()
                 kill()
                 continue
             }
@@ -75,41 +69,7 @@ class WifiReader (val socket: Socket, @Volatile var handler : Handler, @Volatile
             if(oneTime){
                 break
             }
-            if (c.purpose == SENDGAME) {
-                if (c.deviceID != deviceID) {
-                    var newGame = Game(c.msg)
-                    match.addGame(newGame)
-                    while (!forwardHandlerSet) {
-                        var x = 0
-                    }
-                    forwardHandler.obtainMessage(MESSAGE_WRITE, BYTEARRAY, -1, buffer)
-                        .sendToTarget()
-                }
-            } else if (c.purpose == SENDSTART) {
-                var gameInfo = GameInfo(c.msg)
-                if (!gameInfo.clientList.contains(socket.inetAddress.hostAddress)) {
-                    gameInfo.clientList.add(0, socket.inetAddress.hostAddress)
-                    c.msg = gameInfo.toString()
-                    if (forwardHandlerSet && !amHost) {
-                        forwardHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString())
-                            .sendToTarget()
-                    }
-                    handler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
-                    continue
-
-                }
-                while (!forwardHandlerSet) {
-                    var x = 0
-                }
-                if (c.deviceID != deviceID) {
-                    forwardHandler.obtainMessage(MESSAGE_WRITE, BYTEARRAY, -1, buffer)
-                        .sendToTarget()
-                }
-                handler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
-
-            } else {
-                handler.obtainMessage(MESSAGE_READ, c).sendToTarget()
-            }
+            handler.obtainMessage(MESSAGE_READ, c).sendToTarget()
         }
     }
 

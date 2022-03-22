@@ -1,26 +1,37 @@
 package com.OS3.iscorebridge
 
-import android.net.wifi.p2p.WifiP2pManager
+import android.net.wifi.p2p.WifiP2pDevice
+import android.net.wifi.p2p.WifiP2pGroup
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import java.net.ConnectException
-import java.net.InetSocketAddress
+import android.util.Log
 import java.net.ServerSocket
 import java.net.Socket
 
+@Volatile lateinit var wifiHost: WifiHost
+var wifiHostInitialised = false
 
-val ME = "HOSTCONNECT"
-class WifiHost(var manager : WifiP2pManager, var channel : WifiP2pManager.Channel, @Volatile var parentHandler: Handler){
+class WifiHost(@Volatile var parentHandler: Handler){
     
     @Volatile lateinit var hostHandler : Handler
-    @Volatile lateinit var myWriter: WifiWriter
-    var clients = ArrayList<String>()
-    var serverSockets = ArrayList<ServerSocket>()
-    @Volatile lateinit var myClient : Socket
-    @Volatile var cancel = false
+    var clients = ArrayList<Client>()
+    @Volatile var p2pClientList = ArrayList<String>()
+    var currentPort = hostport + 1
+    lateinit var hostSocket : ServerSocket
+    lateinit var hostConnectedSocket : Socket
+    @Volatile var connecting = false
     init{
         ClientHandler().start()
+    }
+
+    fun processGroupInfo(groupInfo: WifiP2pGroup){
+        for(client in groupInfo.clientList){
+            if(!p2pClientList.contains(client.deviceAddress)){
+                p2pClientList.add(client.deviceAddress)
+                ConnectThread(client).start()
+            }
+        }
     }
 
 
@@ -37,6 +48,14 @@ class WifiHost(var manager : WifiP2pManager, var channel : WifiP2pManager.Channe
                         MESSAGE_WRITER_DISCONNECTED->{
 
                         }
+                        MESSAGE_READ ->{
+                            var c = msg.obj as Communication
+                            if (c.purpose == SENDGAME) {
+                                var newGame = Game(c.msg)
+                                match.addGame(newGame)
+                                send(SENDGAME, newGame.toString())
+                            }
+                        }
                     }
 
                 }
@@ -46,86 +65,93 @@ class WifiHost(var manager : WifiP2pManager, var channel : WifiP2pManager.Channe
 
     }
 
-    public inner class ConnectThread() : Thread() {
+    public inner class ConnectThread(var device : WifiP2pDevice) : Thread() {
 
-        var clientIP: String = ""
-
-        constructor(clientIP: String) : this() {
-            this.clientIP = clientIP
-        }
 
         override fun run(){
-            if(clientIP == ""){
-                connect()
-            }
-            else{
-                connect(clientIP)
-            }
+
+            do{}while(connecting)
+            Log.d("Connecting", "Initialising connection to client")
+            connecting = true
+            connect()
         }
 
-        fun connect(clientIP : String){
-            var socket = Socket()
-            socket.bind(null)
-            socket.connect(InetSocketAddress(clientIP, hostport), 100000)
-            sendStartupInfo(socket)
+        fun sendConnectionData(socket: Socket){
+            Log.d("Sending data", "Sending data to client")
+            var clientPort = getNextPort()
+            var clientAssignment = ClientAssignment(clientPort, clients.size)
+
+            var message = Communication(deviceID, SENDCONNECTIONINFO, clientAssignment.toString())
+            OneTimeWifiWriter(socket, hostHandler, message.toString())
+            socket.close()
+            connecting = false
+            Log.d("Sending data", "Send successful")
+            var c = Client(clientPort, clients.size, hostHandler)
+            Log.d("Connecting client", "Initialising connection on port $clientPort")
+            c.connect()
+            Log.d("Connecting client", "Connection successful")
+            clients.add(c)
+            parentHandler.obtainMessage(MESSAGE_CLIENT_CONNECTED, device.deviceName).sendToTarget()
         }
 
         fun connect(){
-            var serverSoc = ServerSocket(hostport)
-            val writerSoc = serverSoc.accept()
-            sendStartupInfo(writerSoc)
-            serverSoc.close()
+            try {
 
-        }
-
-        fun sendStartupInfo(soc : Socket){
-            var clientAssignment: String = if (clients.size == 0) {
-                ME
-            } else {
-                clients[clients.size - 1]
+                hostSocket = ServerSocket(hostport)
+                Log.d("Connecting", "Server socket created")
             }
-
-            var ca = ClientAssignment(clientAssignment, clients.size + 1)
-            var c = Communication(deviceID, MESSAGE_CONNECTDEVICE, ca.toString())
-            OneTimeWifiWriter(soc, hostHandler, c.toString())
-
-            if (clients.size == 0) {
-                wifiService.connectWriter()
+            catch(e : Exception){
+                Log.e("Connection Error", "Server socket crashed")
+                return
             }
-            clients.add(soc.inetAddress.hostAddress)
-            parentHandler.obtainMessage(MESSAGE_CLIENT_CONNECTED, clients.size + 1, -1, soc.inetAddress.hostName).sendToTarget()
-            soc.close()
-        }
-    }
-
-    inner class StartThread(var parentHandler: Handler, var serviceHandler: Handler, var clientIP: String) : Thread(){
-
-
-        override fun run(){
-            var socket : Socket
-            while(true){
-                try {
-                    socket = Socket()
-                    socket.bind(null)
-                    socket.connect(InetSocketAddress(clientIP, getReaderPort(clientNumber)), 20000)
-                    break
-                }
-                catch (e : ConnectException){
-
-                }
-            }
-            wifiService.addReader(WifiReader(socket, parentHandler, serviceHandler))
-
+            hostConnectedSocket = hostSocket.accept()
+            Log.d("Connecting", "Server socket accepted")
+            hostSocket.close()
+            sendConnectionData(hostConnectedSocket)
         }
 
     }
 
-    fun startGame(parentHandler: Handler, serviceHandler: Handler){
-        wifiService.send(
+    fun getClientAddresses() : ArrayList<String>{
+        var cls = ArrayList<String>()
+        for(client in clients){
+            cls.add(client.getAddress())
+        }
+        return cls
+    }
+
+    fun getNextPort() : Int{
+        return currentPort++
+    }
+
+    fun send(purpose : Int, msg : String){
+        var c = Communication(deviceID, purpose, msg)
+        for(client in clients){
+            client.writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
+        }
+    }
+
+
+    fun startGame(parentHandler: Handler){
+        send(
             SENDSTART,
             gameInfo.toString()
         )
-        StartThread(parentHandler, serviceHandler, clients[clients.size - 1]).start()
+        parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+    }
+
+    fun kill(){
+        for(client in clients){
+            client.kill()
+        }
+        try{
+            hostSocket.close()
+        }
+        catch(e:Exception){}
+        try{
+            hostConnectedSocket.close()
+        }
+        catch(e:Exception){}
 
     }
 

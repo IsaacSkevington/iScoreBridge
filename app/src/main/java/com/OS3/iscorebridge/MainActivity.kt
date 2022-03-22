@@ -24,7 +24,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        wifiService.kill()
+        try {
+            wifiService.kill()
+        }
+        catch(e:Exception){}
     }
 
 

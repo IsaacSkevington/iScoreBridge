@@ -78,7 +78,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:hint="Game ID" />
+            android:hint="Game ID"
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ProgressBar

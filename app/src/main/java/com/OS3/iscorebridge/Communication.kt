@@ -5,21 +5,21 @@ package com.OS3.iscorebridge
 class ClientAssignment{
     val dlm = "!!"
 
-    var connectionAddress : String
+    var port : Int
     var myNumber : Int
 
     constructor(s : String){
         var parsed = s.split(dlm)
-        connectionAddress = parsed[0]
+        port = parsed[0].toInt()
         myNumber = parsed[1].toInt()
     }
-    constructor(addr : String, num : Int){
-        connectionAddress = addr
+    constructor(port : Int, num : Int){
+        this.port = port
         myNumber = num
     }
 
     override fun toString(): String {
-        return connectionAddress + dlm + myNumber.toString()
+        return port.toString() + dlm + myNumber.toString()
     }
 }
 

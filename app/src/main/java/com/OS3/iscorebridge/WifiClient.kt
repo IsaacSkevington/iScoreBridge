@@ -1,25 +1,39 @@
 package com.OS3.iscorebridge
 
-import android.net.wifi.WpsInfo
-import android.net.wifi.p2p.WifiP2pConfig
+
 import android.net.wifi.p2p.WifiP2pDevice
+import android.net.wifi.p2p.WifiP2pInfo
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import androidx.annotation.RequiresApi
+import java.net.ConnectException
 import java.net.InetSocketAddress
-import java.net.ServerSocket
 import java.net.Socket
+import java.net.SocketTimeoutException
 
+
+@Volatile lateinit var wifiClient : WifiClient
+var wifiClientInitialised = false
 
 class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
 
-    lateinit var childHandler : Handler
-    lateinit @Volatile var connectionHandler : Handler
+    @Volatile lateinit  var connectionHandler : Handler
+    @Volatile lateinit var reader: WifiReader
+    @Volatile lateinit var writer: WifiWriter
     @Volatile var connectionHandlerSet = false
+    @Volatile var connecting = false
+    @Volatile var clientPort : Int = 0
+
+
     init{
         ConnectionHandler().start()
+    }
+
+    fun setHandler(handler: Handler){
+        parentHandler = handler
     }
 
     inner class ConnectionHandler() : Thread(){
@@ -34,6 +48,19 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
                         MESSAGE_WRITER_DISCONNECTED->{
 
                         }
+                        MESSAGE_READ ->{
+                            var c = msg.obj as Communication
+                            if (c.purpose == SENDGAME) {
+                                if (c.deviceID != deviceID) {
+                                    var newGame = Game(c.msg)
+                                    match.addGame(newGame)
+                                }
+                            } else if (c.purpose == SENDSTART) {
+                                var gameInfo = GameInfo(c.msg)
+                                parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+
+                            }
+                        }
                     }
 
                 }
@@ -47,109 +74,125 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun run(){
-        while(!connectionHandlerSet){
-        }
         lateinit var device : WifiP2pDevice
         var connected = false
         while (!connected){
-            for (peer in peers) {
-                if (encodeID(peer.deviceName) == hostID) {
-                    device = peer
-                    connected = true
-                    break
-                }
-            }
-        }
-        val config = WifiP2pConfig().apply {
-            deviceAddress = device.deviceAddress
-            wps.setup = WpsInfo.PBC
-        }
-
-        wifiService.manager.connect(wifiService.channel, config, null)
-    }
-
-    public inner class ConnectThread() : Thread(){
-
-        var hostIP : String = ""
-        constructor(hostIP: String) : this(){
-            this.hostIP = hostIP
-        }
-
-        override fun run(){
-            if(hostIP == ""){
-                connect()
-            }
-            else{
-                connect(hostIP)
-            }
-        }
-
-        fun connect(hostIP : String){
-            var soc = Socket()
-            soc.bind(null)
-            soc.connect(InetSocketAddress(hostIP, hostport))
-            recieveStartData(soc)
-        }
-
-        fun connect(){
-            var soc = ServerSocket(hostport)
-            var readerSoc = soc.accept()
-            recieveStartData(readerSoc)
-        }
-
-        fun recieveStartData(soc : Socket){
-            Looper.prepare()
-            var handler = object : Handler(Looper.myLooper()!!) {
-                override fun handleMessage(msg: Message) {
-                    when (msg.what) {
-                        MESSAGE_ONETIMEREADER_DATAAVAILABLE -> {
-
-                        }
-
+            for (i in 0 until peers.size) {
+                if (peers[i] != null) {
+                    if (encodeID(peers[i].deviceName) == hostID) {
+                        device = peers[i]
+                        connected = true
+                        break
                     }
                 }
             }
-            var otReader = OneTimeWifiReader(soc, handler, wifiService.serviceHandler)
+        }
+        Log.d("Device search", "Device search complete, found device " + device.deviceName)
+        wifiService.connectP2p(device.deviceAddress)
+    }
+
+    public fun send(purpose : Int, msg : String){
+        var c = Communication(deviceID, purpose, msg)
+        writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
+    }
+
+    inner class ConnectThread(var info : WifiP2pInfo) : Thread(){
+
+        override fun run(){
+
+            if(!connecting) {
+                Log.d("Connection", "Connection initialising")
+                connecting = true
+                connect()
+            }
+            else{
+                parentHandler.obtainMessage(MESSAGE_CONNECTION_FAILED).sendToTarget()
+            }
+        }
+        fun connect(){
+            var connected = false
+            for(i in 0..3) {
+                Log.d("Connection", "Trying to contact $HOSTIP:$hostport. Time #$i")
+                var soc = Socket()
+                try {
+                    soc.bind(null)
+                    soc.connect(InetSocketAddress(HOSTIP, hostport), 10000)
+                    Log.d("Connection", "Connection successful, preparing to receive data")
+                    recieveStartData(soc)
+                    Log.d("Connection", "Data successfully received")
+                    connected = true
+                    break
+                } catch (e: ConnectException) {
+                    Log.e("Connection error", e.toString())
+                }
+                catch(e : SocketTimeoutException){
+                    Log.e("Connection error", e.toString())
+                }
+                finally {
+                    Log.d("Connection", "Closing socket")
+                    soc.close()
+                }
+                sleep(1000)
+
+            }
+            if(!connected) {
+                parentHandler.obtainMessage(MESSAGE_CONNECTION_FAILED).sendToTarget()
+            }
+            else{
+                connectNewPort(clientPort)
+            }
+
+        }
+
+        fun recieveStartData(soc : Socket){
+            var otReader = OneTimeWifiReader(soc, connectionHandler)
             var assignment = ClientAssignment(otReader.data.msg)
             clientNumber = assignment.myNumber
-            wifiService.processStartData(assignment, soc)
+            clientPort = assignment.port
+        }
+
+        fun connectNewPort(port : Int){
+            var connected = false
+            for(i in 0..3) {
+                Log.d("Connection", "Trying to contact $HOSTIP:$port. Time #$i")
+                var soc = Socket()
+                try {
+                    soc.bind(null)
+                    soc.connect(InetSocketAddress(HOSTIP, port), 30000)
+                    Log.d("Connection", "Connection successful, establishing permanent R/W link with host")
+                    reader = WifiReader(soc, connectionHandler)
+                    writer = WifiWriter(soc, connectionHandler)
+                    connected = true
+                    break;
+                } catch (e: ConnectException) {
+                    Log.e("Connection error", e.toString())
+                    soc.close()
+                }
+                catch(e : SocketTimeoutException){
+                    Log.e("Connection error", e.toString())
+                    soc.close()
+                }
+                sleep(1000)
+
+            }
+            if(!connected) {
+                parentHandler.obtainMessage(MESSAGE_CONNECTION_FAILED).sendToTarget()
+            }
+            else{
+                parentHandler.obtainMessage(MESSAGECONNECTEDHOST).sendToTarget()
+            }
         }
 
 
-    }
-    public inner class StartConnect() : Thread(){
-        override fun run(){
-            var socket = ServerSocket(getWriterPort(clientNumber))
-            var writerSoc = socket.accept()
-            var writer = WifiWriter(writerSoc, wifiService.serviceHandler)
-            while(!writer.sendHandlerSet){}
-            wifiService.addWriter(writer)
-            wifiService.send(
-                SENDSTART,
-                gameInfo.toString()
-            )
+        fun setHandler(handler: Handler){
+            parentHandler = handler
         }
-    }
 
-    public fun startGame(){
-        StartConnect().start()
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    private fun decodeID(hostID: String): String {
-        var b64 = Base64Int(hostID)
-        var b16 = Base16Int(b64)
-        return b16.toMAC()
+    fun kill(){
+        reader.kill()
+        writer.kill()
     }
 }
