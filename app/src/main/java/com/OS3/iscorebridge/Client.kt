@@ -3,13 +3,13 @@ package com.OS3.iscorebridge
 import android.os.Handler
 import java.net.ServerSocket
 
-class Client(var port : Int, var number:Int, var handler : Handler){
+class Client(private var port : Int, var number:Int, var handler : Handler){
 
-    lateinit var reader : WifiReader
+    private lateinit var reader : WifiReader
     lateinit var writer: WifiWriter
 
     fun connect(){
-        var serverSoc = ServerSocket(port)
+        val serverSoc = ServerSocket(port)
         val connectedSoc = serverSoc.accept()
         serverSoc.close()
         reader = WifiReader(connectedSoc, handler)

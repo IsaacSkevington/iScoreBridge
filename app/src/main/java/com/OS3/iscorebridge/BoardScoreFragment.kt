@@ -1,5 +1,6 @@
 package com.OS3.iscorebridge
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,16 +32,17 @@ class BoardScoreFragment : Fragment() {
     }
 
     private fun makeText(text : String, view : View) : TextView{
-        var textView = TextView(view.context)
+        val textView = TextView(view.context)
         textView.text = text
         textView.setPadding(10,10,10,10)
         return textView
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun display(view : View){
-        var tableLayout = view.findViewById<TableLayout>(R.id.ScoreViewTable)
-        var currentScores : MutableMap<Int,Int?>
+        val tableLayout = view.findViewById<TableLayout>(R.id.ScoreViewTable)
+        val currentScores : MutableMap<Int,Int?>
         if(gameInfo.gameMode == GAMEMODE_TEAMS){
             currentScores = match.boards[boardNumber]!!.teamsScore()
             view.findViewById<TextView>(R.id.ScoreTitle).text = "IMPs (NS)"
@@ -50,10 +52,10 @@ class BoardScoreFragment : Fragment() {
             view.findViewById<TextView>(R.id.ScoreTitle).text = "MPs (NS)"
         }
 
-        var gamesSorted = match.boards[boardNumber]!!.sortGamesByScore()
+        val gamesSorted = match.boards[boardNumber]!!.sortGamesByScore()
 
         for(game in gamesSorted){
-            var tableRow = TableRow(view.context)
+            val tableRow = TableRow(view.context)
             if(game.pairNS == pairNS && game.pairEW == pairEW){
                 tableRow.setBackgroundColor(Color.parseColor("#A6DAF2"))
             }

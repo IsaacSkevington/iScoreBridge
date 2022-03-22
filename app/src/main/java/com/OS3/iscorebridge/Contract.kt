@@ -19,7 +19,7 @@ class Contract {
     }
 
     constructor(contract: String){
-        var parametersAsString = contract.split(dlm)
+        val parametersAsString = contract.split(dlm)
         this.suit = parametersAsString[0][0]
         this.number = parametersAsString[1].toInt()
         this.declarer = parametersAsString[2][0]
@@ -27,22 +27,22 @@ class Contract {
         this.redoubled = parametersAsString[4].toBoolean()
     }
 
-    public fun isMinor() : Boolean{
+    fun isMinor() : Boolean{
         return suit == 'C' || suit == 'D'
     }
-    public fun isMajor() : Boolean{
+    fun isMajor() : Boolean{
         return suit == 'H' || suit == 'S'
     }
-    public fun isNoTrump() : Boolean{
+    fun isNoTrump() : Boolean{
         return suit == 'N'
     }
 
-    public fun toDisplayString(): String{
+    fun toDisplayString(): String{
         return toDisplayString(true)
     }
 
-    public fun toDisplayString(displayDeclarer : Boolean) : String{
-        var displaySuit = if(suit == 'N') "NT"
+    fun toDisplayString(displayDeclarer : Boolean) : String{
+        val displaySuit = if(suit == 'N') "NT"
         else{suit.toString()}
         var out = this.number.toString() + displaySuit
         if(doubled){

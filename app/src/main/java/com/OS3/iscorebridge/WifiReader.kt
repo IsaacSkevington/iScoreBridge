@@ -6,12 +6,12 @@ import java.io.InputStream
 import java.net.Socket
 
 
-class OneTimeWifiReader(val socket: Socket, @Volatile var handler : Handler){
+class OneTimeWifiReader(socket: Socket, @Volatile var handler : Handler){
     @Volatile
     var data : Communication
 
     init {
-        var reader = WifiReader(socket, handler, true)
+        val reader = WifiReader(socket, handler, true)
         do {
         } while (!reader.messageWaiting)
         data = reader.getMessage()
@@ -20,7 +20,7 @@ class OneTimeWifiReader(val socket: Socket, @Volatile var handler : Handler){
 }
 
 
-class WifiReader (val socket: Socket, @Volatile var handler : Handler, var oneTime : Boolean) : Thread(){
+class WifiReader (val socket: Socket, @Volatile var handler : Handler, private var oneTime : Boolean) : Thread(){
 
     constructor(socket: Socket, handler : Handler) : this(socket, handler, false)
 
@@ -45,7 +45,7 @@ class WifiReader (val socket: Socket, @Volatile var handler : Handler, var oneTi
 
 
     override fun run() {
-        var numBytes: Int = 0
+        var numBytes: Int
         this.inputStream = socket.inputStream
         this.connected = true
         while (!killFlag) {
@@ -59,7 +59,7 @@ class WifiReader (val socket: Socket, @Volatile var handler : Handler, var oneTi
 
             var c: Communication
             try{
-                var readMessage = String(buffer, 0, numBytes);
+                val readMessage = String(buffer, 0, numBytes)
                 c = Communication(readMessage)
             } catch (e: Exception) {
                 continue

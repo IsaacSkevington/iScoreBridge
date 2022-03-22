@@ -6,7 +6,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlin.math.abs
 
-public fun scoringModeToString(scoringMode: Int) : String{
+fun scoringModeToString(scoringMode: Int) : String{
     return when(scoringMode) {
         GAMEMODE_TEAMS -> "IMPs"
         GAMEMODE_PAIRS -> "MPs"
@@ -14,15 +14,15 @@ public fun scoringModeToString(scoringMode: Int) : String{
     }
 }
 
-val TEAMS : Int = 0
-val PAIRS : Int = 1
+const val TEAMS : Int = 0
+const val PAIRS : Int = 1
 val IMPCONVERSION : Array<Int> = arrayOf(0, 20, 50, 90, 130, 170, 220, 270, 320, 370, 430, 500,
     600, 750, 900, 1100, 1300, 1500, 1750, 2000, 2250, 2500, 3000, 3500, 4000)
 
 class Board {
     var boardNumber: Int
-    var games: ArrayList<Game> = ArrayList<Game>()
-    var vulnerability: Vulnerability
+    var games: ArrayList<Game> = ArrayList()
+    private var vulnerability: Vulnerability
     var dlm = "|||"
 
     constructor(boardNumber: Int){
@@ -31,8 +31,8 @@ class Board {
     }
 
     constructor(board:String){
-        var parametersAsString = board.split(dlm + "$")
-        var gamesAsString = parametersAsString[1].split(dlm)
+        val parametersAsString = board.split("$dlm$")
+        val gamesAsString = parametersAsString[1].split(dlm)
         for(game in gamesAsString){
             games.add(Game(game))
         }
@@ -41,20 +41,20 @@ class Board {
     }
 
     override fun toString():String{
-        var out = boardNumber.toString() + dlm + "$"
+        var out = "$boardNumber$dlm$"
         if(games.size > 0){
             out += games[0].toString()
             for(i in 1..games.size){
                 out += dlm + games.toString()
             }
         }
-        out += dlm + "$" + vulnerability.toString()
+        out += "$dlm$$vulnerability"
         return out
 
     }
 
     fun sortGamesByScore() : ArrayList<Game>{
-        var sortedList = ArrayList<Game>()
+        val sortedList = ArrayList<Game>()
         for(i in 0 until games.size){
             var added = false
             for(j in 0 until sortedList.size){
@@ -92,15 +92,24 @@ class Board {
         return game
     }
 
-    fun getGame(pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
+    fun getGame(
+        pairNS: Int,
+        pairEW: Int,
+        suit: Char,
+        trickNumbers: Int,
+        tricksMade: Int,
+        lead: String,
+        declarer: Char,
+        doubled: Boolean,
+        redoubled: Boolean
+    ): Game {
 
-        var contract : Contract = Contract(suit, trickNumbers, declarer, doubled, redoubled)
-        var leadCard = Card(lead)
-        var g : Game = Game(boardNumber, contract, pairNS, pairEW, tricksMade, leadCard, vulnerability)
-        return g
+        val contract = Contract(suit, trickNumbers, declarer, doubled, redoubled)
+        val leadCard = Card(lead)
+        return Game(boardNumber, contract, pairNS, pairEW, tricksMade, leadCard, vulnerability)
     }
 
-    fun IMPConversion(score: Int) : Int{
+    private fun IMPConversion(score: Int) : Int{
         for(i in 0 until IMPCONVERSION.size - 1){
             if(score >= IMPCONVERSION[i] && score <= IMPCONVERSION[i+1]){
                 return i
@@ -110,12 +119,12 @@ class Board {
     }
 
     fun teamsScore() : MutableMap<Int, Int?>{
-        var scores = HashMap<Int, Int?>()
+        val scores = HashMap<Int, Int?>()
         for(game1 in this.games){
             for(game2 in this.games){
                 if(game1.pairNS == game2.pairEW && game1.pairEW == game2.pairNS && !scores.containsKey(game1.pairNS)){
-                    var overallScorewrtNS = game1.score - game2.score
-                    var IMPs : Int = IMPConversion(abs(overallScorewrtNS))
+                    val overallScorewrtNS = game1.score - game2.score
+                    val IMPs : Int = IMPConversion(abs(overallScorewrtNS))
                     if(overallScorewrtNS > 0){
                         scores[game1.pairNS] = IMPs
                         scores[game1.pairEW] = IMPs * -1
@@ -135,7 +144,7 @@ class Board {
     }
 
     fun pairScore() : MutableMap<Int, Int?>{
-        var scores : MutableMap<Int, Int?> = HashMap<Int, Int?>()
+        val scores : MutableMap<Int, Int?> = HashMap()
         for(game1 in this.games){
             for(game2 in this.games){
                 if(game1.pairNS != game2.pairNS){
@@ -167,13 +176,12 @@ class Board {
         return when(scoringMode) {
             GAMEMODE_TEAMS -> teamsScore()
             GAMEMODE_PAIRS -> pairScore()
-            else -> HashMap<Int, Int?>()
+            else -> HashMap()
         }
     }
 
     private fun calculateVulnerability(boardNumber: Int) : Vulnerability{
-        var cycleNum : Int = boardNumber % 4
-        return when(cycleNum){
+        return when(boardNumber % 4){
             0->Vulnerability(arrayOf('N', 'E', 'S', 'W'))
             1-> Vulnerability(arrayOf())
             2-> Vulnerability(arrayOf('N', 'S'))
@@ -187,16 +195,16 @@ class Board {
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun toPDF(page : PdfDocument.Page, scoringMode: Int){
 
-        var scoringString = scoringModeToString(scoringMode) + " (N/S)"
-        var scoringMap = calculateScores(scoringMode)
-        var table = TablePage(arrayOf("N/S", "E/W", "Contract", "Lead", "Tricks", "Score", scoringString))
+        val scoringString = scoringModeToString(scoringMode) + " (N/S)"
+        val scoringMap = calculateScores(scoringMode)
+        val table = TablePage(arrayOf("N/S", "E/W", "Contract", "Lead", "Tricks", "Score", scoringString))
         for(game in games){
-            var valuesArray : ArrayList<String> = game.toArray()
-            var toAdd = scoringMap[valuesArray[0].toInt()]!!.toString()
+            val valuesArray : ArrayList<String> = game.toArray()
+            val toAdd = scoringMap[valuesArray[0].toInt()]!!.toString()
             valuesArray.add(toAdd)
             table.addRow(valuesArray.toTypedArray())
         }
-        var titleText = Paint()
+        val titleText = Paint()
         titleText.textAlign = Paint.Align.CENTER
         titleText.isUnderlineText = true
         titleText.textSize = 30F

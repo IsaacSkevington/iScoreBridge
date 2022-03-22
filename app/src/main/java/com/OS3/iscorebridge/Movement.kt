@@ -1,26 +1,26 @@
 package com.OS3.iscorebridge
 
-val MOVEMENT_MITCHELL = 0
-val MOVEMENT_HOWELL = 1
-val MOVEMENT_NONE = 2
+const val MOVEMENT_MITCHELL = 0
+const val MOVEMENT_HOWELL = 1
+const val MOVEMENT_NONE = 2
 
 class Movement {
 
     val dlm = "&&&"
 
-    var rounds : MutableMap<Int, Round>
+    private var rounds : MutableMap<Int, Round>
 
     constructor(tables : Int, gameMode : Int, boards: Int, selectedMovement : Int){
-        rounds = HashMap<Int, Round>()
+        rounds = HashMap()
         createMovement(tables, gameMode, boards, selectedMovement)
     }
     constructor(s:String) {
 
-        rounds = HashMap<Int, Round>()
+        rounds = HashMap()
         if (s.isNotEmpty()) {
-            var roundsString = s.split(dlm)
+            val roundsString = s.split(dlm)
             for (round in roundsString) {
-                var r = Round(round)
+                val r = Round(round)
                 rounds[r.roundNumber] = r
             }
         }
@@ -36,7 +36,7 @@ class Movement {
     }
 
 
-    fun createMovement(tables : Int, boards : Int, gameMode : Int, movement : Int){
+    private fun createMovement(tables : Int, boards : Int, gameMode : Int, movement : Int){
         if(movement == MOVEMENT_NONE){
             return
         }
@@ -48,7 +48,7 @@ class Movement {
         }
     }
 
-    public override fun toString(): String {
+    override fun toString(): String {
         var out = ""
         for(round in rounds.values){
             out += round.toString() + dlm

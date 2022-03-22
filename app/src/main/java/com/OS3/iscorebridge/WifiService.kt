@@ -14,9 +14,11 @@ import androidx.annotation.RequiresApi
 @Volatile lateinit var wifiService : WifiService
 
 
-@Volatile public var peers : ArrayList<WifiP2pDevice> = ArrayList<WifiP2pDevice>()
-@Volatile public var peersChanged = false
-public val peerListListener = WifiP2pManager.PeerListListener { peerList ->
+@Volatile
+var peers : ArrayList<WifiP2pDevice> = ArrayList()
+@Volatile
+var peersChanged = false
+val peerListListener = WifiP2pManager.PeerListListener { peerList ->
     val refreshedPeers = peerList.deviceList
     if (refreshedPeers != peers) {
         peers.clear()
@@ -66,8 +68,8 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
                 catch (e: SecurityException) {}
             }
             WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION -> {
-                var info : WifiP2pInfo? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO)
-                var groupInfo : WifiP2pGroup? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_GROUP)
+                val info : WifiP2pInfo? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO)
+                val groupInfo : WifiP2pGroup? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_GROUP)
                 if(info != null) {
                     if (wifiHostInitialised || wifiClientInitialised) {
                         Log.d("IP : ", info.groupOwnerAddress?.hostAddress + " Am group owner : " + info.isGroupOwner)
@@ -88,8 +90,8 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
             WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION -> {
                 val device: WifiP2pDevice =
                     intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE)!!
-                if(device!!.deviceName != deviceID) {
-                    deviceID = device!!.deviceName
+                if(device.deviceName != deviceID) {
+                    deviceID = device.deviceName
                     parentHandler.obtainMessage(MESSAGE_DEVICE_ID_CHANGED).sendToTarget()
                 }
             }
@@ -120,15 +122,15 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
         })
     }
 
-    public fun createGroup(){
+    fun createGroup(){
         manager.createGroup(channel, null)
     }
 
-    public fun discoverPeers(){
+    fun discoverPeers(){
         manager.discoverPeers(channel, null)
     }
 
-    public fun send(type : Int, message: String){
+    fun send(type : Int, message: String){
         if(amHost){
             wifiHost.send(type, message)
         }
@@ -137,7 +139,7 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
         }
     }
 
-    public fun kill(){
+    fun kill(){
         if(amHost){
             wifiHost.kill()
         }
@@ -148,12 +150,12 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
 
 
     inner class RunningThread() : Thread(){
-        public override fun run(){
+        override fun run(){
         }
     }
 
 
-    public inner class WifiDirectScanner() : Thread(){
+    inner class WifiDirectScanner() : Thread(){
 
         override fun run() {
             while(true) {

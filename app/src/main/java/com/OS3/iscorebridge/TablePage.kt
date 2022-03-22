@@ -6,30 +6,30 @@ import android.graphics.pdf.PdfDocument
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-class TablePage(val columnTitles : Array<String>){
+class TablePage(private val columnTitles : Array<String>){
 
-    var columns : MutableMap<String, ArrayList<String>> = HashMap<String, ArrayList<String>>()
-    var maxSizes : MutableMap<String, Int> = HashMap<String, Int>()
-    final val columnSpacing = 10
-    final val characterWidth = 1.5f
+    private var columns : MutableMap<String, ArrayList<String>> = HashMap()
+    private var maxSizes : MutableMap<String, Int> = HashMap()
+    private val columnSpacing = 10
+    private val characterWidth = 1.5f
 
-    final val characterHeight = 1
-    final val FONT_SIZE = 12f
-    final val rowHeight = FONT_SIZE + 20
-    var tableWidth = 0
-    var totalRows = 1
+    private val characterHeight = 1
+    private val FONT_SIZE = 12f
+    private val rowHeight = FONT_SIZE + 20
+    private var tableWidth = 0
+    private var totalRows = 1
 
-    fun getCharacterHeight(fontSize : Float) : Float{
+    private fun getCharacterHeight(fontSize : Float) : Float{
         return characterHeight * fontSize
     }
 
-    fun getCharacterWidth(fontSize : Float) : Float{
+    private fun getCharacterWidth(fontSize : Float) : Float{
         return characterWidth * fontSize
     }
 
     init{
         for (column in columnTitles){
-            columns[column] = ArrayList<String>()
+            columns[column] = ArrayList()
             maxSizes[column] = column.length
             tableWidth += column.length*getCharacterWidth(FONT_SIZE).toInt() + columnSpacing
         }
@@ -40,14 +40,14 @@ class TablePage(val columnTitles : Array<String>){
         if(rowValues.size != columnTitles.size){
             throw IllegalArgumentException("Not all columns have values")
         }
-        var map : MutableMap<String, String> = HashMap<String, String>()
+        val map : MutableMap<String, String> = HashMap()
         for(i in rowValues.indices){
             map[columnTitles[i]] = rowValues[i]
         }
         addRow(map)
     }
 
-    fun addRow(rowValues : MutableMap<String, String>){
+    private fun addRow(rowValues : MutableMap<String, String>){
         if(rowValues.size != columnTitles.size){
             throw IllegalArgumentException("Not all columns have values")
         }
@@ -66,13 +66,13 @@ class TablePage(val columnTitles : Array<String>){
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun draw(page : PdfDocument.Page, x : Float, y : Float, borders : Boolean){
-        var currentX = x;
-        var currentY = y;
-        var titlePaint = Paint()
+        var currentX = x
+        var currentY = y
+        val titlePaint = Paint()
         titlePaint.textSize = FONT_SIZE
         titlePaint.textAlign = Paint.Align.CENTER
         titlePaint.isFakeBoldText = true
-        var linePaint = Paint()
+        val linePaint = Paint()
         if(borders) {
             linePaint.color = Color.BLACK
         }
@@ -91,7 +91,7 @@ class TablePage(val columnTitles : Array<String>){
             currentY += rowHeight
         }
 
-        var textPaint = Paint()
+        val textPaint = Paint()
         textPaint.textSize = FONT_SIZE
         for(column in columnTitles){
             currentY = y + rowHeight/2

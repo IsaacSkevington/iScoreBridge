@@ -8,29 +8,27 @@ import java.io.OutputStream
 import java.net.Socket
 
 
-class OneTimeWifiWriter(var socket : Socket, var handler: Handler, var message : String){
+class OneTimeWifiWriter(private var socket : Socket, var handler: Handler, private var message : String){
     init{
-        var writer = WifiWriter(socket, handler, firstMessage = message)
-        while(!writer.firstMessageWritten){
-
-        }
+        val writer = WifiWriter(socket, handler, firstMessage = message)
+        do{}while(!writer.firstMessageWritten)
         writer.kill()
     }
 }
 
 
-class WifiWriter(var socket: Socket, var serviceHandler : Handler, var firstMessage: String = "NONE") : Thread() {
+class WifiWriter(private var socket: Socket, private var serviceHandler : Handler, var firstMessage: String = "NONE") : Thread() {
 
 
 
         @Volatile lateinit var sendHandler: Handler
-        private var outputStream: OutputStream
+        private var outputStream: OutputStream = this.socket.outputStream
         @Volatile var firstMessageWritten = false
 
-        @Volatile public var sendHandlerSet = false
+        @Volatile
+        var sendHandlerSet = false
 
         init {
-            this.outputStream = this.socket.outputStream
             start()
         }
 

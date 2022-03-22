@@ -17,7 +17,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
     @Volatile lateinit var hostHandler : Handler
     var clients = ArrayList<Client>()
     @Volatile var p2pClientList = ArrayList<String>()
-    var currentPort = hostport + 1
+    private var currentPort = HOSTPORT + 1
     lateinit var hostSocket : ServerSocket
     lateinit var hostConnectedSocket : Socket
     @Volatile var connecting = false
@@ -49,9 +49,9 @@ class WifiHost(@Volatile var parentHandler: Handler){
 
                         }
                         MESSAGE_READ ->{
-                            var c = msg.obj as Communication
+                            val c = msg.obj as Communication
                             if (c.purpose == SENDGAME) {
-                                var newGame = Game(c.msg)
+                                val newGame = Game(c.msg)
                                 match.addGame(newGame)
                                 send(SENDGAME, newGame.toString())
                             }
@@ -65,7 +65,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
 
     }
 
-    public inner class ConnectThread(var device : WifiP2pDevice) : Thread() {
+    inner class ConnectThread(private var device : WifiP2pDevice) : Thread() {
 
 
         override fun run(){
@@ -76,17 +76,17 @@ class WifiHost(@Volatile var parentHandler: Handler){
             connect()
         }
 
-        fun sendConnectionData(socket: Socket){
+        private fun sendConnectionData(socket: Socket){
             Log.d("Sending data", "Sending data to client")
-            var clientPort = getNextPort()
-            var clientAssignment = ClientAssignment(clientPort, clients.size)
+            val clientPort = getNextPort()
+            val clientAssignment = ClientAssignment(clientPort, clients.size)
 
-            var message = Communication(deviceID, SENDCONNECTIONINFO, clientAssignment.toString())
+            val message = Communication(deviceID, SENDCONNECTIONINFO, clientAssignment.toString())
             OneTimeWifiWriter(socket, hostHandler, message.toString())
             socket.close()
             connecting = false
             Log.d("Sending data", "Send successful")
-            var c = Client(clientPort, clients.size, hostHandler)
+            val c = Client(clientPort, clients.size, hostHandler)
             Log.d("Connecting client", "Initialising connection on port $clientPort")
             c.connect()
             Log.d("Connecting client", "Connection successful")
@@ -94,10 +94,10 @@ class WifiHost(@Volatile var parentHandler: Handler){
             parentHandler.obtainMessage(MESSAGE_CLIENT_CONNECTED, device.deviceName).sendToTarget()
         }
 
-        fun connect(){
+        private fun connect(){
             try {
 
-                hostSocket = ServerSocket(hostport)
+                hostSocket = ServerSocket(HOSTPORT)
                 Log.d("Connecting", "Server socket created")
             }
             catch(e : Exception){
@@ -113,7 +113,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
     }
 
     fun getClientAddresses() : ArrayList<String>{
-        var cls = ArrayList<String>()
+        val cls = ArrayList<String>()
         for(client in clients){
             cls.add(client.getAddress())
         }
@@ -125,7 +125,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
     }
 
     fun send(purpose : Int, msg : String){
-        var c = Communication(deviceID, purpose, msg)
+        val c = Communication(deviceID, purpose, msg)
         for(client in clients){
             client.writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
         }

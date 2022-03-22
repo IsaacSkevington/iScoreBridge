@@ -32,12 +32,6 @@ class StartGameScreen : Fragment() {
 
     var start = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,14 +42,14 @@ class StartGameScreen : Fragment() {
     }
 
 
-    fun tablesCheck(view : View) : Boolean{
-        var tables = view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString()
+    private fun tablesCheck(view : View) : Boolean{
+        val tables = view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString()
         if(tables == ""){
             view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error = "Tables must be specified"
             return false
         }
         try{
-            var x = tables.toInt()
+            val x = tables.toInt()
             if(x < 1){
                 view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error = "Tables must be greater than 0"
                 return false
@@ -68,14 +62,14 @@ class StartGameScreen : Fragment() {
         return true
     }
 
-    fun boardsCheck(view : View) : Boolean{
-        var boards = view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString()
+    private fun boardsCheck(view : View) : Boolean{
+        val boards = view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString()
         if(boards == ""){
             view.findViewById<TextInputLayout>(R.id.numberBoardsLayout).error = "Boards must be specified"
             return false
         }
         try{
-            var x = boards.toInt()
+            val x = boards.toInt()
             if(x < 1){
                 view.findViewById<TextInputLayout>(R.id.numberBoardsLayout).error = "Boards must be greater than 0"
                 return false
@@ -88,7 +82,7 @@ class StartGameScreen : Fragment() {
         return true
     }
 
-    fun errorCheck(view:View): Boolean{
+    private fun errorCheck(view:View): Boolean{
         view.findViewById<TextInputLayout>(R.id.numberTablesLayout).isErrorEnabled = false
         view.findViewById<TextInputLayout>(R.id.numberBoardsLayout).isErrorEnabled = false
         var ret = boardsCheck(view)
@@ -119,7 +113,7 @@ class StartGameScreen : Fragment() {
 
         amHost = true
         view.findViewById<TextView>(R.id.idTextView).text = encodeID(deviceID)
-        var handler = object : Handler(Looper.myLooper()!!) {
+        val handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
                     MESSAGECONNECTEDHOST -> {
@@ -152,40 +146,44 @@ class StartGameScreen : Fragment() {
         view.findViewById<Button>(R.id.StartPlayingButton).setOnClickListener {
             if(errorCheck(view)) {
 
-                var tables =
+                val tables =
                     view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString()
                         .toInt()
-                var boards =
+                val boards =
                     view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString()
                         .toInt()
-                if (wifiHost.clients.size + 1 > tables) {
-                    view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error =
-                        "Too many people in game (${wifiHost.clients.size + 1})"
+                when {
+                    wifiHost.clients.size + 1 > tables -> {
+                        view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error =
+                            "Too many people in game (${wifiHost.clients.size + 1})"
 
-                } else if (wifiHost.clients.size + 1 < tables) {
-                    view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error =
-                        "Too few people in game (${wifiHost.clients.size + 1})"
-                } else {
-                    var movementTypeSelection =
-                        view.findViewById<RadioGroup>(R.id.movementGroup).checkedRadioButtonId
-                    var movementType = when (movementTypeSelection) {
-                        R.id.movementMitchell -> MOVEMENT_MITCHELL
-                        R.id.movementHowell -> MOVEMENT_HOWELL
-                        R.id.movementNone -> MOVEMENT_NONE
-                        else -> MOVEMENT_NONE
                     }
-
-                    var gameMode = if (view.findViewById<Switch>(R.id.modeSwitch).isChecked) {
-                        GAMEMODE_PAIRS
-                    } else {
-                        GAMEMODE_TEAMS
+                    wifiHost.clients.size + 1 < tables -> {
+                        view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error =
+                            "Too few people in game (${wifiHost.clients.size + 1})"
                     }
+                    else -> {
+                        val movementTypeSelection =
+                            view.findViewById<RadioGroup>(R.id.movementGroup).checkedRadioButtonId
+                        val movementType = when (movementTypeSelection) {
+                            R.id.movementMitchell -> MOVEMENT_MITCHELL
+                            R.id.movementHowell -> MOVEMENT_HOWELL
+                            R.id.movementNone -> MOVEMENT_NONE
+                            else -> MOVEMENT_NONE
+                        }
 
-                    gameInfo =
-                        GameInfo(tables, gameMode, boards, movementType, wifiHost.getClientAddresses())
+                        val gameMode = if (view.findViewById<Switch>(R.id.modeSwitch).isChecked) {
+                            GAMEMODE_PAIRS
+                        } else {
+                            GAMEMODE_TEAMS
+                        }
 
-                    wifiHost.startGame(handler)
+                        gameInfo =
+                            GameInfo(tables, gameMode, boards, movementType, wifiHost.getClientAddresses())
 
+                        wifiHost.startGame(handler)
+
+                    }
                 }
             }
 

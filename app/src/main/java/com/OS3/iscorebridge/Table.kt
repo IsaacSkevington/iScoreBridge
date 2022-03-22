@@ -3,9 +3,9 @@ package com.OS3.iscorebridge
 
 class Table {
     val dlm = "&"
-    var board : Int
-    var pairNS : Int
-    var pairEW : Int
+    private var board : Int
+    private var pairNS : Int
+    private var pairEW : Int
 
     constructor(board: Int, pairNS : Int, pairEW : Int){
         this.board = board
@@ -14,7 +14,7 @@ class Table {
     }
 
     constructor(s : String){
-        var table = s.split(dlm)
+        val table = s.split(dlm)
         this.board = table[0].toInt()
         this.pairNS = table[1].toInt()
         this.pairEW = table[2].toInt()

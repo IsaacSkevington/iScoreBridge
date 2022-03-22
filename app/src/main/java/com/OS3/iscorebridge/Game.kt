@@ -1,7 +1,7 @@
 package com.OS3.iscorebridge
 
 class Game {
-    lateinit var contract: Contract
+    var contract: Contract
     var pairNS: Int
     var pairEW: Int
     var tricks: Int
@@ -21,7 +21,7 @@ class Game {
     }
 
     constructor(game: String){
-        var parametersAsString = game.split(dlm)
+        val parametersAsString = game.split(dlm)
         this.boardNumber = parametersAsString[0].toInt()
         this.contract = Contract(parametersAsString[1])
         this.pairNS = parametersAsString[2].toInt()
@@ -36,45 +36,49 @@ class Game {
     }
 
     private fun goingDown(tricksDown : Int, vulnerability: Vulnerability) : Int{
-        var penality: Int = 0
+        var penality: Int
         if(vulnerability.isVulnerable(contract.declarer)){
-            if(contract.doubled){
-                penality = 200
-                for(i in 0 until (tricksDown - 1)){
-                    penality += 300
+            when {
+                contract.doubled -> {
+                    penality = 200
+                    for(i in 0 until (tricksDown - 1)){
+                        penality += 300
+                    }
                 }
-            }
-            else if(contract.redoubled){
-                penality = 400
-                for(i in 0 until (tricksDown - 1)){
-                    penality += 600
+                contract.redoubled -> {
+                    penality = 400
+                    for(i in 0 until (tricksDown - 1)){
+                        penality += 600
+                    }
                 }
-            }
-            else{
-                penality = 100 * tricksDown
+                else -> {
+                    penality = 100 * tricksDown
+                }
             }
         }
         else{
-            if(contract.doubled){
-                penality = 100
-                if(tricksDown - 1 != 0){
-                    penality += 200
+            when {
+                contract.doubled -> {
+                    penality = 100
+                    if(tricksDown - 1 != 0){
+                        penality += 200
+                    }
+                    for(i in 0 until (tricksDown - 2)){
+                        penality += 300
+                    }
                 }
-                for(i in 0 until (tricksDown - 2)){
-                    penality += 300
+                contract.redoubled -> {
+                    penality = 200
+                    if(tricksDown - 1 != 0){
+                        penality += 400
+                    }
+                    for(i in 0 until (tricksDown - 2)){
+                        penality += 300
+                    }
                 }
-            }
-            else if(contract.redoubled){
-                penality = 200
-                if(tricksDown - 1 != 0){
-                    penality += 400
+                else -> {
+                    penality = 50 * tricksDown
                 }
-                for(i in 0 until (tricksDown - 2)){
-                    penality += 300
-                }
-            }
-            else{
-                penality = 50 * tricksDown
             }
         }
         return penality
@@ -105,7 +109,7 @@ class Game {
     }
 
     private fun contractPoints() : Int{
-        var contractTricks = contract.number
+        val contractTricks = contract.number
         if(contract.doubled){
             if(contract.isMinor()){
                 return contractTricks * 40 + 100
@@ -142,9 +146,9 @@ class Game {
         return 0
     }
 
-    fun calculateScore(vulnerability: Vulnerability) : Int{
+    private fun calculateScore(vulnerability: Vulnerability) : Int{
         var score = 0
-        var tricksNeeded = this.contract.number + 6
+        val tricksNeeded = this.contract.number + 6
         if(tricksNeeded > tricks){
             score = -1 * goingDown(tricksNeeded - tricks, vulnerability)
         }

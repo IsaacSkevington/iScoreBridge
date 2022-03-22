@@ -1,5 +1,6 @@
 package com.OS3.iscorebridge
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -24,7 +25,7 @@ class FinalScoreFragment : Fragment() {
     }
 
     private fun makeTitle(text : String, view : View) : TextView{
-        var title = TextView(view.context)
+        val title = TextView(view.context)
         title.text = text
         title.textSize = 20F
         title.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -34,25 +35,26 @@ class FinalScoreFragment : Fragment() {
     }
 
     private fun makeText(text : String, view : View) : TextView{
-        var textView = TextView(view.context)
+        val textView = TextView(view.context)
         textView.text = text
         textView.setPadding(10,10,10,10)
         return textView
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun displayBoardList(view : View){
-        var boards = match.boards.keys
-        var tableLayout = view.findViewById<TableLayout>(R.id.boardsDisplayTable)
+        val boards = match.boards.keys
+        val tableLayout = view.findViewById<TableLayout>(R.id.boardsDisplayTable)
         tableLayout.isStretchAllColumns = true
-        var titleRow = TableRow(view.context)
+        val titleRow = TableRow(view.context)
         titleRow.addView(makeTitle("Board", view))
         titleRow.addView(makeTitle("View", view))
         tableLayout.addView(titleRow)
         for(board in boards){
-            var row = TableRow(view.context)
+            val row = TableRow(view.context)
             row.addView(makeText(board.toString(), view))
-            var boardButton = Button(view.context)
+            val boardButton = Button(view.context)
             boardButton.text = "More..."
             boardButton.setOnClickListener {
                 displayBoardScore(view, board)
@@ -63,10 +65,10 @@ class FinalScoreFragment : Fragment() {
     }
 
     private fun displayOverallScore(view : View){
-        var scores = match.getScores(gameInfo.gameMode)
-        var tableLayout = view.findViewById<TableLayout>(R.id.scoreDisplayTable)
+        val scores = match.getScores(gameInfo.gameMode)
+        val tableLayout = view.findViewById<TableLayout>(R.id.scoreDisplayTable)
         tableLayout.isStretchAllColumns = true
-        var titleRow = TableRow(view.context)
+        val titleRow = TableRow(view.context)
         titleRow.addView(makeTitle("Position", view))
         if(gameInfo.gameMode == GAMEMODE_PAIRS){
             titleRow.addView(makeTitle("Pair", view))
@@ -77,12 +79,12 @@ class FinalScoreFragment : Fragment() {
             titleRow.addView(makeTitle("Final Score (IMPs)", view))
         }
         tableLayout.addView(titleRow)
-        var scoresImmut = scores as Map<Int, Int>
-        var sortedScores = scoresImmut.toSortedMap()
+        val scoresImmut = scores as Map<Int, Int>
+        val sortedScores = scoresImmut.toSortedMap()
         var i = 0
         for(pair in sortedScores.keys.reversed()){
             i++
-            var row = TableRow(view.context)
+            val row = TableRow(view.context)
             row.addView(makeText(i.toString(), view))
             row.addView(makeText(pair.toString(), view))
             row.addView(makeText(sortedScores[pair]!!.toString(), view))
@@ -91,23 +93,24 @@ class FinalScoreFragment : Fragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun displayBoardScore(view : View, boardNumber : Int){
 
-        view.findViewById<TextView>(R.id.boardNumberText).text = "Board " + boardNumber.toString()
-        var tableLayout = view.findViewById<TableLayout>(R.id.boardDisplayTable)
+        view.findViewById<TextView>(R.id.boardNumberText).text = "Board $boardNumber"
+        val tableLayout = view.findViewById<TableLayout>(R.id.boardDisplayTable)
         tableLayout.isStretchAllColumns = true
         tableLayout.removeAllViews()
         tableLayout.setBackgroundColor(Color.TRANSPARENT)
         view.findViewById<NestedScrollView>(R.id.greyScrollView).setBackgroundColor(Color.TRANSPARENT)
 
-        var titleRow = TableRow(view.context)
+        val titleRow = TableRow(view.context)
         titleRow.addView(makeTitle("NS", view))
         titleRow.addView(makeTitle("EW", view))
         titleRow.addView(makeTitle("Contract", view))
         titleRow.addView(makeTitle("Lead", view))
         titleRow.addView(makeTitle("Tricks", view))
         titleRow.addView(makeTitle("Score (NS)", view))
-        var currentScores : MutableMap<Int,Int?>
+        val currentScores : MutableMap<Int,Int?>
         if(gameInfo.gameMode == GAMEMODE_TEAMS){
             currentScores = match.boards[boardNumber]!!.teamsScore()
             titleRow.addView(makeTitle("IMPs (NS)", view))
@@ -117,10 +120,10 @@ class FinalScoreFragment : Fragment() {
             titleRow.addView(makeTitle("MPs (NS)", view))
         }
         tableLayout.addView(titleRow)
-        var gamesSorted = match.boards[boardNumber]!!.sortGamesByScore()
+        val gamesSorted = match.boards[boardNumber]!!.sortGamesByScore()
 
         for(game in gamesSorted){
-            var tableRow = TableRow(view.context)
+            val tableRow = TableRow(view.context)
             tableRow.addView(makeText(game.pairNS.toString(), view))
             tableRow.addView(makeText(game.pairEW.toString(), view))
             tableRow.addView(makeText(game.contract.toDisplayString(), view))
@@ -152,7 +155,7 @@ class FinalScoreFragment : Fragment() {
             resultData?.data?.also { uri ->
                 val contentResolver = context!!.contentResolver
                     try {
-                        var descriptor = contentResolver.openFileDescriptor(uri, "w")
+                        val descriptor = contentResolver.openFileDescriptor(uri, "w")
                         FileOutputStream(descriptor?.fileDescriptor).use {
                             match.toPDF(gameInfo.gameMode, it)
                         }
@@ -171,8 +174,8 @@ class FinalScoreFragment : Fragment() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "application/pdf"
-            var d = LocalDate.now()
-            var dateString = d.dayOfMonth.toString() + d.month.toString() + d.year.toString()
+            val d = LocalDate.now()
+            d.dayOfMonth.toString() + d.month.toString() + d.year.toString()
             putExtra(Intent.EXTRA_TITLE, "scores" + LocalDate.now().toString() + ".pdf")
         }
         startActivityForResult(intent, CREATE_FILE)

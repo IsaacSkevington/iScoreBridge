@@ -78,7 +78,7 @@ class Base64Int{
         var position = s.length - 1
         for(char in s){
             value += fromMap[char]!!.times(64.toDouble().pow(position)).toInt()
-            position--;
+            position--
         }
     }
     constructor(i : Int){
@@ -102,7 +102,7 @@ class Base64Int{
 
 class Base16Int{
 
-    var value : Int;
+    var value : Int
     constructor(){
         value = 0
     }

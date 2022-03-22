@@ -1,13 +1,13 @@
 package com.OS3.iscorebridge
 
 
-public fun isCard(card : String) : Boolean{
+fun isCard(card : String) : Boolean{
     if(card.length != 2){
         return false
     }
-    var number = card[0]
+    val number = card[0]
     try{
-        var valueInt = number.toString().toInt()
+        val valueInt = number.toString().toInt()
         if(valueInt < 2 || valueInt > 9){
             return false
         }
@@ -17,15 +17,15 @@ public fun isCard(card : String) : Boolean{
             return false
         }
     }
-    var suit = card[1]
+    val suit = card[1]
     return suit == 'C' || suit == 'D' || suit == 'H' || suit == 'S'
 
 }
 
-class Card (var suit : Char, var value : Char){
+class Card (private var suit : Char, private var value : Char){
 
-    constructor(card:String) : this(card[1], card[0]){
-    }
+    constructor(card:String) : this(card[1], card[0])
+
     override fun toString() : String{
         return this.value.toString() + this.suit.toString()
     }

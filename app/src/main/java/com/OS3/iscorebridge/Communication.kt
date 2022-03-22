@@ -9,7 +9,7 @@ class ClientAssignment{
     var myNumber : Int
 
     constructor(s : String){
-        var parsed = s.split(dlm)
+        val parsed = s.split(dlm)
         port = parsed[0].toInt()
         myNumber = parsed[1].toInt()
     }
@@ -37,7 +37,7 @@ class Communication{
         this.msg = msg
     }
     constructor(s : String){
-        var parsed = s.split(dlm)
+        val parsed = s.split(dlm)
         deviceID = parsed[0]
         purpose = parsed[1].toInt()
         msg = parsed[2]

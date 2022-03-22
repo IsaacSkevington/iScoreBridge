@@ -16,11 +16,11 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-
+private const val START = "START"
+private const val JOIN = "JOIN"
 
 class HomePage : Fragment() {
-    val START = "START"
-    val JOIN = "JOIN"
+
     var idSet = false
     var buttonPress : String = ""
     val manager: WifiP2pManager? by lazy(LazyThreadSafetyMode.NONE) {
@@ -44,7 +44,7 @@ class HomePage : Fragment() {
                     findNavController().navigate(R.id.homeToStart)
                 }
                 else{
-
+                    Toast.makeText(context, "Bluetooth permissions incorrect", Toast.LENGTH_LONG).show()
                 }
 
             }
@@ -84,7 +84,7 @@ class HomePage : Fragment() {
 
     private fun setupWifi() {
 
-        var handler = object : Handler(Looper.myLooper()!!) {
+        val handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
                     MESSAGE_DEVICE_ID_CHANGED -> {
@@ -96,7 +96,7 @@ class HomePage : Fragment() {
                 }
             }
         }
-        var channel = manager!!.initialize(context, activity!!.mainLooper, null)
+        val channel = manager!!.initialize(context, activity!!.mainLooper, null)
         wifiService = WifiService(handler)
         activity!!.registerReceiver(wifiService, intentFilter)
         wifiService.setup(manager!!, channel)
@@ -105,17 +105,17 @@ class HomePage : Fragment() {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            manager!!.requestDeviceInfo(channel, WifiP2pManager.DeviceInfoListener {
-                if(!idSet) {
+            manager!!.requestDeviceInfo(channel) {
+                if (!idSet) {
                     deviceID = it!!.deviceName
                     idSet = true
                     next()
                 }
-            })
+            }
         }
     }
 
-    public fun next(){
+    fun next(){
         if (buttonPress == JOIN) {
             findNavController().navigate(R.id.homeToJoin)
         } else {

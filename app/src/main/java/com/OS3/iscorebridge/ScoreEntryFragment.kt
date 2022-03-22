@@ -1,6 +1,6 @@
 package com.OS3.iscorebridge
 
-import android.content.DialogInterface
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -33,23 +33,19 @@ class ScoreEntryFragment() : Fragment(){
     lateinit var game : Game
 
     private var contractNumber: Int = 0
-    var contractSuit: Char = ' '
-    var doubled: Boolean = false
-    var redoubled: Boolean = false
-    lateinit var background : Drawable
+    private var contractSuit: Char = ' '
+    private var doubled: Boolean = false
+    private var redoubled: Boolean = false
+    private lateinit var background : Drawable
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     private fun displayContract(){
-        var text: String = ""
+        var text: String
         if(contractSuit == ' ' || contractNumber == 0){
             text = "No contract selected"
         }
         else{
-            var suit = if(contractSuit == 'N') "NT"
+            val suit = if(contractSuit == 'N') "NT"
             else contractSuit.toString()
             text = contractNumber.toString() + suit
             if(doubled){
@@ -59,7 +55,7 @@ class ScoreEntryFragment() : Fragment(){
                 text+="XX"
             }
         }
-        val contractView: TextView = view!!.findViewById<TextView>(R.id.contractView)
+        val contractView: TextView = view!!.findViewById(R.id.contractView)
         contractView.text = text
     }
 
@@ -131,7 +127,7 @@ class ScoreEntryFragment() : Fragment(){
 
 
     private fun boardCheck(view: View) : Boolean{
-        var boardText = view.findViewById<TextInputEditText>(R.id.BoardNum).text.toString()
+        val boardText = view.findViewById<TextInputEditText>(R.id.BoardNum).text.toString()
         if(boardText == ""){
             view.findViewById<TextInputLayout>(R.id.BoardNumLayout).error = "Board required"
             return false
@@ -144,7 +140,7 @@ class ScoreEntryFragment() : Fragment(){
     }
 
     private fun pairNSErrorCheck(view: View) : Boolean{
-        var pairText = view.findViewById<TextInputEditText>(R.id.NorthSouth).text.toString()
+        val pairText = view.findViewById<TextInputEditText>(R.id.NorthSouth).text.toString()
         if(pairText == ""){
             view.findViewById<TextInputLayout>(R.id.NorthSouthLayout).error = "Pair required"
             return false
@@ -157,7 +153,7 @@ class ScoreEntryFragment() : Fragment(){
     }
 
     private fun pairEWErrorCheck(view: View) : Boolean{
-        var pairText = view.findViewById<TextInputEditText>(R.id.EastWest).text.toString()
+        val pairText = view.findViewById<TextInputEditText>(R.id.EastWest).text.toString()
         if(pairText == ""){
             view.findViewById<TextInputLayout>(R.id.EastWestLayout).error = "Pair required"
             return false
@@ -171,19 +167,19 @@ class ScoreEntryFragment() : Fragment(){
 
     private fun contractCheck(view: View) : Boolean{
         if(contractSuit == ' ' || contractNumber == 0){
-            view!!.findViewById<TextView>(R.id.contractView).setTextColor(Color.parseColor("#DD2C00"))
+            view.findViewById<TextView>(R.id.contractView).setTextColor(Color.parseColor("#DD2C00"))
             return false
         }
         return true
     }
 
     private fun declarerCheck(view: View) : Boolean{
-        var declarerText = view.findViewById<TextInputEditText>(R.id.DeclarerEntry).text.toString()
+        val declarerText = view.findViewById<TextInputEditText>(R.id.DeclarerEntry).text.toString()
         if(declarerText == ""){
             view.findViewById<TextInputLayout>(R.id.DeclarerEntryLayout).error = "Declarer required"
             return false
         }
-        var d = declarerText[0]
+        val d = declarerText[0]
         if(d != 'N' && d != 'E' && d != 'S' && d != 'W'){
             view.findViewById<TextInputLayout>(R.id.DeclarerEntryLayout).error = "Declarer must be N, E, S or W"
             return false
@@ -193,7 +189,7 @@ class ScoreEntryFragment() : Fragment(){
 
     private fun trickCheck(view: View) : Boolean{
 
-        var trickText = view.findViewById<TextInputEditText>(R.id.TricksEntry).text.toString()
+        val trickText = view.findViewById<TextInputEditText>(R.id.TricksEntry).text.toString()
         if(trickText == ""){
             view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).error = "Trick count required"
             return false
@@ -202,7 +198,7 @@ class ScoreEntryFragment() : Fragment(){
             view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).error = "Tricks must be a number"
             return false
         }
-        var tricks = trickText.toInt()
+        val tricks = trickText.toInt()
         if(tricks < 0){
             view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).error = "Tricks must be a positive number"
             return false
@@ -215,7 +211,7 @@ class ScoreEntryFragment() : Fragment(){
         return true
     }
     private fun leadCheck(view: View) : Boolean{
-        var leadText = view.findViewById<TextInputEditText>(R.id.LeadEntry).text.toString()
+        val leadText = view.findViewById<TextInputEditText>(R.id.LeadEntry).text.toString()
         if(leadText == ""){
             view.findViewById<TextInputLayout>(R.id.LeadEntryLayout).error = "Lead required"
             return false
@@ -234,7 +230,7 @@ class ScoreEntryFragment() : Fragment(){
         view.findViewById<TextInputLayout>(R.id.DeclarerEntryLayout).isErrorEnabled = false
         view.findViewById<TextInputLayout>(R.id.LeadEntryLayout).isErrorEnabled = false
         view.findViewById<TextInputLayout>(R.id.TricksEntryLayout).isErrorEnabled = false
-        view!!.findViewById<TextView>(R.id.contractView).setTextColor(Color.parseColor("#000000"))
+        view.findViewById<TextView>(R.id.contractView).setTextColor(Color.parseColor("#000000"))
         var ret = true
         ret = boardCheck(view) && ret
         ret = pairNSErrorCheck(view) && ret
@@ -247,9 +243,9 @@ class ScoreEntryFragment() : Fragment(){
     }
 
     private fun logicCheck(view : View) : Boolean{
-        var pairNS = view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
-        var pairEW = view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
-        var boardNumber = view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
+        val pairNS = view.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
+        val pairEW = view.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
+        val boardNumber = view.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
         if(match.boards.containsKey(boardNumber)){
             if(match.boards[boardNumber]!!.hasGame(pairNS, pairEW)){
                 view.findViewById<TextInputLayout>(R.id.BoardNumLayout).error = "Game already played"
@@ -262,17 +258,17 @@ class ScoreEntryFragment() : Fragment(){
     }
 
     private fun getGame(view : View) : Game{
-        pairNS = view!!.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
-        pairEW = view!!.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
-        boardNumber = view!!.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
+        pairNS = view.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
+        pairEW = view.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
+        boardNumber = view.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
         return match.getGame(  boardNumber,
             pairNS,
             pairEW,
             contractSuit,
             contractNumber,
-            view!!.findViewById<TextView>(R.id.TricksEntry).text.toString().toInt(),
-            view!!.findViewById<TextView>(R.id.LeadEntry).text.toString(),
-            view!!.findViewById<TextView>(R.id.DeclarerEntry).text[0],
+            view.findViewById<TextView>(R.id.TricksEntry).text.toString().toInt(),
+            view.findViewById<TextView>(R.id.LeadEntry).text.toString(),
+            view.findViewById<TextView>(R.id.DeclarerEntry).text[0],
             doubled,
             redoubled
         )
@@ -300,6 +296,7 @@ class ScoreEntryFragment() : Fragment(){
 
 
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -307,9 +304,9 @@ class ScoreEntryFragment() : Fragment(){
 
         if(gameInfo.movementType == MOVEMENT_NONE){
             if(pairNS != 0 && pairEW != 0 && boardNumber != 0){
-                view!!.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
-                view!!.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
-                view!!.findViewById<TextView>(R.id.BoardNum).text = (boardNumber + 1).toString()
+                view.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
+                view.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
+                view.findViewById<TextView>(R.id.BoardNum).text = (boardNumber + 1).toString()
             }
         }
 
@@ -369,7 +366,7 @@ class ScoreEntryFragment() : Fragment(){
                 if(logicCheck(view)){
                     game = getGame(view)
                     val builder = AlertDialog.Builder(view.context)
-                    var resultString = when {
+                    val resultString = when {
                         game.tricks - (game.contract.number + 6) == 0 -> {
                             "="
                         }
@@ -386,15 +383,14 @@ class ScoreEntryFragment() : Fragment(){
                             "\nContract: " + game.contract.toDisplayString(false) + " by " + game.contract.declarer +
                             "\nTricks: " + game.tricks.toString() + " (" + resultString + ")" +
                             "\nScore: " + game.score.toString())
-                        .setPositiveButton("Confirm",
-                            DialogInterface.OnClickListener { dialog, id ->
-                                submit(game)
+                        .setPositiveButton("Confirm"
+                        ) { _, _ ->
+                            submit(game)
+                        }
+                        .setNegativeButton("Reject"
+                        ) { _, _ ->
 
-                            })
-                        .setNegativeButton("Reject",
-                            DialogInterface.OnClickListener { dialog, id ->
-
-                            })
+                        }
                     builder.create()
                     builder.show()
                 }

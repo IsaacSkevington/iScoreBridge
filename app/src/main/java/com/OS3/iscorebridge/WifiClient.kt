@@ -18,7 +18,7 @@ import java.net.SocketTimeoutException
 @Volatile lateinit var wifiClient : WifiClient
 var wifiClientInitialised = false
 
-class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
+class WifiClient(private var hostID : String, var parentHandler: Handler) : Thread(){
 
     @Volatile lateinit  var connectionHandler : Handler
     @Volatile lateinit var reader: WifiReader
@@ -49,14 +49,14 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
 
                         }
                         MESSAGE_READ ->{
-                            var c = msg.obj as Communication
+                            val c = msg.obj as Communication
                             if (c.purpose == SENDGAME) {
                                 if (c.deviceID != deviceID) {
-                                    var newGame = Game(c.msg)
+                                    val newGame = Game(c.msg)
                                     match.addGame(newGame)
                                 }
                             } else if (c.purpose == SENDSTART) {
-                                var gameInfo = GameInfo(c.msg)
+                                val gameInfo = GameInfo(c.msg)
                                 parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
 
                             }
@@ -78,12 +78,10 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
         var connected = false
         while (!connected){
             for (i in 0 until peers.size) {
-                if (peers[i] != null) {
-                    if (encodeID(peers[i].deviceName) == hostID) {
-                        device = peers[i]
-                        connected = true
-                        break
-                    }
+                if (encodeID(peers[i].deviceName) == hostID) {
+                    device = peers[i]
+                    connected = true
+                    break
                 }
             }
         }
@@ -91,8 +89,8 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
         wifiService.connectP2p(device.deviceAddress)
     }
 
-    public fun send(purpose : Int, msg : String){
-        var c = Communication(deviceID, purpose, msg)
+    fun send(purpose : Int, msg : String){
+        val c = Communication(deviceID, purpose, msg)
         writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
     }
 
@@ -109,16 +107,16 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
                 parentHandler.obtainMessage(MESSAGE_CONNECTION_FAILED).sendToTarget()
             }
         }
-        fun connect(){
+        private fun connect(){
             var connected = false
             for(i in 0..3) {
-                Log.d("Connection", "Trying to contact $HOSTIP:$hostport. Time #$i")
-                var soc = Socket()
+                Log.d("Connection", "Trying to contact $HOSTIP:$HOSTPORT. Time #$i")
+                val soc = Socket()
                 try {
                     soc.bind(null)
-                    soc.connect(InetSocketAddress(HOSTIP, hostport), 10000)
+                    soc.connect(InetSocketAddress(HOSTIP, HOSTPORT), 10000)
                     Log.d("Connection", "Connection successful, preparing to receive data")
-                    recieveStartData(soc)
+                    receiveStartData(soc)
                     Log.d("Connection", "Data successfully received")
                     connected = true
                     break
@@ -144,18 +142,18 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
 
         }
 
-        fun recieveStartData(soc : Socket){
-            var otReader = OneTimeWifiReader(soc, connectionHandler)
-            var assignment = ClientAssignment(otReader.data.msg)
+        private fun receiveStartData(soc : Socket){
+            val otReader = OneTimeWifiReader(soc, connectionHandler)
+            val assignment = ClientAssignment(otReader.data.msg)
             clientNumber = assignment.myNumber
             clientPort = assignment.port
         }
 
-        fun connectNewPort(port : Int){
+        private fun connectNewPort(port : Int){
             var connected = false
             for(i in 0..3) {
                 Log.d("Connection", "Trying to contact $HOSTIP:$port. Time #$i")
-                var soc = Socket()
+                val soc = Socket()
                 try {
                     soc.bind(null)
                     soc.connect(InetSocketAddress(HOSTIP, port), 30000)
@@ -163,7 +161,7 @@ class WifiClient(var hostID : String, var parentHandler: Handler) : Thread(){
                     reader = WifiReader(soc, connectionHandler)
                     writer = WifiWriter(soc, connectionHandler)
                     connected = true
-                    break;
+                    break
                 } catch (e: ConnectException) {
                     Log.e("Connection error", e.toString())
                     soc.close()
