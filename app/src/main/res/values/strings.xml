@@ -14,4 +14,8 @@
     <string name="enterDetailsPrompt">Please enter your table\'s details before the game starts</string>
     <string name="joinPrompt">Please enter the game ID to join</string>
     <string name="dotted_line">----------------------------------------------</string>
+    <string name="spade">♠</string>
+    <string name="heart">♥</string>
+    <string name="diamond">♦</string>
+    <string name="club">♣</string>
 </resources>

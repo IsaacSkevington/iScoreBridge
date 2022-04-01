@@ -41,6 +41,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="HandConstructorFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="HomePage">
                     <value>
                       <LayoutPositions>
@@ -52,6 +64,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="homeToHandConstructor">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="homeToJoin">
                               <value>
                                 <LayoutPositions />

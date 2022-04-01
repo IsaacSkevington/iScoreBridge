@@ -17,6 +17,19 @@
         <action
             android:id="@+id/homeToStart"
             app:destination="@id/StartGameFragment" />
+        <action
+            android:id="@+id/homeToHandConstructor"
+            app:destination="@id/HandConstructorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/HandConstructorFragment"
+        android:name="com.OS3.iscorebridge.HandConstructorFragment"
+        android:label="Hand Constructor"
+        tools:layout="@layout/fragment_hand_constructor">
+        <action
+            android:id="@+id/handConstructorToHome"
+            app:destination="@id/HomePage" />
     </fragment>
 
     <fragment

@@ -154,5 +154,8 @@ class HomePage : Fragment() {
             buttonPress = JOIN
             setupPermissions()
         }
+        view.findViewById<Button>(R.id.makeDealButton).setOnClickListener {
+            findNavController().navigate(R.id.homeToHandConstructor)
+        }
     }
 }
