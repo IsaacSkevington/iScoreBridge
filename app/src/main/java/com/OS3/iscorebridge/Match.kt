@@ -91,6 +91,16 @@ class Match {
         }
     }
 
+    fun getBoards(pairNS: Int, pairEW: Int) : ArrayList<Int>{
+        var boardsPlayed = ArrayList<Int>()
+        for(board in boards.values){
+                if(board!!.hasGame(pairNS, pairEW)){
+                    boardsPlayed.add(board.boardNumber)
+            }
+        }
+        return boardsPlayed
+    }
+
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun drawScores(page : PdfDocument.Page, scoringMode: Int){
         val title = Paint()

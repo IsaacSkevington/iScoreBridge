@@ -42,10 +42,6 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
     @Volatile lateinit var manager : WifiP2pManager
     @Volatile lateinit var channel : WifiP2pManager.Channel
 
-    init{
-        RunningThread().start()
-    }
-
     constructor(manager : WifiP2pManager, channel : WifiP2pManager.Channel, parentHandler: Handler) : this(parentHandler){
         this.manager = manager
         this.channel = channel
@@ -90,8 +86,8 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
             WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION -> {
                 val device: WifiP2pDevice =
                     intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE)!!
-                if(device.deviceName != deviceID) {
-                    deviceID = device.deviceName
+                if(device.deviceName != MYINFO.deviceName) {
+                    MYINFO.deviceName = device.deviceName
                     parentHandler.obtainMessage(MESSAGE_DEVICE_ID_CHANGED).sendToTarget()
                 }
             }
@@ -146,12 +142,7 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
         else{
             wifiClient.kill()
         }
-    }
-
-
-    inner class RunningThread() : Thread(){
-        override fun run(){
-        }
+        manager.removeGroup(channel, null)
     }
 
 

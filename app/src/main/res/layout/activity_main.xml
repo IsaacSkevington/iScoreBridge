@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
+    android:id="@+id/topBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="false"
@@ -39,12 +39,13 @@
                 app:srcCompat="@mipmap/appic_launcher_foreground" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton"
+                android:id="@+id/menuButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="#FFFFFF"
                 android:clickable="true"
+                android:contentDescription="Settings"
                 android:tint="#000000"
                 app:backgroundTint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -63,5 +64,58 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/menuLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <Button
+            android:id="@+id/addPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:text="Add Player" />
+
+        <Button
+            android:id="@+id/findPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:text="Find Player" />
+
+        <Button
+            android:id="@+id/importPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:text="Import Players" />
+
+        <Button
+            android:id="@+id/exportPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:text="Export Players" />
+
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:text="Settings" />
+
+        <Button
+            android:id="@+id/aboutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20sp"
+            android:text="About" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

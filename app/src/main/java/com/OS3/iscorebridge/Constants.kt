@@ -27,16 +27,35 @@ const val MESSAGE_START = 18
 
 
 const val CREATE_FILE = 19
+const val OPEN_FILE = 28
 const val SENDCONNECTIONINFO = 20
 
 const val MESSAGE_CONNECTION_FAILED = 21
 const val MESSAGE_DEVICE_ID_CHANGED = 22
 
-var gameInfo : GameInfo = GameInfo(2, GAMEMODE_TEAMS, 10, MOVEMENT_NONE, ArrayList())
+
+const val SENDCLIENTDETAILS = 23
+const val MESSAGE_SEND_GAME = 24
+const val MESSAGE_UPDATE_CLIENT = 25
+
+const val CHECKCLIENTDETAILS = 26
+
+const val MESSAGE_CLIENT_DETAILS_OBTAINED = 27
+
+const val PLAYERNOTFOUND = "Player Not Found"
+
+const val  PLAYERLISTFILE = "playerlist.dat"
+
+var gameInfo : GameInfo = GameInfo(2, GAMEMODE_TEAMS, 10, MOVEMENT_NONE,
+    arrowSwitch = false,
+    shareAndRelay = false,
+    clientList = ArrayList()
+)
+
+const val MESSAGE_CLIENT_DISCONNECTED = 28
 
 const val HOSTIP = "192.168.49.1"
 
-@Volatile var deviceID : String = ""
 
 val programUUID: UUID = UUID.fromString("096e8f5d-2b31-410a-9cc3-c577003bbfdd")
 

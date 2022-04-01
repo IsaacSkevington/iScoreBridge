@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -31,6 +32,7 @@ class StartGameScreen : Fragment() {
 
 
     var start = false
+    var playerTableRows = ArrayList<TableRow>()
 
 
     override fun onCreateView(
@@ -106,13 +108,47 @@ class StartGameScreen : Fragment() {
         amHost = false
     }
 
+    fun updateClientTable(view : View){
+        var table = view!!.findViewById<TableLayout>(R.id.playersTable)
+        playerTableRows.forEach {
+            table.removeView(it)
+        }
+        var currentRowItems = 0
+        var currentRow = TableRow(view.context)
+        wifiHost.getTables().forEach {
+            var textView = TextView(view.context)
+            textView.text = it.toString()
+            if(++currentRowItems == 3){
+                table.addView(currentRow)
+                currentRow = TableRow(view.context)
+                currentRowItems = 0
+            }
+        }
+
+    }
+
+    fun pairsMode(view : View){
+        view.findViewById<ConstraintLayout>(R.id.mitchellTypeLayout).visibility = View.VISIBLE
+        view.findViewById<RadioButton>(R.id.movementHowell).visibility = View.VISIBLE
+        view.findViewById<CheckBox>(R.id.arrowSwitchCheck).visibility = View.VISIBLE
+
+    }
+    fun teamsMode(view : View){
+        view.findViewById<ConstraintLayout>(R.id.mitchellTypeLayout).visibility = View.GONE
+        view.findViewById<RadioButton>(R.id.movementHowell).visibility = View.GONE
+        view.findViewById<CheckBox>(R.id.arrowSwitchCheck).visibility = View.GONE
+        if(view.findViewById<RadioGroup>(R.id.movementGroup).checkedRadioButtonId == R.id.movementHowell){
+            view.findViewById<RadioGroup>(R.id.movementGroup).check(R.id.movementNone)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         amHost = true
-        view.findViewById<TextView>(R.id.idTextView).text = encodeID(deviceID)
+        view.findViewById<TextView>(R.id.idTextView).text = encodeID(MYINFO.deviceName)
         val handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
@@ -130,11 +166,16 @@ class StartGameScreen : Fragment() {
 
                     }
                     MESSAGE_CLIENT_CONNECTED ->{
-                        Toast.makeText(view.context, msg.obj as String + " (" + (msg.arg1) + ") joined", Toast.LENGTH_LONG).show()
+                        var client = msg.obj as ClientInfo
+                        Toast.makeText(view.context, client.deviceName + " joined", Toast.LENGTH_LONG).show()
+
+                    }
+                    MESSAGE_UPDATE_CLIENT ->{
+                        updateClientTable(view)
                     }
                     MESSAGE_DEVICE_ID_CHANGED -> {
                         Toast.makeText(view.context, "Device ID Changed!", Toast.LENGTH_LONG).show()
-                        view.findViewById<TextView>(R.id.idTextView).text = encodeID(deviceID)
+                        view.findViewById<TextView>(R.id.idTextView).text = encodeID(MYINFO.deviceName)
                     }
                 }
             }
@@ -143,6 +184,16 @@ class StartGameScreen : Fragment() {
         wifiService.parentHandler = handler
         wifiHost = WifiHost(handler)
         wifiHostInitialised = true
+
+        view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener{
+            if(view.findViewById<Switch>(R.id.modeSwitch).isChecked){
+                teamsMode(view)
+            }
+            else{
+                pairsMode(view)
+            }
+        }
+
         view.findViewById<Button>(R.id.StartPlayingButton).setOnClickListener {
             if(errorCheck(view)) {
 
@@ -178,8 +229,11 @@ class StartGameScreen : Fragment() {
                             GAMEMODE_TEAMS
                         }
 
+                        val arrowSwitch = view.findViewById<CheckBox>(R.id.arrowSwitchCheck).isChecked
+                        val shareAndRelay = view.findViewById<Switch>(R.id.mitchellTypeSwitch).isChecked
+
                         gameInfo =
-                            GameInfo(tables, gameMode, boards, movementType, wifiHost.getClientAddresses())
+                            GameInfo(tables, gameMode, boards, movementType, arrowSwitch, shareAndRelay, wifiHost.getClientAddresses())
 
                         wifiHost.startGame(handler)
 

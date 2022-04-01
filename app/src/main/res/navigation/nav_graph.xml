@@ -36,8 +36,18 @@
         tools:layout="@layout/fragment_join_game">
 
         <action
-            android:id="@+id/joinGameToWaitToStart"
-            app:destination="@id/WaitToStartFragment" />
+            android:id="@+id/joinGameToEnterDetails"
+            app:destination="@id/EnterTableDetails"/>
+    </fragment>
+    <fragment
+        android:id="@+id/EnterTableDetails"
+        android:name="com.OS3.iscorebridge.EnterTableDetailsFragment"
+        android:label="Enter Details"
+        tools:layout="@layout/fragment_enter_table_details">
+
+        <action
+            android:id="@+id/enterDetailsToWaitToString"
+            app:destination="@id/WaitToStartFragment"/>
     </fragment>
     <fragment
         android:id="@+id/WaitToStartFragment"
@@ -58,6 +68,20 @@
         <action
             android:id="@+id/scoreEntryToScoreView"
             app:destination="@id/ScoreViewFragment" />
+
+        <action
+            android:id="@+id/scoreEntryToMovementDisplay"
+            app:destination="@id/MovementDisplayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MovementDisplayFragment"
+        android:name="com.OS3.iscorebridge.MovementDisplayFragment"
+        android:label="Movement Display"
+        tools:layout="@layout/fragment_movement_display">
+
+        <action
+            android:id="@+id/movementDisplayToScoreEntry"
+            app:destination="@id/ScoreEntryFragment" />
     </fragment>
     <fragment
         android:id="@+id/ScoreViewFragment"

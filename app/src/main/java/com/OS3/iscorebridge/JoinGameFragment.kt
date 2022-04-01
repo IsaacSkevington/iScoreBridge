@@ -52,30 +52,11 @@ class JoinGame : Fragment() {
         }
     }
 
-    private fun tableCheck(view:View) : Boolean{
-        val table = view.findViewById<TextInputEditText>(R.id.tableEntry).text.toString()
-        if(table == ""){
-            view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "Table must be specified"
-            return false
-        }
-        try{
-            val x = table.toInt()
-            if(x < 1){
-                view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "Table must be greater than 0"
-                return false
-            }
-        }
-        catch (e : Exception){
-            view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "Table must be a number"
-            return false
-        }
-        return true
-    }
 
     private fun idCheck(view:View) : Boolean{
         val id = view.findViewById<TextInputEditText>(R.id.idEntry).text.toString()
         if(id == ""){
-            view.findViewById<TextInputLayout>(R.id.tableEntryLayout).error = "ID must be specified"
+            view.findViewById<TextInputLayout>(R.id.idEntry).error = "ID must be specified"
             return false
         }
         return true
@@ -83,10 +64,8 @@ class JoinGame : Fragment() {
 
 
     private fun errorCheck(view : View) : Boolean{
-        view.findViewById<TextInputLayout>(R.id.tableEntryLayout).isErrorEnabled = false
         view.findViewById<TextInputLayout>(R.id.idEntryLayout).isErrorEnabled = false
-        val ret = tableCheck(view)
-        return idCheck(view) && ret
+        return idCheck(view)
     }
 
     override fun onPause(){
@@ -109,7 +88,7 @@ class JoinGame : Fragment() {
                         if(!joined) {
                             joined = true
                             Toast.makeText(context, "Joined successfully", Toast.LENGTH_LONG).show()
-                            findNavController().navigate(R.id.joinGameToWaitToStart)
+                            findNavController().navigate(R.id.joinGameToEnterDetails)
                         }
                     }
                     MESSAGE_CONNECTION_FAILED -> {

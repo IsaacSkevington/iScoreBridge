@@ -15,7 +15,7 @@ var wifiHostInitialised = false
 class WifiHost(@Volatile var parentHandler: Handler){
     
     @Volatile lateinit var hostHandler : Handler
-    var clients = ArrayList<Client>()
+    @Volatile var clients = ArrayList<Client>()
     @Volatile var p2pClientList = ArrayList<String>()
     private var currentPort = HOSTPORT + 1
     lateinit var hostSocket : ServerSocket
@@ -34,6 +34,20 @@ class WifiHost(@Volatile var parentHandler: Handler){
         }
     }
 
+    fun hasTable(table : Int) : Boolean{
+        clients.forEach {
+            if(it.getTableNumber() == table){
+                return true
+            }
+        }
+        return false
+    }
+
+    fun removeClient(c : Client){
+        c.kill()
+        clients.remove(c)
+    }
+
 
     inner class ClientHandler() : Thread(){
 
@@ -41,21 +55,20 @@ class WifiHost(@Volatile var parentHandler: Handler){
             Looper.prepare()
             hostHandler = object : Handler(Looper.myLooper()!!) {
                 override fun handleMessage(msg: Message) {
+
                     when (msg.what) {
-                        MESSAGE_READER_DISCONNECTED->{
+                        MESSAGE_CLIENT_DISCONNECTED->{
+                            removeClient(msg.obj as Client)
+                            parentHandler.obtainMessage(MESSAGE_UPDATE_CLIENT)
+                        }
+                        MESSAGE_SEND_GAME ->{
+                            val newGame = msg.obj as Game
+                            send(SENDGAME, newGame.toString())
+                        }
+                        else -> {
+                            parentHandler.obtainMessage(msg.what, msg.arg1, msg.arg2, msg.obj)
+                        }
 
-                        }
-                        MESSAGE_WRITER_DISCONNECTED->{
-
-                        }
-                        MESSAGE_READ ->{
-                            val c = msg.obj as Communication
-                            if (c.purpose == SENDGAME) {
-                                val newGame = Game(c.msg)
-                                match.addGame(newGame)
-                                send(SENDGAME, newGame.toString())
-                            }
-                        }
                     }
 
                 }
@@ -81,7 +94,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
             val clientPort = getNextPort()
             val clientAssignment = ClientAssignment(clientPort, clients.size)
 
-            val message = Communication(deviceID, SENDCONNECTIONINFO, clientAssignment.toString())
+            val message = Communication(MYINFO.deviceName, SENDCONNECTIONINFO, clientAssignment.toString())
             OneTimeWifiWriter(socket, hostHandler, message.toString())
             socket.close()
             connecting = false
@@ -91,7 +104,6 @@ class WifiHost(@Volatile var parentHandler: Handler){
             c.connect()
             Log.d("Connecting client", "Connection successful")
             clients.add(c)
-            parentHandler.obtainMessage(MESSAGE_CLIENT_CONNECTED, device.deviceName).sendToTarget()
         }
 
         private fun connect(){
@@ -125,9 +137,9 @@ class WifiHost(@Volatile var parentHandler: Handler){
     }
 
     fun send(purpose : Int, msg : String){
-        val c = Communication(deviceID, purpose, msg)
+        val c = Communication(MYINFO.deviceName, purpose, msg)
         for(client in clients){
-            client.writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
+            client.send(c)
         }
     }
 
@@ -138,6 +150,18 @@ class WifiHost(@Volatile var parentHandler: Handler){
             gameInfo.toString()
         )
         parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+    }
+
+    fun getTables() : ArrayList<Int>{
+        var list = ArrayList<Int>()
+        clients.forEach {
+            var number = it.getTableNumber()
+            if(number != 0) {
+                list.add(number)
+            }
+        }
+        list.sort()
+        return list
     }
 
     fun kill(){

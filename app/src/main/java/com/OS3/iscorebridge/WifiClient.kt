@@ -51,7 +51,7 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                         MESSAGE_READ ->{
                             val c = msg.obj as Communication
                             if (c.purpose == SENDGAME) {
-                                if (c.deviceID != deviceID) {
+                                if (c.deviceID != MYINFO.deviceName) {
                                     val newGame = Game(c.msg)
                                     match.addGame(newGame)
                                 }
@@ -59,6 +59,12 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                                 val gameInfo = GameInfo(c.msg)
                                 parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
 
+                            }
+                            else if(c.purpose == SENDCLIENTDETAILS){
+                                parentHandler.obtainMessage(MESSAGE_CLIENT_DETAILS_OBTAINED, ClientInfo(c.msg)).sendToTarget()
+                            }
+                            else{
+                                parentHandler.obtainMessage(MESSAGE_READ, msg.obj).sendToTarget()
                             }
                         }
                     }
@@ -90,7 +96,7 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
     }
 
     fun send(purpose : Int, msg : String){
-        val c = Communication(deviceID, purpose, msg)
+        val c = Communication(MYINFO.deviceName, purpose, msg)
         writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
     }
 
@@ -149,6 +155,10 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
             clientPort = assignment.port
         }
 
+        private fun sendFirstMessage(){
+            send(SENDCLIENTDETAILS, MYINFO.toString())
+        }
+
         private fun connectNewPort(port : Int){
             var connected = false
             for(i in 0..3) {
@@ -161,6 +171,8 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                     reader = WifiReader(soc, connectionHandler)
                     writer = WifiWriter(soc, connectionHandler)
                     connected = true
+                    do{}while(writer.sendHandlerSet)
+                    sendFirstMessage()
                     break
                 } catch (e: ConnectException) {
                     Log.e("Connection error", e.toString())

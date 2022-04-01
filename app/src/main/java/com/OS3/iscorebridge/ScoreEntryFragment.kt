@@ -278,7 +278,6 @@ class ScoreEntryFragment() : Fragment(){
 
         match.addGame(game)
         wifiService.send(SENDGAME, game.toString())
-        round++
         findNavController().navigate(R.id.scoreEntryToScoreView)
 
     }
@@ -290,6 +289,10 @@ class ScoreEntryFragment() : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_score_entry, container, false)
+    }
+
+    fun nextRound(){
+        findNavController().navigate(R.id.scoreEntryToMovementDisplay)
     }
 
 
@@ -311,7 +314,16 @@ class ScoreEntryFragment() : Fragment(){
         }
 
         else{
-            //Implement movement display here
+            boardNumber = gameInfo.getNextBoard(round, MYINFO.tableNumber)
+            if(boardNumber == 0){
+                nextRound()
+                return
+            }
+            else {
+                view.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
+                view.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
+                view.findViewById<TextView>(R.id.BoardNum).text = boardNumber.toString()
+            }
         }
 
         background = view.findViewById<ImageButton>(R.id.clubButton).background
@@ -365,7 +377,7 @@ class ScoreEntryFragment() : Fragment(){
             if(errorCheck(view)) {
                 if(logicCheck(view)){
                     game = getGame(view)
-                    val builder = AlertDialog.Builder(view.context)
+
                     val resultString = when {
                         game.tricks - (game.contract.number + 6) == 0 -> {
                             "="
@@ -377,7 +389,7 @@ class ScoreEntryFragment() : Fragment(){
                             "+" + (game.tricks - (game.contract.number + 6)).toString()
                         }
                     }
-
+                    val builder = AlertDialog.Builder(view.context)
                     builder.setMessage("Confirmation required!" +
                             "\nBoard: " + game.boardNumber.toString() + " (NS " + game.pairNS.toString() + " vs EW " + game.pairEW.toString() + ")" +
                             "\nContract: " + game.contract.toDisplayString(false) + " by " + game.contract.declarer +

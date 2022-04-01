@@ -107,7 +107,7 @@ class HomePage : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             manager!!.requestDeviceInfo(channel) {
                 if (!idSet) {
-                    deviceID = it!!.deviceName
+                    MYINFO.deviceName = it!!.deviceName
                     idSet = true
                     next()
                 }
@@ -119,7 +119,14 @@ class HomePage : Fragment() {
         if (buttonPress == JOIN) {
             findNavController().navigate(R.id.homeToJoin)
         } else {
-            findNavController().navigate(R.id.homeToStart)
+            if(playerList.load(PLAYERLISTFILE, context!!)){
+                Toast.makeText(context!!, "Player list loaded", Toast.LENGTH_LONG)
+                findNavController().navigate(R.id.homeToStart)
+            }
+            else{
+                Toast.makeText(context!!, "Player list load failed", Toast.LENGTH_LONG)
+            }
+
         }
     }
 
