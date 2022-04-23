@@ -1,7 +1,5 @@
 package com.OS3.iscorebridge
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -12,26 +10,29 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.time.LocalDate
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class HandConstructorFragment : Fragment() {
+class HandConstructorFragment : DialogFragment() {
 
     private lateinit var background : Drawable
-    private var deal = Deal()
+    var deal = Deal()
 
-    private var currentCardinality = 'N'
-    private var currentSuit = 'C'
+    private var currentCardinality = NORTH
+    private var currentSuit = Suit(CLUBS)
     private lateinit var currentView : View
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        deal.setupForFragment(this, {}, {
+            colourCards(currentView)
+            deal.display(currentView)
+        }
+        )
     }
 
     override fun onCreateView(
@@ -77,47 +78,47 @@ class HandConstructorFragment : Fragment() {
     }
 
 
-    fun cardToButtonId(card : Char) : Int{
-        return when(card){
-            '2' -> R.id.card_button_2
-            '3' -> R.id.card_button_3
-            '4' -> R.id.card_button_4
-            '5' -> R.id.card_button_5
-            '6' -> R.id.card_button_6
-            '7' -> R.id.card_button_7
-            '8' -> R.id.card_button_8
-            '9' -> R.id.card_button_9
-            'T' -> R.id.card_button_10
-            'J' -> R.id.card_button_J
-            'Q' -> R.id.card_button_Q
-            'K' -> R.id.card_button_K
-            'A' -> R.id.card_button_A
+    fun cardToButtonId(card : Card) : Int{
+        return when(card.value){
+            TWO -> R.id.card_button_2
+            THREE -> R.id.card_button_3
+            FOUR -> R.id.card_button_4
+            FIVE -> R.id.card_button_5
+            SIX -> R.id.card_button_6
+            SEVEN -> R.id.card_button_7
+            EIGHT -> R.id.card_button_8
+            NINE -> R.id.card_button_9
+            TEN -> R.id.card_button_10
+            JACK -> R.id.card_button_J
+            QUEEN -> R.id.card_button_Q
+            KING -> R.id.card_button_K
+            ACE -> R.id.card_button_A
             else -> 0
         }
     }
 
-    fun cardinalityToTextId(cardinality: Char) : Int{
+    fun cardinalityToTextId(cardinality: Cardinality) : Int{
         return when(cardinality){
-            'N' -> R.id.northTitle
-            'E' -> R.id.eastTitle
-            'S' -> R.id.southTitle
-            'W' -> R.id.westTitle
+            NORTH -> R.id.northTitle
+            EAST -> R.id.eastTitle
+            SOUTH -> R.id.southTitle
+            WEST -> R.id.westTitle
             else -> 0
         }
     }
 
-    fun suitToButtonId(suit : Char) : Int{
+    fun suitToButtonId(suit : Suit) : Int{
         return when(suit){
-            'C' -> R.id.card_button_club
-            'D' -> R.id.card_button_diamond
-            'H' -> R.id.card_button_heart
-            'S' -> R.id.card_button_spade
+            CLUBS -> R.id.card_button_club
+            DIAMONDS -> R.id.card_button_diamond
+            HEARTS -> R.id.card_button_heart
+            SPADES -> R.id.card_button_spade
             else -> 0
         }
     }
 
-    fun colourCard(view: View, value: Char, color : Int){
-        view.findViewById<Button>(cardToButtonId(value)).setBackgroundColor(color)
+    fun colourCard(view: View, card : Card, color : Int){
+        view.findViewById<Button>(cardToButtonId(card)).setBackgroundColor(color)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -125,198 +126,183 @@ class HandConstructorFragment : Fragment() {
         resetCardBackgrounds(view)
         var usedCards = deal.getCardsUsedBySuit()[currentSuit]
         usedCards!!.forEach{
-            colourCard(view, it.value, Color.DKGRAY)
+            colourCard(view, it, Color.DKGRAY)
         }
         var cards = deal.getHand(currentCardinality).getBySuit()[currentSuit]
         cards!!.forEach {
-            colourCard(view, it.value, Color.CYAN)
+            colourCard(view, it, Color.CYAN)
         }
 
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    fun suitPressed(view : View, suit : Char, button : View){
+    fun suitPressed(view : View, suit : Suit, button : View){
         resetSuitBackgrounds(view)
-        currentSuit = suit
+        currentSuit = Suit(suit)
         button.setBackgroundColor(Color.CYAN)
         colourCards(view)
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    fun cardPressed(view : View, card: Char, button : View){
-        if(view.findViewById<Button>(cardToButtonId(card)).background == background){
-            if(deal.containsCard(Card(currentSuit, card)) || !deal.getHand(currentCardinality).addCard(Card(currentSuit, card))) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun cardPressed(view: View, card: CardValue){
+        var pressed = Card(currentSuit, card)
+        if(view.findViewById<Button>(cardToButtonId(pressed)).background == background){
+            if(deal.containsCard(pressed) || !deal.getHand(currentCardinality).addCard(pressed)) {
                 return
             }
         }
         else{
-            deal.getHand(currentCardinality).removeCard(Card(currentSuit, card))
+            deal.getHand(currentCardinality).removeCard(pressed)
         }
         colourCards(view)
         deal.display(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    fun cardinalityPressed(view : View, cardinality : Char, textView : View){
+    fun cardinalityPressed(view : View, cardinality : Cardinality, textView : View){
         resetCardinalityBackgrounds(view)
         currentCardinality = cardinality
         textView.setBackgroundColor(Color.CYAN)
         colourCards(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == CREATE_FILE && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.also { uri ->
-                val contentResolver = context!!.contentResolver
-                try {
-                    val descriptor = contentResolver.openFileDescriptor(uri, "w")
-                    FileOutputStream(descriptor?.fileDescriptor).use {
-                        deal.save(it)
-                    }
-                    Toast.makeText(context!!, "Save successful", Toast.LENGTH_LONG).show()
-                    findNavController().navigate(R.id.handConstructorToHome)
-                } catch (e: FileNotFoundException) {
-                    Toast.makeText(context!!, "Save failed", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-        else if(requestCode == OPEN_FILE && resultCode == Activity.RESULT_OK){
-            resultData?.data?.also { uri ->
-                val contentResolver = context!!.contentResolver
-                try {
-                    val descriptor = contentResolver.openFileDescriptor(uri, "r")
-                    FileInputStream(descriptor?.fileDescriptor).use {
-                        deal.load(it)
-                    }
-                    Toast.makeText(context!!, "Load successful", Toast.LENGTH_LONG).show()
-                    colourCards(currentView)
-                    deal.display(currentView)
-                } catch (e: FileNotFoundException) {
-                    Toast.makeText(context!!, "Load failed", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-    }
+
 
 
     private fun load(){
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/txt"
-        }
-        startActivityForResult(intent, OPEN_FILE)
+        deal.import()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun save() {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/txt"
-            val d = LocalDate.now()
-            d.dayOfMonth.toString() + d.month.toString() + d.year.toString()
-            putExtra(Intent.EXTRA_TITLE, "game" + LocalDate.now().toString() + ".deal")
-        }
-        startActivityForResult(intent, CREATE_FILE)
+    var onCancel = {
+        findNavController().navigate(R.id.handConstructorToHome)
     }
+
+    var onCreate = {
+        findNavController().navigate(R.id.handConstructorToHome)
+    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         background = view.findViewById<ImageButton>(R.id.card_button_club).background
         deal.display(view)
-        suitPressed(view, 'C', view.findViewById(R.id.card_button_club))
-        cardinalityPressed(view, 'N', view.findViewById(R.id.northTitle))
+        suitPressed(view, CLUBS, view.findViewById(R.id.card_button_club))
+        cardinalityPressed(view, NORTH, view.findViewById(R.id.northTitle))
 
         view.findViewById<ImageButton>(R.id.card_button_club).setOnClickListener {
-            suitPressed(view, 'C', it)
+            suitPressed(view, CLUBS, it)
         }
         view.findViewById<ImageButton>(R.id.card_button_diamond).setOnClickListener {
-            suitPressed(view, 'D', it)
+            suitPressed(view, DIAMONDS, it)
         }
         view.findViewById<ImageButton>(R.id.card_button_heart).setOnClickListener {
-            suitPressed(view, 'H', it)
+            suitPressed(view, HEARTS, it)
         }
         view.findViewById<ImageButton>(R.id.card_button_spade).setOnClickListener {
-            suitPressed(view, 'S', it)
+            suitPressed(view, SPADES, it)
         }
 
         view.findViewById<Button>(R.id.card_button_2).setOnClickListener {
-            cardPressed(view, '2', it)
+            cardPressed(view, TWO)
         }
         view.findViewById<Button>(R.id.card_button_3).setOnClickListener {
-            cardPressed(view, '3', it)
+            cardPressed(view, THREE)
         }
         view.findViewById<Button>(R.id.card_button_4).setOnClickListener {
-            cardPressed(view, '4', it)
+            cardPressed(view, FOUR)
         }
         view.findViewById<Button>(R.id.card_button_5).setOnClickListener {
-            cardPressed(view, '5', it)
+            cardPressed(view, FIVE)
         }
         view.findViewById<Button>(R.id.card_button_6).setOnClickListener {
-            cardPressed(view, '6', it)
+            cardPressed(view, SIX)
         }
         view.findViewById<Button>(R.id.card_button_7).setOnClickListener {
-            cardPressed(view, '7', it)
+            cardPressed(view, SEVEN)
         }
         view.findViewById<Button>(R.id.card_button_8).setOnClickListener {
-            cardPressed(view, '8', it)
+            cardPressed(view, EIGHT)
         }
         view.findViewById<Button>(R.id.card_button_9).setOnClickListener {
-            cardPressed(view, '9', it)
+            cardPressed(view, NINE)
         }
         view.findViewById<Button>(R.id.card_button_10).setOnClickListener {
-            cardPressed(view, 'T', it)
+            cardPressed(view, TEN)
         }
         view.findViewById<Button>(R.id.card_button_J).setOnClickListener {
-            cardPressed(view, 'J', it)
+            cardPressed(view, JACK)
         }
         view.findViewById<Button>(R.id.card_button_Q).setOnClickListener {
-            cardPressed(view, 'Q', it)
+            cardPressed(view, QUEEN)
         }
         view.findViewById<Button>(R.id.card_button_K).setOnClickListener {
-            cardPressed(view, 'K', it)
+            cardPressed(view, KING)
         }
         view.findViewById<Button>(R.id.card_button_A).setOnClickListener {
-            cardPressed(view, 'A', it)
+            cardPressed(view, ACE)
         }
         view.findViewById<TextView>(R.id.northTitle).setOnClickListener {
-            cardinalityPressed(view, 'N', it)
+            cardinalityPressed(view, NORTH, it)
         }
         view.findViewById<TextView>(R.id.eastTitle).setOnClickListener {
-            cardinalityPressed(view, 'E', it)
+            cardinalityPressed(view, EAST, it)
         }
         view.findViewById<TextView>(R.id.southTitle).setOnClickListener {
-            cardinalityPressed(view, 'S', it)
+            cardinalityPressed(view, SOUTH, it)
         }
         view.findViewById<TextView>(R.id.westTitle).setOnClickListener {
-            cardinalityPressed(view, 'W', it)
+            cardinalityPressed(view, WEST, it)
         }
         view.findViewById<View>(R.id.northView).setOnClickListener {
-            cardinalityPressed(view, 'N', view.findViewById<TextView>(R.id.northTitle))
+            cardinalityPressed(view, NORTH, view.findViewById<TextView>(R.id.northTitle))
         }
         view.findViewById<View>(R.id.eastView).setOnClickListener {
-            cardinalityPressed(view, 'E', view.findViewById<TextView>(R.id.eastTitle))
+            cardinalityPressed(view, EAST, view.findViewById<TextView>(R.id.eastTitle))
         }
         view.findViewById<View>(R.id.southView).setOnClickListener {
-            cardinalityPressed(view, 'S', view.findViewById<TextView>(R.id.southTitle))
+            cardinalityPressed(view, SOUTH, view.findViewById<TextView>(R.id.southTitle))
         }
         view.findViewById<View>(R.id.westView).setOnClickListener {
-            cardinalityPressed(view, 'W', view.findViewById<TextView>(R.id.westTitle))
+            cardinalityPressed(view, WEST, view.findViewById<TextView>(R.id.westTitle))
         }
-        view.findViewById<Button>(R.id.saveDealButton).setOnClickListener {
-            this.currentView = view
-            save()
-        }
-        view.findViewById<Button>(R.id.loadDealButton).setOnClickListener {
+
+        view.findViewById<FloatingActionButton>(R.id.loadDealButton).setOnClickListener {
             this.currentView = view
             load()
         }
-        view.findViewById<Button>(R.id.cancelButton).setOnClickListener {
-            findNavController().navigate(R.id.handConstructorToHome)
+        view.findViewById<FloatingActionButton>(R.id.createDealButton).setOnClickListener{
+            onCreate()
+        }
+        view.findViewById<FloatingActionButton>(R.id.cancelButton).setOnClickListener {
+            onCancel()
+        }
+        view.findViewById<Button>(R.id.shuffleButton).setOnClickListener {
+            deal.random()
+            deal.display(view)
+            colourCards(view)
         }
 
     }
+}
+
+fun showHandConstructorDiag(fragmentManager: FragmentManager, onSuccess : (deal : Deal)->Boolean) {
+    HandConstructorFragment().also{
+        it.show(fragmentManager, "dialog")
+        it.onCancel = {
+            it.dismiss()
+        }
+        it.onCreate = {
+            if(onSuccess(it.deal)) {
+                it.dismiss()
+            }
+        }
+    }
+
+
 }

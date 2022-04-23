@@ -67,6 +67,7 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
                 val info : WifiP2pInfo? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO)
                 val groupInfo : WifiP2pGroup? = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_GROUP)
                 if(info != null) {
+                    Log.d("Connection Changed", "The connection status changed")
                     if (wifiHostInitialised || wifiClientInitialised) {
                         Log.d("IP : ", info.groupOwnerAddress?.hostAddress + " Am group owner : " + info.isGroupOwner)
                         if (amHost) {

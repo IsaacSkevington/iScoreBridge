@@ -48,7 +48,9 @@ class WaitToStartFragment : Fragment() {
                         wifiService.clientList = gameInfo.clientList
                         round = 1
 
-                        findNavController().navigate(R.id.waitToStartToScoreEntry)
+                        var nextPositions = gameInfo.setupTable(MYINFO.tableNumber)
+                        var action = WaitToStartFragmentDirections.waitToStartToScoreEntry(nextPositions.pairNS, nextPositions.pairEW, nextPositions.boards[0])
+                        findNavController().navigate(action)
 
                     }
                     MESSAGECONNECTEDWRITER ->{

@@ -54,12 +54,14 @@ class JoinGame : Fragment() {
 
 
     private fun idCheck(view:View) : Boolean{
-        val id = view.findViewById<TextInputEditText>(R.id.idEntry).text.toString()
-        if(id == ""){
-            view.findViewById<TextInputLayout>(R.id.idEntry).error = "ID must be specified"
-            return false
+        view.findViewById<TextInputEditText>(R.id.idEntry).also{
+            var id = it.text.toString()
+            if(id == ""){
+                it.error = "ID must be specified"
+                return false
+            }
+            return true
         }
-        return true
     }
 
 

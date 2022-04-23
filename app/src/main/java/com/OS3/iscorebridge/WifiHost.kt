@@ -61,6 +61,15 @@ class WifiHost(@Volatile var parentHandler: Handler){
                             removeClient(msg.obj as Client)
                             parentHandler.obtainMessage(MESSAGE_UPDATE_CLIENT)
                         }
+
+                        MESSAGE_SEND_DEAL ->{
+                            val newDeal = msg.obj as Deal
+                            send(SENDGAME, newDeal.toString())
+                        }
+                        MESSAGE_EDIT_GAME -> {
+                            val newGame = msg.obj as Game
+                            send(SENDEDITGAME, newGame.toString())
+                        }
                         MESSAGE_SEND_GAME ->{
                             val newGame = msg.obj as Game
                             send(SENDGAME, newGame.toString())

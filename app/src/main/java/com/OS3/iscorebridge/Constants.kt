@@ -46,6 +46,13 @@ const val PLAYERNOTFOUND = "Player Not Found"
 
 const val  PLAYERLISTFILE = "playerlist.dat"
 
+const val SENDNEWDEAL = 28
+const val MESSAGE_SEND_DEAL = 29
+
+const val SENDEDITGAME = 30
+const val MESSAGE_EDIT_GAME = 31
+
+
 var gameInfo : GameInfo = GameInfo(2, GAMEMODE_TEAMS, 10, MOVEMENT_NONE,
     arrowSwitch = false,
     shareAndRelay = false,

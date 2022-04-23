@@ -4,23 +4,38 @@ val MYINFO = ClientInfo()
 
 class ClientInfo{
 
-
-    val delim = "***"
+    val delim = "*****"
     var deviceName : String
     var tableNumber : Int
     var north:Player
     var east:Player
     var south:Player
     var west:Player
+    var myNumber : Int
+    var starredBoards = ArrayList<Board>()
     lateinit var client : Client
 
-    constructor(clientName : String, tableNumber : Int, north:Player, east:Player, south:Player, west:Player){
+
+    fun addStarredBoard(board : Board){
+        if(!starredBoards.contains(board)){
+            starredBoards.add(board)
+        }
+    }
+    fun removeStarredBoard(board : Board){
+        starredBoards.remove(board)
+    }
+    fun isStarred(board : Board) : Boolean{
+        return starredBoards.contains(board)
+    }
+
+    constructor(clientName : String, tableNumber : Int, north:Player, east:Player, south:Player, west:Player, myNumber : Int){
         this.deviceName = clientName
         this.tableNumber = tableNumber
         this.north = north
         this.east = east
         this.south = south
         this.west = west
+        this.myNumber = myNumber
     }
 
     constructor(){
@@ -30,6 +45,7 @@ class ClientInfo{
         east = Player()
         south = Player()
         west = Player()
+        myNumber = 0
     }
 
     constructor(string: String){
@@ -40,10 +56,11 @@ class ClientInfo{
         this.east = Player(params[3])
         this.south = Player(params[4])
         this.west = Player(params[5])
+        this.myNumber = params[6].toInt()
     }
 
     override fun toString(): String {
-        return deviceName + delim + tableNumber + delim + north.toString() + delim + east.toString() + delim + south.toString() + delim + west.toString() + delim
+        return deviceName + delim + tableNumber + delim + north.toString() + delim + east.toString() + delim + south.toString() + delim + west.toString() + delim + myNumber.toString()
     }
 
 

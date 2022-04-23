@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputLayout
 fun encodeID(ID : String) : String{
     var out = ""
     for(char in ID){
-        out += char.toInt().toString()
+        out += char.code.toString()
     }
     return if(out.length > 7){
         out.substring(out.length - 7, out.length)
@@ -109,7 +109,7 @@ class StartGameScreen : Fragment() {
     }
 
     fun updateClientTable(view : View){
-        var table = view!!.findViewById<TableLayout>(R.id.playersTable)
+        var table = view.findViewById<TableLayout>(R.id.playersTable)
         playerTableRows.forEach {
             table.removeView(it)
         }
@@ -161,7 +161,9 @@ class StartGameScreen : Fragment() {
 
                         if(!start) {
                             start = true
-                            findNavController().navigate(R.id.startGameToScore)
+                            var nextPositions = gameInfo.setupTable(MYINFO.tableNumber)
+                            var action = StartGameScreenDirections.startGameToScore(nextPositions.pairNS, nextPositions.pairEW, nextPositions.boards[0])
+                            findNavController().navigate(action)
                         }
 
                     }
@@ -214,9 +216,7 @@ class StartGameScreen : Fragment() {
                             "Too few people in game (${wifiHost.clients.size + 1})"
                     }
                     else -> {
-                        val movementTypeSelection =
-                            view.findViewById<RadioGroup>(R.id.movementGroup).checkedRadioButtonId
-                        val movementType = when (movementTypeSelection) {
+                        val movementType = when (view.findViewById<RadioGroup>(R.id.movementGroup).checkedRadioButtonId) {
                             R.id.movementMitchell -> MOVEMENT_MITCHELL
                             R.id.movementHowell -> MOVEMENT_HOWELL
                             R.id.movementNone -> MOVEMENT_NONE

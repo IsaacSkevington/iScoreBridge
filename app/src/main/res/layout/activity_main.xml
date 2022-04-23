@@ -50,72 +50,31 @@
                 app:backgroundTint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_settings" />
+                app:srcCompat="@drawable/ic_settings"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <include
-        android:id="@+id/westView"
+        android:id="@+id/mainContent"
         layout="@layout/content_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <LinearLayout
-        android:id="@+id/menuLayout"
+    <include
+        layout="@layout/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <Button
-            android:id="@+id/addPlayer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20sp"
-            android:text="Add Player" />
-
-        <Button
-            android:id="@+id/findPlayer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20sp"
-            android:text="Find Player" />
-
-        <Button
-            android:id="@+id/importPlayers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20sp"
-            android:text="Import Players" />
-
-        <Button
-            android:id="@+id/exportPlayers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20sp"
-            android:text="Export Players" />
-
-        <Button
-            android:id="@+id/settingsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20sp"
-            android:text="Settings" />
-
-        <Button
-            android:id="@+id/aboutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20sp"
-            android:text="About" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

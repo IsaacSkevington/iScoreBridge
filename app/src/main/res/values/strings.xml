@@ -2,15 +2,7 @@
     <string name="app_name">iScoreBridge</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enterDetailsPrompt">Please enter your table\'s details before the game starts</string>
     <string name="joinPrompt">Please enter the game ID to join</string>
     <string name="dotted_line">----------------------------------------------</string>
@@ -18,4 +10,45 @@
     <string name="heart">♥</string>
     <string name="diamond">♦</string>
     <string name="club">♣</string>
+
+    <string name="club1">1♣</string>
+    <string name="club2">2♣</string>
+    <string name="club3">3♣</string>
+    <string name="club4">4♣</string>
+    <string name="club5">5♣</string>
+    <string name="club6">6♣</string>
+    <string name="club7">7♣</string>
+
+    <string name="diamond1">1♦</string>
+    <string name="diamond2">2♦</string>
+    <string name="diamond3">3♦</string>
+    <string name="diamond4">4♦</string>
+    <string name="diamond5">5♦</string>
+    <string name="diamond6">6♦</string>
+    <string name="diamond7">7♦</string>
+
+    <string name="heart1">1♥</string>
+    <string name="heart2">2♥</string>
+    <string name="heart3">3♥</string>
+    <string name="heart4">4♥</string>
+    <string name="heart5">5♥</string>
+    <string name="heart6">6♥</string>
+    <string name="heart7">7♥</string>
+
+    <string name="spade1">1♠</string>
+    <string name="spade2">2♠</string>
+    <string name="spade3">3♠</string>
+    <string name="spade4">4♠</string>
+    <string name="spade5">5♠</string>
+    <string name="spade6">6♠</string>
+    <string name="spade7">7♠</string>
+
+    <string name="pass">Pass</string>
+    <string name="dble">X</string>
+    <string name="redble">XX</string>
+    <string name="title_activity_spectator_view">SpectatorViewActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+
+
 </resources>

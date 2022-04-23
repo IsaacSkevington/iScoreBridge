@@ -16,38 +16,38 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
-var boardNumber = 0
-var pairNS = 0
-var pairEW = 0
+
 var teams : Boolean = true
 var round = 0
 
 
 
-class ScoreEntryFragment() : Fragment(){
+class ScoreEntryFragment : Fragment(){
 
     lateinit var game : Game
 
     private var contractNumber: Int = 0
-    private var contractSuit: Char = ' '
+    private var contractSuit: Suit? = null
     private var doubled: Boolean = false
     private var redoubled: Boolean = false
     private lateinit var background : Drawable
+    var boardNumber = 0
+    var pairNS = 0
+    var pairEW = 0
 
 
-    private fun displayContract(){
+    private fun displayContract(view : View){
         var text: String
-        if(contractSuit == ' ' || contractNumber == 0){
+        if(contractSuit == null || contractNumber == 0){
             text = "No contract selected"
         }
         else{
-            val suit = if(contractSuit == 'N') "NT"
-            else contractSuit.toString()
-            text = contractNumber.toString() + suit
+            text = contractNumber.toString() + contractSuit.toString()
             if(doubled){
                 text+= 'X'
             }
@@ -55,20 +55,20 @@ class ScoreEntryFragment() : Fragment(){
                 text+="XX"
             }
         }
-        val contractView: TextView = view!!.findViewById(R.id.contractView)
+        val contractView: TextView = view.findViewById(R.id.contractView)
         contractView.text = text
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private fun setSuit(suit: Char, button: View, view: View){
+    private fun setSuit(suit: Suit, button: View, view: View){
         view.findViewById<ImageButton>(R.id.clubButton).background = background
         view.findViewById<ImageButton>(R.id.diamondButton).background = background
         view.findViewById<ImageButton>(R.id.heartButton).background = background
         view.findViewById<ImageButton>(R.id.spadeButton).background = background
         view.findViewById<Button>(R.id.noTrumpButton).background = background
         button.background = ColorDrawable(Color.CYAN)
-        contractSuit = suit
-        displayContract()
+        contractSuit = Suit(suit)
+        displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -82,7 +82,7 @@ class ScoreEntryFragment() : Fragment(){
         view.findViewById<Button>(R.id.button7).background = background
         button.background = ColorDrawable(Color.CYAN)
         contractNumber = number
-        displayContract()
+        displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -92,7 +92,7 @@ class ScoreEntryFragment() : Fragment(){
         button.background = ColorDrawable(Color.CYAN)
         redoubled = false
         doubled = true
-        displayContract()
+        displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -102,7 +102,7 @@ class ScoreEntryFragment() : Fragment(){
         button.background = ColorDrawable(Color.CYAN)
         redoubled = true
         doubled = false
-        displayContract()
+        displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -112,7 +112,7 @@ class ScoreEntryFragment() : Fragment(){
         button.background = ColorDrawable(Color.CYAN)
         redoubled = false
         doubled = false
-        displayContract()
+        displayContract(view)
     }
 
     private fun isInt(text : String) : Boolean{
@@ -166,7 +166,7 @@ class ScoreEntryFragment() : Fragment(){
     }
 
     private fun contractCheck(view: View) : Boolean{
-        if(contractSuit == ' ' || contractNumber == 0){
+        if(contractSuit == null || contractNumber == 0){
             view.findViewById<TextView>(R.id.contractView).setTextColor(Color.parseColor("#DD2C00"))
             return false
         }
@@ -264,11 +264,11 @@ class ScoreEntryFragment() : Fragment(){
         return match.getGame(  boardNumber,
             pairNS,
             pairEW,
-            contractSuit,
+            contractSuit!!,
             contractNumber,
             view.findViewById<TextView>(R.id.TricksEntry).text.toString().toInt(),
             view.findViewById<TextView>(R.id.LeadEntry).text.toString(),
-            view.findViewById<TextView>(R.id.DeclarerEntry).text[0],
+            Cardinality(view.findViewById<TextView>(R.id.DeclarerEntry).text.toString()[0]),
             doubled,
             redoubled
         )
@@ -278,7 +278,8 @@ class ScoreEntryFragment() : Fragment(){
 
         match.addGame(game)
         wifiService.send(SENDGAME, game.toString())
-        findNavController().navigate(R.id.scoreEntryToScoreView)
+        var action = ScoreEntryFragmentDirections.scoreEntryToScoreView(boardNumber, pairNS, pairEW)
+        findNavController().navigate(action)
 
     }
 
@@ -288,11 +289,18 @@ class ScoreEntryFragment() : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val args : ScoreEntryFragmentArgs by navArgs()
+        this.boardNumber = args.boardNumber
+        this.pairNS = args.pairNS
+        this.pairEW = args.pairEW
+
         return inflater.inflate(R.layout.fragment_score_entry, container, false)
     }
 
     fun nextRound(){
-        findNavController().navigate(R.id.scoreEntryToMovementDisplay)
+        var action = ScoreEntryFragmentDirections.scoreEntryToMovementDisplay(boardNumber, pairNS, pairEW)
+        findNavController().navigate(action)
     }
 
 
@@ -307,14 +315,15 @@ class ScoreEntryFragment() : Fragment(){
 
         if(gameInfo.movementType == MOVEMENT_NONE){
             if(pairNS != 0 && pairEW != 0 && boardNumber != 0){
+                boardNumber+= 1
                 view.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
                 view.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
-                view.findViewById<TextView>(R.id.BoardNum).text = (boardNumber + 1).toString()
+                view.findViewById<TextView>(R.id.BoardNum).text = boardNumber.toString()
             }
         }
 
         else{
-            boardNumber = gameInfo.getNextBoard(round, MYINFO.tableNumber)
+            boardNumber = match.getNextUnplayedBoard(round, pairNS, pairEW)
             if(boardNumber == 0){
                 nextRound()
                 return
@@ -329,19 +338,19 @@ class ScoreEntryFragment() : Fragment(){
         background = view.findViewById<ImageButton>(R.id.clubButton).background
 
         view.findViewById<ImageButton>(R.id.clubButton).setOnClickListener{
-            setSuit('C', it, view)
+            setSuit(CLUBS, it, view)
         }
         view.findViewById<ImageButton>(R.id.diamondButton).setOnClickListener{
-            setSuit('D', it, view)
+            setSuit(DIAMONDS, it, view)
         }
         view.findViewById<ImageButton>(R.id.heartButton).setOnClickListener{
-            setSuit('H', it, view)
+            setSuit(HEARTS, it, view)
         }
         view.findViewById<ImageButton>(R.id.spadeButton).setOnClickListener{
-            setSuit('S', it, view)
+            setSuit(SPADES, it, view)
         }
         view.findViewById<Button>(R.id.noTrumpButton).setOnClickListener{
-            setSuit('N', it, view)
+            setSuit(NOTRUMPS, it, view)
         }
         view.findViewById<Button>(R.id.button1).setOnClickListener{
             setNumber(1, it, view)

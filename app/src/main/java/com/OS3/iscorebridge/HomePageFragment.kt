@@ -1,9 +1,7 @@
 package com.OS3.iscorebridge
 
 import android.Manifest
-import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.wifi.p2p.WifiP2pManager
@@ -13,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 private const val START = "START"
 private const val JOIN = "JOIN"
 
@@ -24,7 +24,7 @@ class HomePage : Fragment() {
     var idSet = false
     var buttonPress : String = ""
     val manager: WifiP2pManager? by lazy(LazyThreadSafetyMode.NONE) {
-        activity!!.getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
+        requireActivity().getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
     }
 
 
@@ -37,46 +37,16 @@ class HomePage : Fragment() {
 
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == REQUEST_ENABLE_BT){
-            if(resultCode == RESULT_OK){
-                if(buttonPress == START){
-                    findNavController().navigate(R.id.homeToStart)
-                }
-                else{
-                    Toast.makeText(context, "Bluetooth permissions incorrect", Toast.LENGTH_LONG).show()
-                }
-
-            }
-            else{
-                Toast.makeText(context, "Bluetooth permissions incorrect", Toast.LENGTH_LONG).show()
-            }
-        }
-
-
-    }
-
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if(requestCode == WIFI_PERMISSIONS_GRANTED){
-            setupWifi()
-        }
-        else{
-            Toast.makeText(context, "Permissions Denied, please try again", Toast.LENGTH_LONG).show()
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.M)
     fun setupPermissions(){
-        if(activity!!.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED){
+        if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED){
             setupWifi()
         }
         else{
-            this.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), WIFI_PERMISSIONS_GRANTED)
+            this.registerForActivityResult(ActivityResultContracts.RequestPermission()){
+                if(it) setupWifi()
+                else Toast.makeText(requireContext(), "Permissions Denied", Toast.LENGTH_LONG).show()
+            }.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
 
@@ -96,9 +66,10 @@ class HomePage : Fragment() {
                 }
             }
         }
-        val channel = manager!!.initialize(context, activity!!.mainLooper, null)
+        val channel = manager!!.initialize(context, requireActivity().mainLooper, null)
+        manager!!.removeGroup(channel, null)
         wifiService = WifiService(handler)
-        activity!!.registerReceiver(wifiService, intentFilter)
+        requireActivity().registerReceiver(wifiService, intentFilter)
         wifiService.setup(manager!!, channel)
         wifiService.disconnect()
         wifiService.WifiDirectScanner().start()
@@ -119,12 +90,12 @@ class HomePage : Fragment() {
         if (buttonPress == JOIN) {
             findNavController().navigate(R.id.homeToJoin)
         } else {
-            if(playerList.load(PLAYERLISTFILE, context!!)){
-                Toast.makeText(context!!, "Player list loaded", Toast.LENGTH_LONG)
+            if(playerList.load(PLAYERLISTFILE, requireContext())){
+                Toast.makeText(requireContext(), "Player list loaded", Toast.LENGTH_LONG).show()
                 findNavController().navigate(R.id.homeToStart)
             }
             else{
-                Toast.makeText(context!!, "Player list load failed", Toast.LENGTH_LONG)
+                Toast.makeText(requireContext(), "Player list load failed", Toast.LENGTH_LONG).show()
             }
 
         }
@@ -153,9 +124,6 @@ class HomePage : Fragment() {
         view.findViewById<Button>(R.id.joingamebutton).setOnClickListener {
             buttonPress = JOIN
             setupPermissions()
-        }
-        view.findViewById<Button>(R.id.makeDealButton).setOnClickListener {
-            findNavController().navigate(R.id.homeToHandConstructor)
         }
     }
 }

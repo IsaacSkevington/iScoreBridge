@@ -20,6 +20,9 @@
         <action
             android:id="@+id/homeToHandConstructor"
             app:destination="@id/HandConstructorFragment" />
+        <action
+            android:id="@+id/homeToBiddingConstructor"
+            app:destination="@id/BiddingConstructorFragment" />
     </fragment>
 
     <fragment
@@ -33,13 +36,30 @@
     </fragment>
 
     <fragment
+        android:id="@+id/BiddingConstructorFragment"
+        android:name="com.OS3.iscorebridge.BiddingConstructor"
+        android:label="Bidding Constructor"
+        tools:layout="@layout/fragment_bidding_constructor">
+    </fragment>
+
+    <fragment
         android:id="@+id/StartGameFragment"
         android:name="com.OS3.iscorebridge.StartGameScreen"
         android:label="Start Game"
         tools:layout="@layout/fragment_start_game_screen">
         <action
             android:id="@+id/startGameToScore"
-            app:destination="@id/ScoreEntryFragment" />
+            app:destination="@id/ScoreEntryFragment" >
+            <argument
+                android:name="boardNumber"
+                app:argType="integer" />
+            <argument
+                android:name="pairNS"
+                app:argType="integer" />
+            <argument
+                android:name="pairEW"
+                app:argType="integer" />
+        </action>
 
     </fragment>
     <fragment
@@ -70,7 +90,18 @@
 
         <action
             android:id="@+id/waitToStartToScoreEntry"
-            app:destination="@id/ScoreEntryFragment" />
+            app:destination="@id/ScoreEntryFragment" >
+            <argument
+                android:name="boardNumber"
+                app:argType="integer" />
+            <argument
+                android:name="pairNS"
+                app:argType="integer" />
+            <argument
+                android:name="pairEW"
+                app:argType="integer" />
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/ScoreEntryFragment"
@@ -78,9 +109,32 @@
         android:label="Score Entry"
         tools:layout="@layout/fragment_score_entry">
 
+        <argument
+            android:name="boardNumber"
+            app:argType="integer" />
+        <argument
+            android:name="pairNS"
+            app:argType="integer" />
+        <argument
+            android:name="pairEW"
+            app:argType="integer" />
         <action
             android:id="@+id/scoreEntryToScoreView"
-            app:destination="@id/ScoreViewFragment" />
+            app:destination="@id/BoardScoreViewFragment" >
+
+            <argument
+                android:name="boardNumber"
+                app:argType="integer" />
+            <argument
+                android:name="pairNS"
+                app:argType="integer" />
+            <argument
+                android:name="pairEW"
+                app:argType="integer" />
+
+        </action>
+
+
 
         <action
             android:id="@+id/scoreEntryToMovementDisplay"
@@ -92,21 +146,66 @@
         android:label="Movement Display"
         tools:layout="@layout/fragment_movement_display">
 
+        <argument
+            android:name="boardNumber"
+            app:argType="integer" />
+        <argument
+            android:name="pairNS"
+            app:argType="integer" />
+        <argument
+            android:name="pairEW"
+            app:argType="integer" />
         <action
             android:id="@+id/movementDisplayToScoreEntry"
-            app:destination="@id/ScoreEntryFragment" />
+            app:destination="@id/ScoreEntryFragment">
+            <argument
+                android:name="boardNumber"
+                app:argType="integer" />
+            <argument
+                android:name="pairNS"
+                app:argType="integer" />
+            <argument
+                android:name="pairEW"
+                app:argType="integer"/>
+        </action>
     </fragment>
     <fragment
-        android:id="@+id/ScoreViewFragment"
-        android:name="com.OS3.iscorebridge.BoardScoreFragment"
+        android:id="@+id/BoardScoreViewFragment"
+        android:name="com.OS3.iscorebridge.BoardScoreViewFragment"
         android:label="Board Score View"
         tools:layout="@layout/fragment_board_score_view">
+
+        <argument
+            android:name="boardNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="pairNS"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="pairEW"
+            app:argType="integer"
+            android:defaultValue="0" />
+
         <action
             android:id="@+id/scoreViewToScoreEntry"
-            app:destination="@id/ScoreEntryFragment" />
+            app:destination="@id/ScoreEntryFragment"
+            >
+            <argument
+                android:name="boardNumber"
+                app:argType="integer" />
+            <argument
+                android:name="pairNS"
+                app:argType="integer" />
+            <argument
+                android:name="pairEW"
+                app:argType="integer" />
+        </action>
         <action
             android:id="@+id/scoreViewToFinalScore"
             app:destination="@id/FinalScoreFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/FinalScoreFragment"

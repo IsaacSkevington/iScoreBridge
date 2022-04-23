@@ -8,6 +8,44 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="BiddingConstructorFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-562" />
+                            <option name="y" value="24" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="BoardScoreViewFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="scoreViewToFinalScore">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="scoreViewToScoreEntry">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="EnterTableDetails">
                     <value>
                       <LayoutPositions>
@@ -46,9 +84,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
+                            <option name="x" value="-948" />
                             <option name="y" value="12" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="handConstructorToHome">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -64,6 +111,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="homeToBiddingConstructor">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="homeToHandConstructor">
                               <value>
                                 <LayoutPositions />
@@ -110,7 +162,7 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="642" />
+                            <option name="x" value="674" />
                             <option name="y" value="-112" />
                           </Point>
                         </option>
@@ -143,32 +195,6 @@
                               </value>
                             </entry>
                             <entry key="scoreEntryToScoreView">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="ScoreViewFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="1032" />
-                            <option name="y" value="-504" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="scoreViewToFinalScore">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="scoreViewToScoreEntry">
                               <value>
                                 <LayoutPositions />
                               </value>

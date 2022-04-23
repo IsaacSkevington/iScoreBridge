@@ -1,9 +1,21 @@
 package com.OS3.iscorebridge
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Build
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.math.abs
 
 fun scoringModeToString(scoringMode: Int) : String{
@@ -14,16 +26,23 @@ fun scoringModeToString(scoringMode: Int) : String{
     }
 }
 
+fun getDealer(boardNumber: Int) : Cardinality{
+    val index = boardNumber % 4
+    return CARDINALITIES[index]
+}
+
 const val TEAMS : Int = 0
 const val PAIRS : Int = 1
 val IMPCONVERSION : Array<Int> = arrayOf(0, 20, 50, 90, 130, 170, 220, 270, 320, 370, 430, 500,
     600, 750, 900, 1100, 1300, 1500, 1750, 2000, 2250, 2500, 3000, 3500, 4000)
+
 
 class Board {
     var boardNumber: Int
     var games: ArrayList<Game> = ArrayList()
     private var vulnerability: Vulnerability
     var dlm = "|||"
+    var deal : Deal? = null
 
     constructor(boardNumber: Int){
         this.boardNumber = boardNumber
@@ -73,14 +92,24 @@ class Board {
 
     }
 
-    fun hasGame(pairNS : Int, pairEW: Int) : Boolean{
+
+
+    fun getGame(pairNS: Int, pairEW: Int) : Game?{
         for(game in games){
             if(game.pairNS == pairNS && game.pairEW == pairEW){
-                return true
+                return game
             }
         }
-        return false
+        return null
+    }
 
+    fun getGame(game : Game) : Game?{
+        return getGame(game.pairNS, game.pairEW)
+    }
+
+    fun hasGame(pairNS : Int, pairEW: Int) : Boolean{
+        getGame(pairNS, pairEW) ?: return false
+        return true
     }
 
     fun hasGame(compareGame : Game) : Boolean{
@@ -88,18 +117,20 @@ class Board {
     }
 
     fun addGame(game: Game) : Game{
-        this.games.add(game)
+        if(!hasGame(game)) {
+            this.games.add(game)
+        }
         return game
     }
 
     fun getGame(
         pairNS: Int,
         pairEW: Int,
-        suit: Char,
+        suit: Suit,
         trickNumbers: Int,
         tricksMade: Int,
         lead: String,
-        declarer: Char,
+        declarer: Cardinality,
         doubled: Boolean,
         redoubled: Boolean
     ): Game {
@@ -182,11 +213,227 @@ class Board {
 
     private fun calculateVulnerability(boardNumber: Int) : Vulnerability{
         return when(boardNumber % 4){
-            0->Vulnerability(arrayOf('N', 'E', 'S', 'W'))
+            0->Vulnerability(CARDINALITIES)
             1-> Vulnerability(arrayOf())
-            2-> Vulnerability(arrayOf('N', 'S'))
-            3-> Vulnerability(arrayOf('E', 'W'))
+            2-> Vulnerability(arrayOf(NORTH, SOUTH))
+            3-> Vulnerability(arrayOf(EAST, WEST))
             else -> Vulnerability(arrayOf())
+        }
+    }
+
+
+    private fun display(view : View){
+
+    }
+
+
+    private fun makeText(text : String, view : View) : TextView{
+        val textView = TextView(view.context)
+        textView.text = text
+        textView.setPadding(10,10,10,10)
+        return textView
+
+    }
+
+
+
+
+    fun getDisplayScore(myPair : Int) : String{
+        var postfix : String
+        val currentScores : MutableMap<Int,Int?> = if(gameInfo.gameMode == GAMEMODE_TEAMS){
+
+            postfix = "IMPs"
+            teamsScore()
+        }
+        else{
+            postfix = "MPs"
+            pairScore()
+        }
+        for(game in games) {
+            if (game.pairNS == myPair || game.pairEW == myPair) {
+                return "${currentScores[myPair]!!} $postfix"
+            }
+        }
+        return "0 $postfix"
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n")
+
+    fun viewHand(view : View, boardNumber : Int, layoutInflater : LayoutInflater){
+        var builder = AlertDialog.Builder(view.context)
+        var boardView = layoutInflater.inflate(R.layout.deal_view, null)
+        var deal = match.boards[boardNumber]!!.deal
+        builder.setMessage("Board $boardNumber")
+            .setPositiveButton("Ok"){_, _ ->
+
+            }
+            .setView(boardView)
+        deal!!.display(boardView)
+        var dialog = builder.create()
+        dialog.show()
+    }
+
+    fun viewBidding(view : View, pairNS : Int, pairEW: Int, boardNumber : Int, layoutInflater : LayoutInflater){
+        var builder = AlertDialog.Builder(view.context)
+        var biddingView = layoutInflater.inflate(R.layout.bidding_view, null)
+        biddingView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200)
+        match.boards[boardNumber]!!.getGame(pairNS, pairEW)!!.bidding.updateBiddingTable(biddingView)
+        builder.setMessage("Bidding for board $boardNumber")
+            .setPositiveButton("Ok"){_, _ ->
+
+            }
+            .setView(biddingView)
+        var dialog = builder.create()
+        dialog.setView(biddingView)
+        dialog.show()
+    }
+
+    fun handBuilder(fragMan: FragmentManager, view : View, boardNumber: Int){
+        showHandConstructorDiag(fragMan){
+            if(it.validate()){
+                it.number = boardNumber
+                match.boards[boardNumber]!!.deal = it
+                wifiService.send(SENDNEWDEAL, it.toString())
+                Toast.makeText(view.context, "Board created successfully", Toast.LENGTH_LONG).show()
+                true
+            }
+            else{
+                Toast.makeText(view.context, "Deal is not complete", Toast.LENGTH_LONG).show()
+                false
+            }
+        }
+    }
+
+    fun biddingBuilder(fragMan : FragmentManager, view : View, pairNS: Int, pairEW : Int, boardNumber: Int){
+        showBiddingConstructorDiag(fragMan, boardNumber){bidding ->
+            this.getGame(pairNS, pairEW)?.also {game ->
+                game.bidding = bidding
+                wifiService.send(SENDEDITGAME, game.toString())
+            }
+        }
+
+    }
+
+
+    fun createHand(fragMan: FragmentManager, view : View, boardNumber: Int){
+
+        var builder = AlertDialog.Builder(view.context)
+        builder.setMessage("Board $boardNumber hasn't be created yet. Would you like to input the cards now?")
+            .setPositiveButton("Yes"){_, _ ->
+                handBuilder(fragMan, view, boardNumber)
+            }
+            .setNegativeButton("No"){_, _ ->
+
+            }
+        var dialog = builder.create()
+        dialog.show()
+    }
+
+    fun createBidding(fragMan: FragmentManager, view : View, pairNS : Int, pairEW : Int,  boardNumber: Int){
+
+        var builder = AlertDialog.Builder(view.context)
+        builder.setMessage("Board $boardNumber doesn't have bidding yet. Would you like to input the bids now?")
+            .setPositiveButton("Yes"){_, _ ->
+                biddingBuilder(fragMan, view, pairNS, pairEW, boardNumber)
+            }
+            .setNegativeButton("No"){_, _ ->
+
+            }
+        var dialog = builder.create()
+        dialog.show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun displayScore(fragMan: FragmentManager, myPair: Int, view: View, layoutInflater: LayoutInflater){
+        games.forEach {
+            if(it.pairNS == myPair){
+                return displayScore(fragMan, myPair, it.pairEW, view, layoutInflater)
+            }
+            if(it.pairEW == myPair){
+                return displayScore(fragMan, it.pairNS, myPair, view, layoutInflater)
+            }
+        }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun displayScore(fragMan: FragmentManager, pairNS : Int, pairEW : Int, view : View, layoutInflater: LayoutInflater){
+        var tableLayout = view.findViewById<TableLayout>(R.id.ScoreViewTable)
+        val currentScores : MutableMap<Int,Int?> = if(gameInfo.gameMode == GAMEMODE_TEAMS){
+
+            tableLayout.findViewById<TextView>(R.id.ScoreTitle).text = "IMPs (NS)"
+            teamsScore()
+        }
+        else{
+            tableLayout.findViewById<TextView>(R.id.ScoreTitle).text = "MPs (NS)"
+            pairScore()
+        }
+
+        val gamesSorted = sortGamesByScore()
+
+        for(game in gamesSorted){
+            val tableRow = TableRow(tableLayout.context)
+            if(game.pairNS == pairNS && game.pairEW == pairEW){
+                tableRow.setBackgroundColor(Color.parseColor("#A6DAF2"))
+            }
+            tableRow.addView(makeText(game.contract.toDisplayString(), tableLayout))
+            tableRow.addView(makeText(game.lead.toString(), tableLayout))
+            tableRow.addView(makeText(game.tricks.toString(), tableLayout))
+            tableRow.addView(makeText(game.score.toString(), tableLayout))
+
+            if(currentScores.containsKey(game.pairNS)){
+                tableRow.addView(makeText(currentScores[game.pairNS].toString(), tableLayout))
+            }
+            else{
+                tableRow.addView(makeText("?", tableLayout))
+            }
+            tableLayout.addView(tableRow)
+        }
+        view.findViewById<FloatingActionButton>(R.id.viewBoardButton).setOnClickListener {
+            if(deal == null){
+                createHand(fragMan, view, boardNumber)
+            }
+            else {
+                viewHand(view, boardNumber, layoutInflater)
+            }
+        }
+        view.findViewById<FloatingActionButton>(R.id.viewBiddingButton).setOnClickListener {
+            if(getGame(pairNS, pairEW) != null && !getGame(pairNS, pairEW)!!.bidding.canBid()){
+                viewBidding(view, pairNS, pairEW, boardNumber, layoutInflater)
+            }
+            else {
+                createBidding(fragMan, view, pairNS, pairEW, boardNumber)
+            }
+        }
+
+
+        setStarListener(view.findViewById(R.id.boardViewStarButton))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setStarListener(s : StarButton){
+        s.also {
+            it.checked = MYINFO.isStarred(this)
+            it.update()
+
+            it.setOnTurnOn {
+                MYINFO.addStarredBoard(this)
+            }
+            it.setOnTurnOff {
+                MYINFO.removeStarredBoard(this)
+            }
+
+        }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return try{
+            var otherBoard = other as Board
+            otherBoard.boardNumber == this.boardNumber
+        } catch(e : ClassCastException){
+            false
         }
     }
 
@@ -209,7 +456,14 @@ class Board {
         titleText.isUnderlineText = true
         titleText.textSize = 30F
         page.canvas.drawText("Board $boardNumber", (page.canvas.width/2).toFloat(), 70f, titleText)
-        table.draw(page, 20f, 200f, false)
+        if(deal == null){
+            table.draw(page, 20f, 200f, false)
+        }
+        else{
+            deal!!.toPDF(page, (page.canvas.width/2).toFloat(), 200f)
+            table.draw(page, 20f, 200f, false)
+        }
+
 
     }
 }

@@ -20,6 +20,22 @@
             android:layout_height="match_parent"
             android:padding="10sp">
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/saveDealButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:tint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/southView"
+                app:maxImageSize="32dp"
+                app:srcCompat="@drawable/save_48px" />
+
             <include
                 android:id="@+id/northView"
                 layout="@layout/hand_view"

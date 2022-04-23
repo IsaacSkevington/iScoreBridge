@@ -5,11 +5,12 @@ import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfDocument.PageInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.io.FileInputStream
 import java.io.FileOutputStream
 
 @Volatile var match : Match = Match()
 
-class Match {
+class Match() : Exportable("scores", ".pdf"){
 
     private val pageWidth = 792
     private val pageHeight = 1120
@@ -17,12 +18,12 @@ class Match {
     var boards : MutableMap<Int, Board?>
     var dlm = "||||"
 
-    constructor(){
+    init{
         boards = HashMap()
     }
 
 
-    constructor(matchString: String){
+    constructor(matchString: String) : this() {
 
         boards = HashMap()
         val boardsAsString = matchString.split(dlm)
@@ -52,7 +53,7 @@ class Match {
     }
 
     fun getScores(matchMode : Int) : MutableMap<Int, Int?>{
-        val scores = HashMap<Int, Int>() as MutableMap<Int, Int?>
+        val scores : MutableMap<Int, Int?> = HashMap()
         for(board in boards.values){
             val boardScores = board!!.calculateScores(matchMode)
             for(pair in boardScores.keys){
@@ -71,9 +72,22 @@ class Match {
 
 
 
-    fun getGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Char, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Char, doubled: Boolean, redoubled: Boolean) : Game{
+    fun getGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Suit, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Cardinality, doubled: Boolean, redoubled: Boolean) : Game{
         val b = Board(boardNumber)
         return b.getGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
+    }
+
+    fun getGames(myNumber : Int) : ArrayList<Game>{
+
+        var games = ArrayList<Game>()
+        this.boards.forEach {
+            it.value!!.games.forEach { game ->
+                if(game.pairNS == myNumber || game.pairEW == myNumber){
+                    games.add(game)
+                }
+            }
+        }
+        return games
     }
 
     fun merge(other : Match){
@@ -101,6 +115,22 @@ class Match {
         return boardsPlayed
     }
 
+    fun getNextUnplayedBoard(round : Int, pairNS: Int, pairEW: Int) : Int{
+        var played = getBoards(pairNS, pairEW)
+        gameInfo.movement.rounds[round]!!.tables.forEach {
+            if(it.value.pairNS == pairNS && it.value.pairEW == pairEW){
+                it.value.boards.forEach { board ->
+                    if(!played.contains(board)){
+                        return board
+                    }
+                }
+                return 0
+            }
+        }
+        return 0
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun drawScores(page : PdfDocument.Page, scoringMode: Int){
         val title = Paint()
@@ -116,7 +146,7 @@ class Match {
         } else{
             TablePage(arrayOf("Position", "Team", "Final Score (IMPs)"))
         }
-        val scoresImmut = scores as Map<Int, Int>
+        val scoresImmut : MutableMap<Int, Int?> = scores
         val sortedScores = scoresImmut.toSortedMap()
         var i = 0
         for(pair in sortedScores.keys.reversed()){
@@ -126,17 +156,25 @@ class Match {
         table.draw(page, 20f, 200f, false)
     }
 
+    override fun read(fileInputStream: FileInputStream) : Boolean{
+        return false
+    }
+
+    override fun write(fileOutputStream: FileOutputStream){
+        return toPDF(gameInfo.gameMode, fileOutputStream)
+    }
+
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun toPDF(scoringMode : Int, output : FileOutputStream){
         val document = PdfDocument()
-        val pageInfo = PageInfo.Builder(pageWidth, pageHeight, 1).create()
+        var pageInfo = PageInfo.Builder(pageWidth, pageHeight, 1).create()
 
         val pageScores: PdfDocument.Page = document.startPage(pageInfo)
         drawScores(pageScores, scoringMode)
         document.finishPage(pageScores)
 
         for(i in 1..boards.size){
-            val pageInfo = PageInfo.Builder(pageWidth, pageHeight, pageInfo.pageNumber + 1).create()
+            pageInfo = PageInfo.Builder(pageWidth, pageHeight, pageInfo.pageNumber + 1).create()
             val boardPage = document.startPage(pageInfo)
             boards[i]!!.toPDF(boardPage, scoringMode)
             document.finishPage(boardPage)

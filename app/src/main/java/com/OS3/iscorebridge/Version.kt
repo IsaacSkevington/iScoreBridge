@@ -20,24 +20,16 @@ val VERSIONS = arrayOf(
     )
 )
 
-
-class Feature(val title : String, val contents : String){
-
+open class Addition(val title : String, val contents: String){
     fun display(context: Context) : View{
         var text = TextView(context)
         text.text = "$title:\n$contents\n\n"
         return text
     }
-
 }
 
-class Bug(val title : String, val contents : String){
-    fun display(context : Context) : View{
-        var text = TextView(context)
-        text.text = "$title:\n$contents\n\n"
-        return text
-    }
-}
+class Feature(title : String, contents: String) : Addition(title, contents)
+class Bug(title : String, contents: String) : Addition(title, contents)
 
 class Version(val number: String, val features: Array<Feature>, val bugs: Array<Bug>) {
 

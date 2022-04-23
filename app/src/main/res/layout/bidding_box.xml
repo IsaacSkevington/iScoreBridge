@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/biddingBoxScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--android:orientation="vertical">-->
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/bidding_1_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_club_button"
+                    android:text="@string/club1" />
+
+                <Button
+                    android:id="@+id/bidding_1_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_diamond_button"
+                    android:text="@string/diamond1" />
+
+                <Button
+                    android:id="@+id/bidding_1_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_heart_button"
+                    android:text="@string/heart1" />
+
+                <Button
+                    android:id="@+id/bidding_1_spade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_spade_button"
+                    android:text="@string/spade1" />
+
+                <Button
+                    android:id="@+id/bidding_1_NT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_nt_button"
+                    android:text="1NT" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout1">
+
+                <Button
+                    android:id="@+id/bidding_2_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_club_button"
+                    android:text="@string/club2" />
+
+                <Button
+                    android:id="@+id/bidding_2_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_diamond_button"
+                    android:text="@string/diamond2" />
+
+                <Button
+                    android:id="@+id/bidding_2_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_heart_button"
+                    android:text="@string/heart2" />
+
+                <Button
+                    android:id="@+id/bidding_2_spade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_spade_button"
+                    android:text="@string/spade2" />
+
+                <Button
+                    android:id="@+id/bidding_2_NT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_nt_button"
+                    android:text="2NT" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                <Button
+                    android:id="@+id/bidding_3_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_club_button"
+                    android:text="@string/club3" />
+
+                <Button
+                    android:id="@+id/bidding_3_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_diamond_button"
+                    android:text="@string/diamond3" />
+
+                <Button
+                    android:id="@+id/bidding_3_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_heart_button"
+                    android:text="@string/heart3" />
+
+                <Button
+                    android:id="@+id/bidding_3_spade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_spade_button"
+                    android:text="@string/spade3" />
+
+                <Button
+                    android:id="@+id/bidding_3_NT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_nt_button"
+                    android:text="3NT" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                <Button
+                    android:id="@+id/bidding_4_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_club_button"
+                    android:text="@string/club4" />
+
+                <Button
+                    android:id="@+id/bidding_4_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_diamond_button"
+                    android:text="@string/diamond4" />
+
+                <Button
+                    android:id="@+id/bidding_4_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_heart_button"
+                    android:text="@string/heart4" />
+
+                <Button
+                    android:id="@+id/bidding_4_spade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_spade_button"
+                    android:text="@string/spade4" />
+
+                <Button
+                    android:id="@+id/bidding_4_NT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_nt_button"
+                    android:text="4NT" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                <Button
+                    android:id="@+id/bidding_5_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_club_button"
+                    android:text="@string/club5" />
+
+                <Button
+                    android:id="@+id/bidding_5_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_diamond_button"
+                    android:text="@string/diamond5" />
+
+                <Button
+                    android:id="@+id/bidding_5_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_heart_button"
+                    android:text="@string/heart5" />
+
+                <Button
+                    android:id="@+id/bidding_5_spade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_spade_button"
+                    android:text="@string/spade5" />
+
+                <Button
+                    android:id="@+id/bidding_5_NT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_nt_button"
+                    android:text="5NT" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@id/linearLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout5">
+
+                <Button
+                    android:id="@+id/bidding_6_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_club_button"
+                    android:text="@string/club6" />
+
+                <Button
+                    android:id="@+id/bidding_6_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_diamond_button"
+                    android:text="@string/diamond6" />
+
+                <Button
+                    android:id="@+id/bidding_6_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_heart_button"
+                    android:text="@string/heart6" />
+
+                <Button
+                    android:id="@+id/bidding_6_spade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_spade_button"
+                    android:text="@string/spade6" />
+
+                <Button
+                    android:id="@+id/bidding_6_NT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_nt_button"
+                    android:text="6NT" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+                <Button
+                    android:id="@+id/bidding_7_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_club_button"
+                    android:text="@string/club7" />
+
+                <Button
+                    android:id="@+id/bidding_7_diamond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_diamond_button"
+                    android:text="@string/diamond7" />
+
+                <Button
+                    android:id="@+id/bidding_7_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_heart_button"
+                    android:text="@string/heart7" />
+
+                <Button
+                    android:id="@+id/bidding_7_spade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_spade_button"
+                    android:text="@string/spade7" />
+
+                <Button
+                    android:id="@+id/bidding_7_NT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_nt_button"
+                    android:text="7NT" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout8"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="-10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+
+                <Button
+                    android:id="@+id/bidding_double"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/bidding_box_dble_button"
+                    android:text="@string/dble"
+                    android:textSize="40sp" />
+
+                <Button
+                    android:id="@+id/bidding_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bidding_box_pass_button"
+                    android:text="@string/pass"
+                    android:textSize="40sp" />
+
+                <Button
+                    android:id="@+id/bidding_redouble"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/bidding_box_rdble_button"
+                    android:text="@string/redble"
+                    android:textSize="40sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

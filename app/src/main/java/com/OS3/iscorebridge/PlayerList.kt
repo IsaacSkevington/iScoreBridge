@@ -8,11 +8,10 @@ import java.io.*
 
 var playerList : PlayerList = PlayerList()
 
-class PlayerList {
+class PlayerList : Exportable("players", ".playerData"){
 
     var map : MutableMap<Int, String> = HashMap()
 
-    constructor(){ }
 
     fun load(fileName : String, context : Context) : Boolean{
         return try {
@@ -42,19 +41,24 @@ class PlayerList {
         return false
     }
 
-    fun import(fis : FileInputStream){
-        var isr = InputStreamReader(fis)
+    override fun read(fileInputStream: FileInputStream) : Boolean{
+        var isr = InputStreamReader(fileInputStream)
         map = HashMap()
-        isr.readLines().forEach(){
-            var p = Player(it)
-            map[p.id] = p.name
+        return try {
+            isr.readLines().forEach() {
+                var p = Player(it)
+                map[p.id] = p.name
+            }
+            true
+        } catch (e : Exception){
+            false
         }
     }
 
-    fun export(fos : FileOutputStream){
+    override fun write(fileOutputStream: FileOutputStream){
         map.forEach {
             var p = Player(it.value, it.key)
-            fos.write((p.toString() + "\n").toByteArray())
+            fileOutputStream.write((p.toString() + "\n").toByteArray())
         }
     }
 
@@ -171,10 +175,9 @@ class PlayerList {
     }
 
     fun save(fileName : String, context : Context){
-        if(File(context.filesDir, fileName).delete()) {
-            var file = File(context.filesDir, fileName)
-            file.writeText(toString())
-        }
+        File(context.filesDir, fileName).delete()
+        var file = File(context.filesDir, fileName)
+        file.writeText(toString())
     }
 
     fun populate(p : Player) : Boolean{

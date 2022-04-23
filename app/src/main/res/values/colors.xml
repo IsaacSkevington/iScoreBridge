@@ -3,4 +3,34 @@
     <color name="colorPrimary">#1E88E5</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="spadeColor">#A9E4FF</color>
+    <color name="heartColor">#FAA4A4</color>
+    <color name="diamondColor">#FFA07A</color>
+    <color name="clubColor">#B4FFB7</color>
+    <color name="NTColor">#8C8C8C</color>
+    <color name="passColor">#007018</color>
+    <color name="doubleColor">#FF4444</color>
+    <color name="redoubleColor">#405DFF</color>
+
+    <color name="spadeHoverColor">#CBEFFF</color>
+    <color name="heartHoverColor">#FFC8C8</color>
+    <color name="diamondHoverColor">#FFC3AB</color>
+    <color name="clubHoverColor">#DDFFDE</color>
+    <color name="NTHoverColor">#C5C5C5</color>
+    <color name="passHoverColor">#00C52A</color>
+    <color name="doubleHoverColor">#FF6E6E</color>
+    <color name="redoubleHoverColor">#627AFF</color>
+
+
+    <color name="spadeBorderColor">#606060</color>
+    <color name="heartBorderColor">#606060</color>
+    <color name="diamondBorderColor">#606060</color>
+    <color name="clubBorderColor">#606060</color>
+    <color name="NTBorderColor">#606060</color>
+    <color name="passBorderColor">#007018</color>
+    <color name="doubleBorderColor">#FF4444</color>
+    <color name="redoubleBorderColor">#405DFF</color>
+
+    <color name="starColor">#FFC51A</color>
+
 </resources>

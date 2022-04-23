@@ -33,19 +33,33 @@ class Client(private var port : Int, var number:Int, var handler : Handler){
                         MESSAGE_READ -> {
                             val c = msg.obj as Communication
 
-                            if (c.purpose == SENDGAME) {
-                                val newGame = Game(c.msg)
-                                match.addGame(newGame)
-                                handler.obtainMessage(MESSAGE_SEND_GAME, newGame.toString())
-                            } else if (c.purpose == SENDCLIENTDETAILS) {
-                                clientInfo = ClientInfo(c.msg)
-                                handler.obtainMessage(MESSAGE_UPDATE_CLIENT, clientInfo)
-                            }
-                            else if(c.purpose == CHECKCLIENTDETAILS){
-                                var clientInfo = ClientInfo(c.msg)
-                                clientInfo.tableNumber = checkTable(clientInfo.tableNumber)
-                                resolveClients(clientInfo)
-                                send(Communication(MYINFO.deviceName, CHECKCLIENTDETAILS, clientInfo.toString()))
+                            when (c.purpose) {
+                                SENDGAME -> {
+                                    val newGame = Game(c.msg)
+                                    match.addGame(newGame)
+                                    handler.obtainMessage(MESSAGE_SEND_GAME, newGame)
+                                }
+                                SENDNEWDEAL -> {
+
+                                    var deal = Deal(c.msg)
+                                    match.boards[deal.number]!!.deal = deal
+                                    handler.obtainMessage(MESSAGE_SEND_DEAL, deal)
+                                }
+                                SENDEDITGAME -> {
+                                    var game = Game(c.msg)
+                                    match.boards[game.boardNumber]!!.getGame(game)!!.copy(game)
+                                    handler.obtainMessage(MESSAGE_EDIT_GAME, game)
+                                }
+                                SENDCLIENTDETAILS -> {
+                                    clientInfo = ClientInfo(c.msg)
+                                    handler.obtainMessage(MESSAGE_UPDATE_CLIENT, clientInfo)
+                                }
+                                CHECKCLIENTDETAILS -> {
+                                    var clientInfo = ClientInfo(c.msg)
+                                    clientInfo.tableNumber = checkTable(clientInfo.tableNumber)
+                                    resolveClients(clientInfo)
+                                    send(Communication(MYINFO.deviceName, CHECKCLIENTDETAILS, clientInfo.toString()))
+                                }
                             }
                         }
                     }

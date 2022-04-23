@@ -3,12 +3,13 @@ package com.OS3.iscorebridge
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import java.io.IOException
 import java.io.OutputStream
 import java.net.Socket
 
 
-class OneTimeWifiWriter(private var socket : Socket, var handler: Handler, private var message : String){
+class OneTimeWifiWriter(socket : Socket, var handler: Handler, message : String){
     init{
         val writer = WifiWriter(socket, handler, firstMessage = message)
         do{}while(!writer.firstMessageWritten)
@@ -67,6 +68,7 @@ class WifiWriter(private var socket: Socket, private var serviceHandler : Handle
             if(firstMessage != "NONE"){
                 write(firstMessage)
                 firstMessageWritten = true
+                Log.d("Write", "Packet sent successfully")
             }
 
             Looper.loop()

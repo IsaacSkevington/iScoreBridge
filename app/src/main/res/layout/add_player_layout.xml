@@ -39,7 +39,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/firstNameLayout"
-        android:layout_width="614dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="25sp"
         app:layout_constraintEnd_toEndOf="parent"

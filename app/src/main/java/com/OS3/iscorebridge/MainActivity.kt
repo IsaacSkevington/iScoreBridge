@@ -1,7 +1,5 @@
 package com.OS3.iscorebridge
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -12,12 +10,8 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,8 +19,9 @@ class MainActivity : AppCompatActivity() {
     val closeRotate : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_close)}
     val menuDown : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.menu_down)}
     val menuUp : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.menu_up)}
-
     var clicked = false
+    lateinit var menuButton : FloatingActionButton
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,21 +30,25 @@ class MainActivity : AppCompatActivity() {
         if(!playerList.load(PLAYERLISTFILE, this)){
             playerList.save(PLAYERLISTFILE, this)
         }
+        playerList.setupForActivity(this, {}, {playerList.save(PLAYERLISTFILE, this)})
 
         setContentView(R.layout.activity_main)
         findViewById<LinearLayout>(R.id.menuLayout).visibility = View.INVISIBLE
+        menuButton = findViewById(R.id.menuButton)
         menuButton.setOnClickListener {
             if(clicked) closeMenu()
             else openMenu()
-            clicked = !clicked
         }
         findViewById<Button>(R.id.settingsButton).setOnClickListener { settings() }
         findViewById<Button>(R.id.addPlayer).setOnClickListener { addPlayer() }
         findViewById<Button>(R.id.findPlayer).setOnClickListener { searchPlayers() }
         findViewById<Button>(R.id.aboutButton).setOnClickListener { about() }
-        findViewById<Button>(R.id.exportPlayers).setOnClickListener { exportPlayers() }
-        findViewById<Button>(R.id.importPlayers).setOnClickListener { importPlayers() }
+        findViewById<Button>(R.id.exportPlayers).setOnClickListener { playerList.export() }
+        findViewById<Button>(R.id.importPlayers).setOnClickListener { playerList.import() }
+        findViewById<View>(R.id.mainContent).setOnClickListener {
+            if(clicked) closeMenu()
         }
+    }
 
     fun validatePlayer(view : View) : Boolean{
         view.findViewById<TextInputLayout>(R.id.idLayout).isErrorEnabled = false
@@ -158,58 +157,7 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Settings not yet implemented", Toast.LENGTH_LONG).show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        super.onActivityResult(requestCode, resultCode, resultData)
-        if (requestCode == CREATE_FILE && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.also { uri ->
-                try {
-                    val descriptor = contentResolver.openFileDescriptor(uri, "w")
-                    FileOutputStream(descriptor?.fileDescriptor).use {
-                        playerList.export(it)
-                    }
-                    Toast.makeText(this, "Export successful", Toast.LENGTH_LONG).show()
-                } catch (e: FileNotFoundException) {
-                    Toast.makeText(this, "Export failed", Toast.LENGTH_LONG).show()
-                }
-            }
 
-        }
-        if (requestCode == OPEN_FILE && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.also { uri ->
-                try {
-                    val descriptor = contentResolver.openFileDescriptor(uri, "r")
-                    FileInputStream(descriptor?.fileDescriptor).use {
-                        playerList.import(it)
-                        playerList.save(PLAYERLISTFILE, this)
-                    }
-                    Toast.makeText(this, "Import successful", Toast.LENGTH_LONG).show()
-                } catch (e: FileNotFoundException) {
-                    Toast.makeText(this, "Import failed", Toast.LENGTH_LONG).show()
-                }
-            }
-
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun exportPlayers(){
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/txt"
-            val d = LocalDate.now()
-            d.dayOfMonth.toString() + d.month.toString() + d.year.toString()
-            putExtra(Intent.EXTRA_TITLE, "players" + LocalDate.now().toString() + ".playerData")
-        }
-        startActivityForResult(intent, CREATE_FILE)
-    }
-
-    fun importPlayers(){
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/txt"
-        }
-        startActivityForResult(intent, OPEN_FILE)
-    }
 
     fun about(){
         val builder = AlertDialog.Builder(this)
@@ -234,6 +182,11 @@ class MainActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.menuLayout).startAnimation(menuDown)
         findViewById<Button>(R.id.settingsButton).isClickable = true
         findViewById<Button>(R.id.addPlayer).isClickable = true
+        findViewById<Button>(R.id.aboutButton).isClickable = true
+        findViewById<Button>(R.id.exportPlayers).isClickable = true
+        findViewById<Button>(R.id.importPlayers).isClickable = true
+        findViewById<Button>(R.id.findPlayer).isClickable = true
+        clicked = true
     }
 
     fun closeMenu(){
@@ -241,6 +194,11 @@ class MainActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.menuLayout).startAnimation(menuUp)
         findViewById<Button>(R.id.settingsButton).isClickable = false
         findViewById<Button>(R.id.addPlayer).isClickable = false
+        findViewById<Button>(R.id.aboutButton).isClickable = false
+        findViewById<Button>(R.id.exportPlayers).isClickable = false
+        findViewById<Button>(R.id.importPlayers).isClickable = false
+        findViewById<Button>(R.id.findPlayer).isClickable = false
+        clicked = false
     }
 
 

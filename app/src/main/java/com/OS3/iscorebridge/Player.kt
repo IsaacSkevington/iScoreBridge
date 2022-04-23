@@ -1,6 +1,6 @@
 package com.OS3.iscorebridge
 
-class Player {
+class Player{
 
     var name : String
     var id : Int
@@ -8,7 +8,7 @@ class Player {
     val dlm = "****"
 
     constructor(){
-        name = ""
+        name = "???"
         id = 0
     }
 

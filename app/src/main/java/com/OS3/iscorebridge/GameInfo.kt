@@ -46,10 +46,15 @@ class GameInfo {
 
 
 
-
+    fun setupTable(tableNumber: Int) : Table{
+        return if(movementType == MOVEMENT_NONE){
+            Table(tableNumber, arrayListOf(0), 0, 0)
+        } else{
+            movement.rounds[1]!!.tables[tableNumber]!!
+        }
+    }
 
     fun getNextBoard(round: Int, tableNumber: Int) : Int{
-
         return movement.rounds[round]!!.tables[tableNumber]!!.getNextBoard()
     }
 
