@@ -26,6 +26,8 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
     @Volatile var connectionHandlerSet = false
     @Volatile var connecting = false
     @Volatile var clientPort : Int = 0
+    @Volatile var responsePending = false
+    @Volatile var response : Pair<Int, Communication?> = Pair(-1, null)
 
 
     init{
@@ -50,6 +52,12 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                         }
                         MESSAGE_READ ->{
                             val c = msg.obj as Communication
+                            if(responsePending){
+                                if(c.purpose == response.first){
+                                    response.copy(c.purpose, c)
+                                    responsePending = false
+                                }
+                            }
                             when(c.purpose){
                                 SENDGAME ->  {
                                     if (c.deviceID != MYINFO.deviceName) {
@@ -65,12 +73,13 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                                 val gameInfo = GameInfo(c.msg)
                                     parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
                                 }
-                                CHECKCLIENTDETAILS -> {
-                                    parentHandler.obtainMessage(MESSAGE_CLIENT_DETAILS_OBTAINED, ClientInfo(c.msg)).sendToTarget()
+                                MATCHFINISHED -> {
+                                    MYINFO.finished = true
                                 }
                                 else -> {
                                     parentHandler.obtainMessage(MESSAGE_READ, msg.obj).sendToTarget()
                                 }
+
                             }
                         }
                     }
@@ -198,6 +207,15 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
             parentHandler = handler
         }
 
+    }
+
+    fun sendForResponse(purpose : Int, msg : String) : Communication{
+        val c = Communication(MYINFO.deviceName, purpose, msg)
+        responsePending = true
+        response.copy(purpose, null)
+        writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
+        while(responsePending){}
+        return response.second!!
     }
 
 

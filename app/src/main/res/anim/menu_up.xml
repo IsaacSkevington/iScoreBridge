@@ -3,9 +3,9 @@
     android:fillAfter="true">
     <translate android:fromYDelta="0"
         android:toYDelta="-500"
-        android:duration="1000"/>
+        android:duration="@integer/menu_animation_duration"/>
     <alpha android:fromAlpha="1"
         android:toAlpha="0"
-        android:duration="1000"/>
+        android:duration="@integer/menu_animation_duration"/>
 
 </set>

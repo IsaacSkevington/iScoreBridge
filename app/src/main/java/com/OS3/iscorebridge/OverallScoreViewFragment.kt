@@ -8,17 +8,14 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class OverallScoreViewFragment : Fragment() {
+class OverallScoreViewFragment : RefreshableFragment() {
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -79,11 +76,12 @@ class OverallScoreViewFragment : Fragment() {
 
     }
 
+    override fun refresh(view : View) {
+        displayOverallScore(view)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayOverallScore(view)
-        view.findViewById<FloatingActionButton>(R.id.refreshScoresButton).setOnClickListener {
-            displayOverallScore(view)
-        }
     }
 }

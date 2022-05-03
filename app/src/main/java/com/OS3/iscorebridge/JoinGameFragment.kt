@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import android.os.*
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -20,18 +23,18 @@ class JoinGame : Fragment() {
 
     var joined = false
     lateinit var handler : Handler
+    var joinMode : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        val args : JoinGameArgs by navArgs()
+        this.joinMode = args.joinMode
         return inflater.inflate(R.layout.fragment_join_game, container, false)
     }
 
@@ -78,6 +81,40 @@ class JoinGame : Fragment() {
         super.onDestroy()
     }
 
+    fun setVisibility(fab : FloatingActionButton, vis : Int){
+        fab.visibility = vis
+        fab.isClickable = (vis == VISIBLE)
+    }
+
+    fun switchButtons(view: View, back : Int, cancel : Int, forward : Int){
+        setVisibility(view.findViewById(R.id.joinBackButton), back)
+        setVisibility(view.findViewById(R.id.joinCancelButton), cancel)
+        setVisibility(view.findViewById(R.id.joinForwardButton), forward)
+
+    }
+
+    fun onConnectionTry(view : View){
+        switchButtons(view, INVISIBLE, VISIBLE, INVISIBLE)
+        view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = VISIBLE
+        view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = VISIBLE
+    }
+
+    fun onConnectionFail(view : View){
+        Toast.makeText(context, "Joining failed", Toast.LENGTH_LONG).show()
+        onConnectionCancel(view)
+    }
+
+    fun onBack(){
+        findNavController().popBackStack()
+    }
+
+    fun onConnectionCancel(view : View){
+        switchButtons(view, VISIBLE, INVISIBLE, VISIBLE)
+        view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = INVISIBLE
+        //Handle cancel logic here
+
+    }
+
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -90,29 +127,30 @@ class JoinGame : Fragment() {
                         if(!joined) {
                             joined = true
                             Toast.makeText(context, "Joined successfully", Toast.LENGTH_LONG).show()
-                            findNavController().navigate(R.id.joinGameToEnterDetails)
+                            if(joinMode == JOIN) findNavController().navigate(R.id.joinGameToEnterDetails)
+                            else findNavController().navigate(R.id.joingGameToSpectatorInitialise)
                         }
                     }
                     MESSAGE_CONNECTION_FAILED -> {
-                        Toast.makeText(context, "Joining failed", Toast.LENGTH_LONG).show()
-                        view.findViewById<Button>(R.id.joinButton).visibility = View.VISIBLE
-                        view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = View.INVISIBLE
-                        view.findViewById<TextView>(R.id.joiningDisplay).text = ""
+                        onConnectionFail(view)
                     }
                 }
 
             }
         }
         wifiService.parentHandler = handler
-        view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = View.INVISIBLE
-        view.findViewById<Button>(R.id.joinButton).setOnClickListener {
+        onConnectionCancel(view)
+        view.findViewById<FloatingActionButton>(R.id.joinForwardButton).setOnClickListener {
             if(errorCheck(view)){
-                view.findViewById<Button>(R.id.joinButton).visibility = View.INVISIBLE
-                view.findViewById<ProgressBar>(R.id.joiningProgress).visibility = View.VISIBLE
-                view.findViewById<TextView>(R.id.joiningDisplay).text = "Joining game"
+                onConnectionTry(view)
                 joinGame(view)
             }
-
+        }
+        view.findViewById<FloatingActionButton>(R.id.joinBackButton).setOnClickListener {
+            onBack()
+        }
+        view.findViewById<FloatingActionButton>(R.id.joinCancelButton).setOnClickListener {
+            onConnectionCancel(view)
         }
     }
 }

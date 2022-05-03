@@ -3,7 +3,7 @@
     android:id="@+id/menuLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="@color/MENUFADE"
     android:dividerPadding="20sp"
     android:orientation="vertical"
     android:visibility="visible">

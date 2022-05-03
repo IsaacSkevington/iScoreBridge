@@ -17,6 +17,19 @@ val VERSIONS = arrayOf(
         arrayOf(
             Bug("Incorrect error message", "Some input boxes had incorrect error messages")
         )
+    ),
+
+    Version(
+        "0.2.1",
+        arrayOf(
+            Feature("Hands", "Added the ability to add specific hands to a game"),
+            Feature("Bidding", "Added the ability to add bidding to a game"),
+            Feature("Starring", "You can now star games"),
+            Feature("Stats view", "View stats at the end of the match"),
+            Feature("Automatic player recognition", "Club numbers are mapped to data on the members")
+        ),
+        arrayOf()
+
     )
 )
 

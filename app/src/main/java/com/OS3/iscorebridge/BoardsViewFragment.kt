@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.fragment.app.Fragment
 
 
-class BoardsViewFragment : Fragment() {
+class BoardsViewFragment : RefreshableFragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,16 +23,25 @@ class BoardsViewFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_boards_view, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun refresh(view: View) {
         var linearLayout = view.findViewById<LinearLayout>(R.id.boardsDisplayView)
 
         val fragMan = parentFragmentManager
         val fragTransaction = fragMan.beginTransaction()
 
         match.boards.forEach {
-            fragTransaction.add(linearLayout.id, BoardReviewDisplayFragment(it.value!!, MYINFO.myNumber))
+            if(it.value!!.playedBy(MYINFO.myNumber) || MYINFO.finished) {
+                fragTransaction.add(
+                    linearLayout.id,
+                    BoardReviewDisplayFragment(it.value!!, MYINFO.myNumber)
+                )
+            }
         }
         fragTransaction.commit()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        refresh(view)
     }
 }

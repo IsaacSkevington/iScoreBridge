@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -16,17 +17,28 @@ private val TABS = arrayOf(
     "Stats"
 )
 
-class SectionsPagerAdapter(fragment: Fragment) :
+abstract class RefreshableFragment : Fragment(){
+    abstract fun refresh(view : View)
+}
+
+class SectionsPagerAdapter(var fragment: SpectatorViewFragment) :
     FragmentStateAdapter(fragment) {
+
+    lateinit var childFragment : RefreshableFragment
 
 
     override fun createFragment(position: Int): Fragment {
-        return when(position){
+        childFragment = when(position){
             0->OverallScoreViewFragment()
             1->BoardsViewFragment()
             2->StatsViewFragment()
             else->OverallScoreViewFragment()
         }
+        return childFragment
+    }
+
+    fun refresh(view : View){
+        childFragment.refresh(view)
     }
 
     override fun getItemCount(): Int {
@@ -47,6 +59,7 @@ class SpectatorViewFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        
         return inflater.inflate(R.layout.fragment_spectator_view, container, false)
     }
 
@@ -61,6 +74,9 @@ class SpectatorViewFragment : Fragment(){
             tab.text = TABS[position]
         }.attach()
         viewPager.currentItem = 0
+        view.findViewById<FloatingActionButton>(R.id.refreshScoresButton).setOnClickListener {
+            adapter.refresh(view)
+        }
 
     }
 

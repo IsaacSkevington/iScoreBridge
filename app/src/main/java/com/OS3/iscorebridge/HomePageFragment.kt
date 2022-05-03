@@ -9,23 +9,27 @@ import android.os.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-private const val START = "START"
-private const val JOIN = "JOIN"
+const val SPECTATOR = 2
+const val START = 1
+const val JOIN = 0
 
 class HomePage : Fragment() {
 
     var idSet = false
-    var buttonPress : String = ""
+    var buttonPress : Int = 0
     val manager: WifiP2pManager? by lazy(LazyThreadSafetyMode.NONE) {
         requireActivity().getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager?
     }
+    lateinit var permissionRequest : ActivityResultLauncher<String>
 
 
     val intentFilter = IntentFilter().apply {
@@ -39,14 +43,15 @@ class HomePage : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun setupPermissions(){
+        if(idSet){
+            next()
+            return
+        }
         if(requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED){
             setupWifi()
         }
         else{
-            this.registerForActivityResult(ActivityResultContracts.RequestPermission()){
-                if(it) setupWifi()
-                else Toast.makeText(requireContext(), "Permissions Denied", Toast.LENGTH_LONG).show()
-            }.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            permissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
 
@@ -76,6 +81,13 @@ class HomePage : Fragment() {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PERMISSION_GRANTED
+            ) {
+                return
+            }
             manager!!.requestDeviceInfo(channel) {
                 if (!idSet) {
                     MYINFO.deviceName = it!!.deviceName
@@ -87,21 +99,36 @@ class HomePage : Fragment() {
     }
 
     fun next(){
-        if (buttonPress == JOIN) {
-            findNavController().navigate(R.id.homeToJoin)
-        } else {
-            if(playerList.load(PLAYERLISTFILE, requireContext())){
-                Toast.makeText(requireContext(), "Player list loaded", Toast.LENGTH_LONG).show()
-                findNavController().navigate(R.id.homeToStart)
+        when(buttonPress){
+            JOIN -> {
+                var action = HomePageDirections.homeToJoin(JOIN)
+                findNavController().navigate(action)
             }
-            else{
-                Toast.makeText(requireContext(), "Player list load failed", Toast.LENGTH_LONG).show()
+            SPECTATOR -> {
+                var action = HomePageDirections.homeToJoin(SPECTATOR)
+                findNavController().navigate(action)
             }
-
+            else -> {
+                if(playerList.load(PLAYERLISTFILE, requireContext())){
+                    Toast.makeText(requireContext(), "Player list loaded", Toast.LENGTH_LONG).show()
+                    findNavController().navigate(R.id.homeToStart)
+                }
+                else{
+                    Toast.makeText(requireContext(), "Player list load failed", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        permissionRequest = this.registerForActivityResult(ActivityResultContracts.RequestPermission()){
+            if(it) setupWifi()
+            else Toast.makeText(requireContext(), "Permissions Denied", Toast.LENGTH_LONG).show()
+        }
+
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -115,14 +142,17 @@ class HomePage : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        view.findViewById<Button>(R.id.playButton).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.playButton).setOnClickListener {
             buttonPress = START
             setupPermissions()
 
         }
-        view.findViewById<Button>(R.id.joingamebutton).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.joingamebutton).setOnClickListener {
             buttonPress = JOIN
+            setupPermissions()
+        }
+        view.findViewById<FloatingActionButton>(R.id.joinspectatorbutton).setOnClickListener {
+            buttonPress = SPECTATOR
             setupPermissions()
         }
     }

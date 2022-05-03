@@ -45,7 +45,7 @@ abstract class Exportable(val defaultName : String, val defaultExtension : Strin
     fun export(){
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/txt"
+            type = "*/*"
             val d = LocalDate.now()
             d.dayOfMonth.toString() + d.month.toString() + d.year.toString()
             putExtra(Intent.EXTRA_TITLE, defaultName + LocalDate.now().toString() + defaultExtension)
@@ -56,7 +56,7 @@ abstract class Exportable(val defaultName : String, val defaultExtension : Strin
     fun import(){
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/txt"
+            type = "*/*"
         }
         activityResultImportLauncher?.launch(intent)
     }

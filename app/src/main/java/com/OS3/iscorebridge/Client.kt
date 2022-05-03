@@ -12,6 +12,7 @@ class Client(private var port : Int, var number:Int, var handler : Handler){
     @Volatile private lateinit var clientHandler : Handler
     @Volatile private var clientHandlerReady = false
     @Volatile var clientInfo : ClientInfo? = null
+    @Volatile var finished = false
 
     init{
         ClientHandler().start()
@@ -37,28 +38,38 @@ class Client(private var port : Int, var number:Int, var handler : Handler){
                                 SENDGAME -> {
                                     val newGame = Game(c.msg)
                                     match.addGame(newGame)
-                                    handler.obtainMessage(MESSAGE_SEND_GAME, newGame)
+                                    handler.obtainMessage(MESSAGE_SEND_GAME, newGame).sendToTarget()
                                 }
                                 SENDNEWDEAL -> {
 
                                     var deal = Deal(c.msg)
                                     match.boards[deal.number]!!.deal = deal
-                                    handler.obtainMessage(MESSAGE_SEND_DEAL, deal)
+                                    handler.obtainMessage(MESSAGE_SEND_DEAL, deal).sendToTarget()
                                 }
                                 SENDEDITGAME -> {
                                     var game = Game(c.msg)
                                     match.boards[game.boardNumber]!!.getGame(game)!!.copy(game)
-                                    handler.obtainMessage(MESSAGE_EDIT_GAME, game)
+                                    handler.obtainMessage(MESSAGE_EDIT_GAME, game).sendToTarget()
                                 }
-                                SENDCLIENTDETAILS -> {
+
+                                SENDJOINCOMPLETE -> {
                                     clientInfo = ClientInfo(c.msg)
-                                    handler.obtainMessage(MESSAGE_UPDATE_CLIENT, clientInfo)
+                                    handler.obtainMessage(MESSAGE_UPDATE_CLIENT, clientInfo).sendToTarget()
                                 }
+
                                 CHECKCLIENTDETAILS -> {
                                     var clientInfo = ClientInfo(c.msg)
                                     clientInfo.tableNumber = checkTable(clientInfo.tableNumber)
                                     resolveClients(clientInfo)
                                     send(Communication(MYINFO.deviceName, CHECKCLIENTDETAILS, clientInfo.toString()))
+                                }
+                                CHECKSPECTATORDETAILS ->{
+                                    var spectatorInfo = SpectatorInfo(c.msg)
+                                    spectatorInfo.confirmation = wifiHost.populate(spectatorInfo)
+                                    send(Communication(MYINFO.deviceName, CHECKSPECTATORDETAILS, spectatorInfo.toString()))
+                                }
+                                MATCHFINISHED -> {
+                                    finished = true
                                 }
                             }
                         }

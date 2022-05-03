@@ -52,6 +52,13 @@ const val MESSAGE_SEND_DEAL = 29
 const val SENDEDITGAME = 30
 const val MESSAGE_EDIT_GAME = 31
 
+const val MATCHFINISHED = 32
+
+const val NORTHSOUTH = 0
+const val EASTWEST = 1
+
+const val  CHECKSPECTATORDETAILS = 33
+
 
 var gameInfo : GameInfo = GameInfo(2, GAMEMODE_TEAMS, 10, MOVEMENT_NONE,
     arrowSwitch = false,
@@ -59,7 +66,9 @@ var gameInfo : GameInfo = GameInfo(2, GAMEMODE_TEAMS, 10, MOVEMENT_NONE,
     clientList = ArrayList()
 )
 
-const val MESSAGE_CLIENT_DISCONNECTED = 28
+const val MESSAGE_CLIENT_DISCONNECTED = 34
+
+const val SENDJOINCOMPLETE = 35
 
 const val HOSTIP = "192.168.49.1"
 

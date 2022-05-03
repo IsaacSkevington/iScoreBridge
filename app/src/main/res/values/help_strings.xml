@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Hosting -->
+    <string-array name="hostingagame">
+        <item>To host a game, first click the start button on the home page</item>
+        <item>The next screen will tell you your game ID which other players need to connect</item>
+        <item>Enter the number of boards and tables you have, as well as parameters for the game (such as movement)</item>
+        <item>Then, when all players have joined, you can begin the game by clicking start</item>
+
+    </string-array>
+    <string-array name="hostingagamenotes">
+        <item>You must have a player list installed to start a game</item>
+    </string-array>
+
+
+    <!-- Joining -->
+    <string-array name="joiningagame">
+        <item>To join a game, first click the join button on the home page</item>
+        <item>The next screen will ask you to enter the game ID to connect. Once entered, wait to join the game</item>
+        <item>Enter the club\'s player numbers for the people sitting at your table on the next screen, along with the table number</item>
+        <item>After you submit the player numbers they will be resolved to names. Confirm the names and wait for the game to start</item>
+    </string-array>
+    <string-array name="joiningagamenotes">
+        <item>If a player at the table doesn\'t have a number, either ask the host to add the player, or enter 0</item>
+    </string-array>
+    
+    <!-- Spectating -->
+    <string-array name="spectating">
+        <item>To spectate, without being a scoring device, click spectate on the home page</item>
+        <item>The next screen will ask you to enter the game ID to connect. Once entered, wait to join the game</item>
+        <item>Enter your table number and your club number and wait for the system to verify your identity</item>
+        <item>The spectate screen will come up, click the refresh button to update the stats</item>
+    </string-array>
+    <string-array name="spectatingnotes">
+        <item>You can\'t see the scores for boards you haven\'t played yet while spectating</item>
+    </string-array>
+
+
+</resources>

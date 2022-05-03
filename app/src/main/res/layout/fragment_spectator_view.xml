@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".SpectatorViewFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/refreshScoresButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_popup_sync"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/spectatorTabLayout"
         android:layout_width="0dp"
@@ -14,12 +28,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<androidx.viewpager2.widget.ViewPager2
-android:id="@+id/spectatorViewPager"
-android:layout_width="0dp"
-android:layout_height="0dp"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toBottomOf="@+id/spectatorTabLayout" />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/spectatorViewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/refreshScoresButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spectatorTabLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

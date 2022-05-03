@@ -13,6 +13,7 @@ class ClientInfo{
     var west:Player
     var myNumber : Int
     var starredBoards = ArrayList<Board>()
+    var finished : Boolean = false
     lateinit var client : Client
 
 
@@ -59,8 +60,17 @@ class ClientInfo{
         this.myNumber = params[6].toInt()
     }
 
+
+    fun calculateNumber(playerNumber : Int) : Int{
+        return 0
+    }
     override fun toString(): String {
         return deviceName + delim + tableNumber + delim + north.toString() + delim + east.toString() + delim + south.toString() + delim + west.toString() + delim + myNumber.toString()
+    }
+
+    fun finishMatch(){
+        this.finished = true
+        wifiService.send(MATCHFINISHED, "")
     }
 
 

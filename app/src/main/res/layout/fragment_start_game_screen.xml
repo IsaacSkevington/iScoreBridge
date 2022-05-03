@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollLayout"
@@ -8,260 +8,291 @@
     android:layout_centerInParent="true"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:layout_gravity="center_horizontal|center_vertical"
-    android:foregroundGravity="center_vertical|center_horizontal"
-    app:layout_anchorGravity="center_horizontal|center_vertical"
+    android:layout_gravity="center_vertical"
+    android:backgroundTint="@color/colorPrimary"
     app:layout_constraintEnd_toEndOf="parent"
     tools:context=".StartGameScreen">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/StartPlayingButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginTop="30dp">
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:rotation="180"
+        android:src="@drawable/arrow_back_48px"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/startGameBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:src="@drawable/arrow_back_48px"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="32dp" />
 
-        <TableLayout
-            android:id="@+id/playersTable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="30sp"
-            app:layout_constraintTop_toTopOf="parent">
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/StartPlayingButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal">
-
-                <TextView
-                    android:id="@+id/textView18"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tables"
-                    android:textSize="30sp" />
-            </TableRow>
-
-        </TableLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <CheckBox
-                android:id="@+id/arrowSwitchCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="Arrow Switch"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movementGroup" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="60dp"
-                android:layout_height="22dp"
-                android:gravity="center_horizontal"
-                android:text="Pairs"
-                app:layout_constraintBottom_toBottomOf="@+id/modeSwitch"
-                app:layout_constraintEnd_toStartOf="@+id/modeSwitch"
-                app:layout_constraintTop_toTopOf="@+id/modeSwitch" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Movement"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/modeSwitch" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="60dp"
-                android:layout_height="22dp"
-                android:foregroundGravity="center"
-                android:gravity="center_horizontal"
-                android:text="Teams"
-                app:layout_constraintBottom_toBottomOf="@+id/modeSwitch"
-                app:layout_constraintStart_toEndOf="@+id/modeSwitch"
-                app:layout_constraintTop_toTopOf="@+id/modeSwitch" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/numberBoardsLayout"
+            <TableLayout
+                android:id="@+id/playersTable"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toStartOf="@+id/movementGroup"
+                android:paddingBottom="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/numberBoardsEntry"
+                <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:hint="Number of boards"
-                    android:numeric="integer" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_horizontal">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/numberTablesLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/movementGroup"
-                app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tables"
+                        android:textSize="30sp" />
+                </TableRow>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/numberTablesEntry"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:hint="Number of tables"
-                    android:numeric="integer" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Switch
-                android:id="@+id/modeSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/numberTablesLayout" />
-
-            <RadioGroup
-                android:id="@+id/movementGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkedButton="@id/movementNone"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12">
-
-                <RadioButton
-                    android:id="@+id/movementNone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="None"
-                    tools:layout_editor_absoluteX="181dp"
-                    tools:layout_editor_absoluteY="169dp" />
-
-                <RadioButton
-                    android:id="@+id/movementHowell"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Howell"
-                    tools:layout_editor_absoluteX="181dp"
-                    tools:layout_editor_absoluteY="201dp" />
-
-                <RadioButton
-                    android:id="@+id/movementMitchell"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mitchell"
-                    tools:layout_editor_absoluteX="181dp"
-                    tools:layout_editor_absoluteY="233dp" />
-
-            </RadioGroup>
+            </TableLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/mitchellTypeLayout"
+                android:id="@+id/constraintLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/arrowSwitchCheck">
+                app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+                <CheckBox
+                    android:id="@+id/arrowSwitchCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Arrow Switch"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/movementGroup" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="60dp"
+                    android:layout_height="22dp"
+                    android:gravity="center_horizontal"
+                    android:text="Pairs"
+                    app:layout_constraintBottom_toBottomOf="@+id/modeSwitch"
+                    app:layout_constraintEnd_toStartOf="@+id/modeSwitch"
+                    app:layout_constraintTop_toTopOf="@+id/modeSwitch" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Movement"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/modeSwitch" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="60dp"
+                    android:layout_height="22dp"
+                    android:foregroundGravity="center"
+                    android:gravity="center_horizontal"
+                    android:text="Teams"
+                    app:layout_constraintBottom_toBottomOf="@+id/modeSwitch"
+                    app:layout_constraintStart_toEndOf="@+id/modeSwitch"
+                    app:layout_constraintTop_toTopOf="@+id/modeSwitch" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/numberBoardsLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    app:errorEnabled="true"
+                    app:layout_constraintEnd_toStartOf="@+id/movementGroup"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/numberBoardsEntry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:hint="Number of boards"
+                        android:numeric="integer" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/numberTablesLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    app:errorEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/movementGroup"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/numberTablesEntry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:hint="Number of tables"
+                        android:numeric="integer" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Switch
-                    android:id="@+id/mitchellTypeSwitch"
+                    android:id="@+id/modeSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/numberTablesLayout" />
 
-                <TextView
-                    android:id="@+id/textView19"
+                <RadioGroup
+                    android:id="@+id/movementGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Skip"
-                    app:layout_constraintBottom_toBottomOf="@+id/mitchellTypeSwitch"
-                    app:layout_constraintEnd_toStartOf="@+id/mitchellTypeSwitch"
-                    app:layout_constraintTop_toTopOf="@+id/mitchellTypeSwitch" />
+                    android:checkedButton="@id/movementNone"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12">
 
-                <TextView
-                    android:id="@+id/textView20"
-                    android:layout_width="wrap_content"
+                    <RadioButton
+                        android:id="@+id/movementNone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="None"
+                        tools:layout_editor_absoluteX="181dp"
+                        tools:layout_editor_absoluteY="169dp" />
+
+                    <RadioButton
+                        android:id="@+id/movementHowell"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Howell"
+                        tools:layout_editor_absoluteX="181dp"
+                        tools:layout_editor_absoluteY="201dp" />
+
+                    <RadioButton
+                        android:id="@+id/movementMitchell"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Mitchell"
+                        tools:layout_editor_absoluteX="181dp"
+                        tools:layout_editor_absoluteY="233dp" />
+
+                </RadioGroup>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mitchellTypeLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Share &amp; Relay"
-                    app:layout_constraintBottom_toBottomOf="@+id/mitchellTypeSwitch"
-                    app:layout_constraintStart_toEndOf="@+id/mitchellTypeSwitch"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/arrowSwitchCheck">
+
+                    <Switch
+                        android:id="@+id/mitchellTypeSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Skip"
+                        app:layout_constraintBottom_toBottomOf="@+id/mitchellTypeSwitch"
+                        app:layout_constraintEnd_toStartOf="@+id/mitchellTypeSwitch"
+                        app:layout_constraintTop_toTopOf="@+id/mitchellTypeSwitch" />
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share &amp; Relay"
+                        app:layout_constraintBottom_toBottomOf="@+id/mitchellTypeSwitch"
+                        app:layout_constraintStart_toEndOf="@+id/mitchellTypeSwitch"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/idTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="000"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="100sp"
+                android:text="Tell the other players this code"
+                android:textSize="36sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idTextView" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Your ID is"
+                android:textSize="36sp"
+                app:layout_constraintTop_toBottomOf="@+id/playersTable"
+                tools:layout_editor_absoluteX="1dp" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/StartPlayingButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="Start Game"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
-
-        <TextView
-            android:id="@+id/idTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="000"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingBottom="100sp"
-            android:text="Tell the other players this code"
-            android:textSize="36sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/idTextView" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Your ID is"
-            android:textSize="36sp"
-            app:layout_constraintTop_toBottomOf="@+id/playersTable"
-            tools:layout_editor_absoluteX="1dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

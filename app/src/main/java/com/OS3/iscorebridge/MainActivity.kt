@@ -1,17 +1,24 @@
 package com.OS3.iscorebridge
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     val closeRotate : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.rotate_close)}
     val menuDown : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.menu_down)}
     val menuUp : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.menu_up)}
+    val fadeInCover : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.fade_in_cover)}
+    val fadeOutCover : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.fade_out_cover)}
     var clicked = false
     lateinit var menuButton : FloatingActionButton
 
@@ -30,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         if(!playerList.load(PLAYERLISTFILE, this)){
             playerList.save(PLAYERLISTFILE, this)
         }
-        playerList.setupForActivity(this, {}, {playerList.save(PLAYERLISTFILE, this)})
+        playerList.setupForActivity(this, {}, {playerList.save(PLAYERLISTFILE, this.applicationContext)})
 
         setContentView(R.layout.activity_main)
         findViewById<LinearLayout>(R.id.menuLayout).visibility = View.INVISIBLE
@@ -45,11 +54,35 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.aboutButton).setOnClickListener { about() }
         findViewById<Button>(R.id.exportPlayers).setOnClickListener { playerList.export() }
         findViewById<Button>(R.id.importPlayers).setOnClickListener { playerList.import() }
-        findViewById<View>(R.id.mainContent).setOnClickListener {
+        findViewById<FrameLayout>(R.id.cover).setOnClickListener {
             if(clicked) closeMenu()
+        }
+        findViewById<ImageView>(R.id.helpCenterButton).setOnClickListener {
+            openHelp()
         }
     }
 
+    fun openHelp(){
+        findViewById<ImageView>(R.id.helpCenterButton).visibility = INVISIBLE
+        findViewById<FrameLayout>(R.id.mainLayout).visibility = INVISIBLE
+        findViewById<FrameLayout>(R.id.helpLayout).also{
+            it.visibility = VISIBLE
+            it.removeAllViews()
+        }
+        supportFragmentManager.beginTransaction()
+        .add(R.id.helpLayout, HelpFragment.newInstance { closeHelp() })
+        .commit()
+    }
+
+    fun closeHelp(){
+        findViewById<ImageView>(R.id.helpCenterButton).visibility = VISIBLE
+        findViewById<FrameLayout>(R.id.mainLayout).visibility = VISIBLE
+        findViewById<FrameLayout>(R.id.helpLayout).also{
+            it.visibility = INVISIBLE
+            it.removeAllViews()
+        }
+
+    }
     fun validatePlayer(view : View) : Boolean{
         view.findViewById<TextInputLayout>(R.id.idLayout).isErrorEnabled = false
         view.findViewById<TextInputLayout>(R.id.firstNameLayout).isErrorEnabled = false
@@ -139,7 +172,7 @@ class MainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
 
         var view = layoutInflater.inflate(R.layout.find_player_layout, null)
-        view.findViewById<Button>(R.id.searchButton).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.searchButton).setOnClickListener {
             search(view)
         }
         builder.setMessage("Find Player")
@@ -164,7 +197,7 @@ class MainActivity : AppCompatActivity() {
 
 
         var view = layoutInflater.inflate(R.layout.about_layout, null)
-        VERSIONS.last().display(this, view.findViewById<LinearLayout>(R.id.aboutLinearLayout))
+        VERSIONS.last().display(this, view.findViewById(R.id.aboutLinearLayout))
         builder.setMessage("About")
             .setPositiveButton("Ok"
             ) { _, _ ->
@@ -176,10 +209,20 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    fun animateColour(layout : ConstraintLayout, from : Int, to : Int, duration : Long){
+        val colorFrom = resources.getColor(from, theme)
+        val colorTo = resources.getColor(to, theme)
+        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
+        colorAnimation.duration = duration
+
+        colorAnimation.addUpdateListener { animator -> layout.foreground = ColorDrawable(animator.animatedValue as Int) }
+        colorAnimation.start()
+    }
 
     fun openMenu(){
         menuButton.startAnimation(openRotate)
         findViewById<LinearLayout>(R.id.menuLayout).startAnimation(menuDown)
+        findViewById<FrameLayout>(R.id.cover).startAnimation(fadeInCover)
         findViewById<Button>(R.id.settingsButton).isClickable = true
         findViewById<Button>(R.id.addPlayer).isClickable = true
         findViewById<Button>(R.id.aboutButton).isClickable = true
@@ -192,6 +235,7 @@ class MainActivity : AppCompatActivity() {
     fun closeMenu(){
         menuButton.startAnimation(closeRotate)
         findViewById<LinearLayout>(R.id.menuLayout).startAnimation(menuUp)
+        findViewById<FrameLayout>(R.id.cover).startAnimation(fadeOutCover)
         findViewById<Button>(R.id.settingsButton).isClickable = false
         findViewById<Button>(R.id.addPlayer).isClickable = false
         findViewById<Button>(R.id.aboutButton).isClickable = false
@@ -205,6 +249,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         Toast.makeText(applicationContext, "Cannot go back", Toast.LENGTH_SHORT).show()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

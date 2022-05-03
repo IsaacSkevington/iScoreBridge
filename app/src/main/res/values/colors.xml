@@ -32,5 +32,7 @@
     <color name="redoubleBorderColor">#405DFF</color>
 
     <color name="starColor">#FFC51A</color>
+    <color name="WHITE">#FFFFFF</color>
+    <color name="MENUFADE">#C1C1C1</color>
 
 </resources>

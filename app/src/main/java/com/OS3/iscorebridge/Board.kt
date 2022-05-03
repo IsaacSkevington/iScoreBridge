@@ -112,6 +112,16 @@ class Board {
         return true
     }
 
+
+    fun hasGame(number : Int) : Boolean{
+        this.games.forEach {
+            if(it.pairNS == number || it.pairEW == number){
+                return true
+            }
+        }
+        return false
+    }
+
     fun hasGame(compareGame : Game) : Boolean{
         return hasGame(compareGame.pairNS, compareGame.pairEW)
     }
@@ -465,5 +475,9 @@ class Board {
         }
 
 
+    }
+
+    fun playedBy(myNumber: Int): Boolean {
+        return hasGame(myNumber)
     }
 }

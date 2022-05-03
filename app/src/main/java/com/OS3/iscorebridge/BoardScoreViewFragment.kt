@@ -1,15 +1,16 @@
 package com.OS3.iscorebridge
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class BoardScoreViewFragment : Fragment() {
@@ -46,12 +47,21 @@ class BoardScoreViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        view.findViewById<Button>(R.id.nextScoreEntryButton).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.nextScoreEntryButton).setOnClickListener {
             var action = BoardScoreViewFragmentDirections.scoreViewToScoreEntry(boardNumber, pairNS, pairEW)
             findNavController().navigate(action)
         }
-        view.findViewById<Button>(R.id.finishButton).setOnClickListener {
-            findNavController().navigate(R.id.scoreViewToFinalScore)
+        view.findViewById<FloatingActionButton>(R.id.finishButton).setOnClickListener {
+            var builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Finish Match?")
+                .setMessage("Are you sure you want to finish the match? You will not be able to score any more boards after this")
+                .setPositiveButton("Yes"){_, _ ->
+                    MYINFO.finishMatch()
+                    findNavController().navigate(R.id.scoreViewToFinalScore)
+                }
+                .setNegativeButton("No"){_, _ ->
+                }
+
         }
 
         this.board.displayScore(parentFragmentManager, pairNS, pairEW, view, layoutInflater)

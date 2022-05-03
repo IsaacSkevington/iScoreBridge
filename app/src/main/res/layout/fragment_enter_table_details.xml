@@ -128,15 +128,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/submitTableDataButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:backgroundTint="@color/colorPrimary"
+        android:clickable="true"
+        android:rotation="180"
+        android:src="@drawable/arrow_back_48px"
+        android:tint="#FFFFFF"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+        app:maxImageSize="32dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

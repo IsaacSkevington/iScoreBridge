@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -110,11 +111,23 @@ class StartGameScreen : Fragment() {
 
     fun updateClientTable(view : View){
         var table = view.findViewById<TableLayout>(R.id.playersTable)
-        playerTableRows.forEach {
-            table.removeView(it)
-        }
+        table.removeAllViews()
         var currentRowItems = 0
+
         var currentRow = TableRow(view.context)
+        var textView = TextView(view.context)
+        textView.textSize = 30f
+        textView.text = "Tables"
+        currentRow.addView(textView)
+        table.addView(currentRow)
+        currentRow = TableRow(view.context)
+        if(wifiHost.getTables().size == 0){
+            var textView = TextView(view.context)
+            textView.text = "No Tables Have Joined"
+            currentRow.addView(textView)
+            table.addView(currentRow)
+            return
+        }
         wifiHost.getTables().forEach {
             var textView = TextView(view.context)
             textView.text = it.toString()
@@ -125,6 +138,12 @@ class StartGameScreen : Fragment() {
             }
         }
 
+    }
+
+    fun onBack(){
+        amHost = false
+        wifiHost.kill()
+        findNavController().popBackStack()
     }
 
     fun pairsMode(view : View){
@@ -186,6 +205,7 @@ class StartGameScreen : Fragment() {
         wifiService.parentHandler = handler
         wifiHost = WifiHost(handler)
         wifiHostInitialised = true
+        updateClientTable(view)
 
         view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener{
             if(view.findViewById<Switch>(R.id.modeSwitch).isChecked){
@@ -196,7 +216,11 @@ class StartGameScreen : Fragment() {
             }
         }
 
-        view.findViewById<Button>(R.id.StartPlayingButton).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.startGameBackButton).setOnClickListener {
+            onBack()
+        }
+
+        view.findViewById<FloatingActionButton>(R.id.StartPlayingButton).setOnClickListener {
             if(errorCheck(view)) {
 
                 val tables =

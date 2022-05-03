@@ -49,6 +49,28 @@ class WifiHost(@Volatile var parentHandler: Handler){
     }
 
 
+    inner class StatusHandler : Thread(){
+
+        fun allClientsFinished() : Boolean{
+            clients.forEach {
+                if(!it.finished){
+                    return false
+                }
+            }
+            return true
+        }
+
+        override fun run() {
+            while(true){
+                if(allClientsFinished()){
+                    break
+                }
+                sleep(10000)
+            }
+            send(MATCHFINISHED, "")
+        }
+    }
+
     inner class ClientHandler() : Thread(){
 
         override fun run(){
@@ -59,7 +81,10 @@ class WifiHost(@Volatile var parentHandler: Handler){
                     when (msg.what) {
                         MESSAGE_CLIENT_DISCONNECTED->{
                             removeClient(msg.obj as Client)
-                            parentHandler.obtainMessage(MESSAGE_UPDATE_CLIENT)
+                            parentHandler.obtainMessage(MESSAGE_UPDATE_CLIENT).sendToTarget()
+                        }
+                        MESSAGE_UPDATE_CLIENT ->{
+                            parentHandler.obtainMessage(MESSAGE_UPDATE_CLIENT).sendToTarget()
                         }
 
                         MESSAGE_SEND_DEAL ->{
@@ -75,7 +100,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
                             send(SENDGAME, newGame.toString())
                         }
                         else -> {
-                            parentHandler.obtainMessage(msg.what, msg.arg1, msg.arg2, msg.obj)
+                            parentHandler.obtainMessage(msg.what, msg.arg1, msg.arg2, msg.obj).sendToTarget()
                         }
 
                     }
@@ -159,6 +184,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
             gameInfo.toString()
         )
         parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+        StatusHandler().start()
     }
 
     fun getTables() : ArrayList<Int>{
@@ -185,6 +211,37 @@ class WifiHost(@Volatile var parentHandler: Handler){
             hostConnectedSocket.close()
         }
         catch(e:Exception){}
+
+    }
+
+    fun findClient(tableNumber : Int) : Client?{
+        clients.forEach {
+            if(it.getTableNumber() == tableNumber){
+                return it
+            }
+        }
+        return null
+    }
+
+    fun populate(si : SpectatorInfo) : Boolean{
+        var client = findClient(si.tableNumber) ?: return false
+        try {
+            if (si.cardinality == NORTHSOUTH) {
+                if (si.playerNumber != client.clientInfo!!.north.id && si.playerNumber != client.clientInfo!!.south.id) {
+                    return false
+                }
+                si.tableNumber = client.clientInfo!!.calculateNumber(si.playerNumber)
+            } else {
+                if (si.playerNumber != client.clientInfo!!.east.id && si.playerNumber != client.clientInfo!!.west.id) {
+                    return false
+                }
+                si.tableNumber = client.clientInfo!!.calculateNumber(si.playerNumber)
+            }
+            return true
+        }
+        catch(e : Exception){
+            return false
+        }
 
     }
 

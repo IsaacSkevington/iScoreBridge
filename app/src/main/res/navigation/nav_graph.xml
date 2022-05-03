@@ -13,7 +13,10 @@
 
         <action
             android:id="@+id/homeToJoin"
-            app:destination="@id/JoinGameFragment" />
+            app:destination="@id/JoinGameFragment">
+            <argument android:name="joinMode"
+                app:argType="integer"/>
+        </action>
         <action
             android:id="@+id/homeToStart"
             app:destination="@id/StartGameFragment" />
@@ -67,10 +70,31 @@
         android:name="com.OS3.iscorebridge.JoinGame"
         android:label="Join game"
         tools:layout="@layout/fragment_join_game">
-
+        <argument
+            android:name="joinMode"
+            app:argType="integer"/>
         <action
             android:id="@+id/joinGameToEnterDetails"
             app:destination="@id/EnterTableDetails"/>
+        <action
+            android:id="@+id/joingGameToSpectatorInitialise"
+            app:destination="@id/SpectatorInitialise"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/SpectatorInitialise"
+        android:name="com.OS3.iscorebridge.SpectatorInitialiseFragment"
+        android:label="Enter spectator details"
+        tools:layout="@layout/fragment_spectator_initialise">
+        <action
+            android:id="@+id/SpectatorInitialiseToSpectatorView"
+            app:destination="@id/SpectatorView"/>
+    </fragment>
+    <fragment
+        android:id="@+id/SpectatorView"
+        android:name="com.OS3.iscorebridge.SpectatorViewFragment"
+        android:label="Spectator view"
+        tools:layout="@layout/fragment_spectator_view">
     </fragment>
     <fragment
         android:id="@+id/EnterTableDetails"

@@ -25,8 +25,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="1102" />
+                            <option name="y" value="-447" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -195,6 +195,27 @@
                               </value>
                             </entry>
                             <entry key="scoreEntryToScoreView">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="SpectatorInitialise">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="SpectatorInitialiseToSpectatorView">
                               <value>
                                 <LayoutPositions />
                               </value>

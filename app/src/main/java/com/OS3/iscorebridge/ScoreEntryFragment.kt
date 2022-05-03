@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -382,7 +383,7 @@ class ScoreEntryFragment : Fragment(){
         view.findViewById<Button>(R.id.undoublebutton).setOnClickListener{
             setunDouble(it, view)
         }
-        view.findViewById<Button>(R.id.submitResult).setOnClickListener{
+        view.findViewById<FloatingActionButton>(R.id.submitResult).setOnClickListener{
             if(errorCheck(view)) {
                 if(logicCheck(view)){
                     game = getGame(view)

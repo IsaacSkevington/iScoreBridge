@@ -7,14 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".ScoreEntryFragment">
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/submitResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:clickable="true"
+        android:rotation="180"
+        android:src="@drawable/arrow_back_48px"
+        android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:maxImageSize="32dp" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -105,10 +111,10 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/spade"
-                        app:tint="#000000"
                         app:layout_constraintBottom_toTopOf="@+id/noTrumpButton"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tint="#000000" />
 
                     <ImageButton
                         android:id="@+id/heartButton"
@@ -116,10 +122,10 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/heart"
-                        app:tint="#FF0000"
                         app:layout_constraintBottom_toTopOf="@+id/spadeButton"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tint="#FF0000" />
 
                     <ImageButton
                         android:id="@+id/diamondButton"
@@ -127,10 +133,10 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/diamond"
-                        app:tint="#FF0000"
                         app:layout_constraintBottom_toTopOf="@+id/heartButton"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tint="#FF0000" />
 
                     <ImageButton
                         android:id="@+id/clubButton"
@@ -138,10 +144,10 @@
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/club"
-                        app:tint="#000000"
                         app:layout_constraintBottom_toTopOf="@+id/diamondButton"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tint="#000000" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

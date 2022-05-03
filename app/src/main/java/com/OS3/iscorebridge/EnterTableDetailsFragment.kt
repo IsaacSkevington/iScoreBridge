@@ -1,17 +1,14 @@
 package com.OS3.iscorebridge
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -129,7 +126,7 @@ class EnterTableDetailsFragment : Fragment() {
 
     fun next(){
         Toast.makeText(context, "Game entered successfully", Toast.LENGTH_LONG).show()
-        wifiClient.send(SENDCLIENTDETAILS, MYINFO.toString())
+        wifiClient.send(SENDJOINCOMPLETE, MYINFO.toString())
         findNavController().navigate(R.id.enterDetailsToWaitToString)
     }
 
@@ -141,46 +138,37 @@ class EnterTableDetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_enter_table_details, container, false)
     }
 
+    fun handleCommunication(c : Communication){
+        var ci = ClientInfo(c.msg)
+        MYINFO.north = ci.north
+        MYINFO.east = ci.east
+        MYINFO.south = ci.south
+        MYINFO.west = ci.west
+        if(ci.tableNumber == 0){
+            tableNumberIncorrect()
+        }
+        else if(ci.north.name == PLAYERNOTFOUND ||
+            ci.east.name == PLAYERNOTFOUND ||
+            ci.south.name == PLAYERNOTFOUND ||
+            ci.west.name == PLAYERNOTFOUND){
+            detailsIncorrect()
+        }
+        else{
+            confirmDetails()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var handler = object : Handler(Looper.myLooper()!!) {
-            override fun handleMessage(msg: Message) {
-                when (msg.what) {
-                    MESSAGE_CLIENT_DETAILS_OBTAINED -> {
-                        var ci = msg.obj as ClientInfo
-                        MYINFO.north = ci.north
-                        MYINFO.east = ci.east
-                        MYINFO.south = ci.south
-                        MYINFO.west = ci.west
-                        if(ci.tableNumber == 0){
-                            tableNumberIncorrect()
-                        }
-                        else if(ci.north.name == PLAYERNOTFOUND ||
-                            ci.east.name == PLAYERNOTFOUND ||
-                            ci.south.name == PLAYERNOTFOUND ||
-                            ci.west.name == PLAYERNOTFOUND){
-                            detailsIncorrect()
-                        }
-                        else{
-                            confirmDetails()
-                        }
-                    }
-                }
-
-            }
-        }
-
-        wifiClient.setHandler(handler)
-
-        view.findViewById<Button>(R.id.submitTableDataButton).setOnClickListener {
+        view.findViewById<FloatingActionButton>(R.id.submitTableDataButton).setOnClickListener {
             if(validate(view)){
                 MYINFO.tableNumber = requireView().findViewById<TextInputEditText>(R.id.tableInput).text.toString().toInt()
                 MYINFO.north = Player("", requireView().findViewById<TextInputEditText>(R.id.northInput).text.toString().toInt())
                 MYINFO.east = Player("", requireView().findViewById<TextInputEditText>(R.id.eastInput).text.toString().toInt())
                 MYINFO.south = Player("", requireView().findViewById<TextInputEditText>(R.id.southInput).text.toString().toInt())
                 MYINFO.west = Player("", requireView().findViewById<TextInputEditText>(R.id.westInput).text.toString().toInt())
-                wifiClient.send(CHECKCLIENTDETAILS, MYINFO.toString())
+                handleCommunication(wifiClient.sendForResponse(CHECKCLIENTDETAILS, MYINFO.toString()))
             }
         }
 
