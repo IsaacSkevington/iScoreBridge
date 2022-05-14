@@ -51,6 +51,8 @@ class Deal(var n : Hand = Hand(Cardinality(NORTH), ArrayList()),
         w = Hand(params[3])
     }
 
+
+
     fun getHand(cardinality : Cardinality) : Hand{
         return when (cardinality) {
             NORTH -> n

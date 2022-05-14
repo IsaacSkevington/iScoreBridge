@@ -29,11 +29,11 @@ class BoardsViewFragment : RefreshableFragment() {
         val fragMan = parentFragmentManager
         val fragTransaction = fragMan.beginTransaction()
 
-        match.boards.forEach {
-            if(it.value!!.playedBy(MYINFO.myNumber) || MYINFO.finished) {
+        gameInfo.match.boards.forEach {
+            if(it.value!!.playedBy(myInfo.myPair) || myInfo.finished) {
                 fragTransaction.add(
                     linearLayout.id,
-                    BoardReviewDisplayFragment(it.value!!, MYINFO.myNumber)
+                    BoardReviewDisplayFragment.newInstance(it.value!!, myInfo.myPair)
                 )
             }
         }

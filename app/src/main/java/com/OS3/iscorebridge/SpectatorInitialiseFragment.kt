@@ -26,16 +26,15 @@ class SpectatorInitialiseFragment : Fragment() {
     }
 
     fun checkSpectatorDetails(view : View) : Boolean{
-        var tableNumber = view.findViewById<EditText>(R.id.spectatorTableNumberEntry).text.toString().toInt()
+        var pairNumber = view.findViewById<EditText>(R.id.spectatorPairNumberEntry).text.toString().toInt()
         var playerNumber = view.findViewById<EditText>(R.id.spectatorPlayerNumberEntry).text.toString().toInt()
         var cardinality = if(view.findViewById<Switch>(R.id.spectatorCardinalitySwitch).isChecked) EASTWEST
                             else NORTHSOUTH
-        var info = SpectatorInfo(tableNumber, playerNumber, cardinality)
+        var info = SpectatorInfo(PlayerPair(pairNumber), playerNumber, cardinality)
         var response = wifiClient.sendForResponse(CHECKSPECTATORDETAILS, info.toString())
         var responseInfo = SpectatorInfo(response.msg)
         return if(responseInfo.confirmation){
-            MYINFO.tableNumber = tableNumber
-            MYINFO.myNumber = responseInfo.tableNumber
+            myInfo.myPair = responseInfo.pair
             true
         }
         else{

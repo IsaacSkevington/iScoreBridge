@@ -16,9 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class BoardScoreViewFragment : Fragment() {
 
     var boardNumber = 0
-    var pairNS = 0
-    var pairEW = 0
-    lateinit var board : Board
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +27,6 @@ class BoardScoreViewFragment : Fragment() {
     ): View? {
         val args : BoardScoreViewFragmentArgs by navArgs()
         this.boardNumber = args.boardNumber
-        this.pairNS = args.pairNS
-        this.pairEW = args.pairEW
-        this.board = match.boards[boardNumber]!!
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_board_score_view, container, false)
@@ -48,23 +42,23 @@ class BoardScoreViewFragment : Fragment() {
 
 
         view.findViewById<FloatingActionButton>(R.id.nextScoreEntryButton).setOnClickListener {
-            var action = BoardScoreViewFragmentDirections.scoreViewToScoreEntry(boardNumber, pairNS, pairEW)
+            var action = BoardScoreViewFragmentDirections.scoreViewToScoreEntry(boardNumber)
             findNavController().navigate(action)
         }
         view.findViewById<FloatingActionButton>(R.id.finishButton).setOnClickListener {
-            var builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Finish Match?")
+            AlertDialog.Builder(requireContext())
+                .setTitle("Finish Match?")
                 .setMessage("Are you sure you want to finish the match? You will not be able to score any more boards after this")
                 .setPositiveButton("Yes"){_, _ ->
-                    MYINFO.finishMatch()
                     findNavController().navigate(R.id.scoreViewToFinalScore)
                 }
                 .setNegativeButton("No"){_, _ ->
                 }
+                .create().show()
 
         }
 
-        this.board.displayScore(parentFragmentManager, pairNS, pairEW, view, layoutInflater)
+        gameInfo.match.boards[boardNumber]?.displayScore(parentFragmentManager, myInfo.currentTable.pairNS, myInfo.currentTable.pairEW, view, layoutInflater)
     }
 
 }

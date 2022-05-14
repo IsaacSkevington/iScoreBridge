@@ -1,0 +1,6 @@
+<-- Mitchell Movement for 2 Tables (2 rounds of n Boards) -->
+/?NS/EW/StartBoard/EndBoard/$$
+1/2/1/div(n,2)$$3/4/1/div(n,2)
+1/4/add(div(n,2),1)/n$$3/2/add(div(n,2),1)/n
+<-- Number of Winners -->
+2

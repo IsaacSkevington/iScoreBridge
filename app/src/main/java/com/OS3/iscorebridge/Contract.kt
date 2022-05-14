@@ -6,7 +6,6 @@ enum class ContractType{
     SLAM
 }
 
-
 class Contract {
 
     var suit: Suit
@@ -18,7 +17,9 @@ class Contract {
     var type : ContractType
 
 
-    constructor(suit: Suit, number: Int, declarer: Cardinality, doubled: Boolean = false, redoubled: Boolean = false){
+
+
+    constructor(suit: Suit = Suit(SUIT_NONE), number: Int = 0, declarer: Cardinality = Cardinality(NORTH), doubled: Boolean = false, redoubled: Boolean = false){
         this.suit = suit
         this.number = number
         this.doubled = doubled
@@ -51,7 +52,14 @@ class Contract {
         return toDisplayString(true)
     }
 
+    fun setAllPass(){
+        suit = SUIT_NONE
+    }
+
     fun toDisplayString(displayDeclarer : Boolean) : String{
+        if(suit == SUIT_NONE){
+            return "All Pass"
+        }
         var out = this.number.toString() + suit.toString()
         if(doubled){
             out += "X"
@@ -65,6 +73,9 @@ class Contract {
 
     fun points() : Int{
         val contractTricks = number
+        if(suit == SUIT_NONE){
+            return 0
+        }
         if(doubled){
             if(isMinor()){
                 return contractTricks * 40 + 100
@@ -203,8 +214,8 @@ class Contract {
         return score
     }
 
-    fun declaredBy(number : Int, pairNS : Int) : Boolean{
-        return if(number == pairNS){
+    fun declaredBy(pair : PlayerPair, pairNS : PlayerPair) : Boolean{
+        return if(pair == pairNS){
             declarer == NORTH || declarer == SOUTH
         } else{
             declarer == EAST || declarer == WEST

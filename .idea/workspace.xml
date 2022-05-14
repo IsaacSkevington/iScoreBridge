@@ -39,105 +39,101 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36d63adb-8de6-4bae-a886-a7a548e65d70" name="Default Changelist" comment="Added Bidding Constructor, fixed BoardReviewDisplayFragment.kt and FinalScoreFragment.kt">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/HelpFragment.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/HelpItem.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorInfo.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorInitialiseFragment.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/anim/fade_in_cover.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/anim/fade_out_cover.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/arrow_back_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/card_progress.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/help_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/help_center_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/loadingsuits.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/loadingsuits_nobg.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/login_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/logout_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/play_arrow_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/question_mark_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/search_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/visibility_48px.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_help.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_spectator_initialise.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/help_subpage.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/values/help_strings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/values/integers.xml" afterDir="false" />
+    <list default="true" id="36d63adb-8de6-4bae-a886-a7a548e65d70" name="Default Changelist" comment="Fixed spectator view, changed appearance, added help">
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell238" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell355" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell464" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell583" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell683" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell7122" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell783" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Howell8122" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/assets/Mitchell2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BoardEditFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Expression.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/InfoTag.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MovementCreator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MovementSkeleton.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MovementType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/PBNParser.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/PlayerPair.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/RadioGrouper.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Settings.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SettingsFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Time.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Timer.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/edit_48px.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/repeat_48px.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/auth_entry.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/director_details.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_board_edit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/movement_overview_table_display.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/movements_display_table.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/view_detail_movement_button.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cardview_cardview_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cardview_cardview_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/app/iScoreBridge.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/iScoreBridge.app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/navEditor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Board.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Board.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BoardReviewDisplayFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BoardReviewDisplayFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BoardScoreViewFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BoardScoreViewFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BoardsViewFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/BoardsViewFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Card.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Card.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Client.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Client.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/ClientInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/ClientInfo.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Contract.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Contract.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Deal.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Deal.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/EnterTableDetailsFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/EnterTableDetailsFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Exportable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Exportable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/FinalScoreFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/FinalScoreFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Game.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Game.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/GameInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/GameInfo.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Hand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Hand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/HomePageFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/HomePageFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/JoinGameFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/JoinGameFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Match.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Match.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Movement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Movement.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MovementDisplayFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/MovementDisplayFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/OverallScoreViewFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/OverallScoreViewFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/PlayerList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/PlayerList.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Round.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Round.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/ScoreEntryFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/ScoreEntryFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorViewFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorViewFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorInfo.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorInitialiseFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/SpectatorInitialiseFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StartGameFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StartGameFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Stats.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Stats.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StatsViewFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/StatsViewFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Suit.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Suit.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Table.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Table.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Version.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Version.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Vulnerability.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Vulnerability.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WaitToStartFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WaitToStartFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiClient.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiHost.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/menu_down.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/anim/menu_down.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/menu_up.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/anim/menu_up.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/rotate_close.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/anim/rotate_close.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/anim/rotate_open.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/anim/rotate_open.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiWriter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/WifiWriter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/about_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/about_layout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/find_player_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/find_player_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_board_score_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_board_score_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_enter_table_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_enter_table_details.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home_page.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home_page.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_join_game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_join_game.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_overall_score_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_overall_score_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_board_review_display.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_board_review_display.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_score_entry.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_score_entry.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_second.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_spectator_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_spectator_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_spectator_initialise.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_spectator_initialise.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_start_game_screen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_start_game_screen.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_stats_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_stats_view.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_wait_to_start.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_wait_to_start.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/menu.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/nav_graph.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\SSAPP\.android\avd\Pixel_2_API_31.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\SSAPP\.android\avd\Pixel_2_API_31_2.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -175,11 +171,11 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin File" />
-        <option value="Class" />
-        <option value="Kotlin Class" />
-        <option value="layoutResourceFile" />
         <option value="resourceFile" />
         <option value="valueResourceFile" />
+        <option value="Class" />
+        <option value="layoutResourceFile" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -218,9 +214,6 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
-  </component>
   <component name="ProjectId" id="24TRzAQPQiYyPvuz2P9HDZtc7ws" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -247,6 +240,7 @@
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="SelectDeploymentTargetsDialog.selectedDevices" value="SerialNumber@acdaa46f0406&#10;SerialNumber@bfef68c" />
     <property name="android-custom-viewD:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/java/com/OS3/iscorebridge/StarButton.kt_SELECTED" value="StarButton" />
+    <property name="android-custom-viewD:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/java/com/OS3/iscorebridge/VerticalTextView.kt_SELECTED" value="VerticalTextView" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/drawable" />
@@ -268,6 +262,8 @@
       <recent name="com.OS3.iscorebridge" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\assets" />
+      <recent name="D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\java\com\OS3\PBNParser" />
       <recent name="D:\Users\SSAPP\Documents\code\Java\iScoreBridge\app\src\main\res\layout\Help" />
     </key>
   </component>
@@ -449,7 +445,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650717154893</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Fixed spectator view, changed appearance, added help">
+      <created>1651607942276</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1651607942276</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -478,7 +481,8 @@
     <MESSAGE value="Added movement and menu" />
     <MESSAGE value="Added hand builder" />
     <MESSAGE value="Added Bidding Constructor, fixed BoardReviewDisplayFragment.kt and FinalScoreFragment.kt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Bidding Constructor, fixed BoardReviewDisplayFragment.kt and FinalScoreFragment.kt" />
+    <MESSAGE value="Fixed spectator view, changed appearance, added help" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed spectator view, changed appearance, added help" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -486,12 +490,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Board.kt</url>
-          <line>288</line>
+          <line>278</line>
           <option name="timeStamp" value="285" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/Deal.kt</url>
-          <line>102</line>
+          <line>104</line>
           <option name="timeStamp" value="287" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -499,22 +503,21 @@
           <line>68</line>
           <option name="timeStamp" value="288" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/OS3/iscorebridge/RadioGrouper.kt</url>
+          <line>14</line>
+          <option name="timeStamp" value="309" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.OS3.iscorebridge.Table" memberName="pairEW" />
+      </pinned-members>
+    </pin-to-top-manager>
     <watches-manager>
       <configuration name="app">
-        <watch expression="peers[i]" language="kotlin" />
-        <watch expression="peers[i].deviceName" language="kotlin" />
-        <watch expression="info.groupFormed" language="kotlin" />
-        <watch expression="info" language="kotlin" />
-        <watch expression="NORTH" language="kotlin" />
-        <watch expression="suitValueMapChar['C']" language="kotlin" />
-        <watch expression="valueToColorMap" language="kotlin" />
-        <watch expression="SUITS" language="kotlin" />
-        <watch expression="CARDVALUES" language="kotlin" />
-        <watch expression="currentSuit" language="kotlin" />
-        <watch expression="deal.getCardsUsedBySuit()[currentSuit]" language="kotlin" />
-        <watch expression="currentSuit == CLUBS" language="kotlin" />
+        <watch expression="&quot;$movementName${tables.size}$i$boardsPerRound&quot;" language="kotlin" />
       </configuration>
     </watches-manager>
   </component>

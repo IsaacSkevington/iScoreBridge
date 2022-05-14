@@ -13,7 +13,19 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class BoardReviewDisplayFragment(var board : Board, var myPair : Int) : Fragment() {
+class BoardReviewDisplayFragment() : Fragment() {
+
+
+    lateinit var board : Board
+    lateinit var myPair : PlayerPair
+    companion object{
+        fun newInstance(board : Board, myPair : PlayerPair): BoardReviewDisplayFragment{
+            var ret = BoardReviewDisplayFragment()
+            ret.board = board
+            ret.myPair = myPair
+            return ret
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -94,9 +94,17 @@ class Board {
 
 
 
-    fun getGame(pairNS: Int, pairEW: Int) : Game?{
+    fun getGame(pairNS: PlayerPair, pairEW: PlayerPair) : Game?{
         for(game in games){
             if(game.pairNS == pairNS && game.pairEW == pairEW){
+                return game
+            }
+        }
+        return null
+    }
+    fun getGame(pairNS: PlayerPair) : Game?{
+        for(game in games){
+            if(game.pairNS == pairNS){
                 return game
             }
         }
@@ -107,15 +115,15 @@ class Board {
         return getGame(game.pairNS, game.pairEW)
     }
 
-    fun hasGame(pairNS : Int, pairEW: Int) : Boolean{
+    fun hasGame(pairNS : PlayerPair, pairEW: PlayerPair) : Boolean{
         getGame(pairNS, pairEW) ?: return false
         return true
     }
 
 
-    fun hasGame(number : Int) : Boolean{
+    fun hasGame(pair : PlayerPair) : Boolean{
         this.games.forEach {
-            if(it.pairNS == number || it.pairEW == number){
+            if(it.pairNS == pair || it.pairEW == pair){
                 return true
             }
         }
@@ -134,8 +142,8 @@ class Board {
     }
 
     fun getGame(
-        pairNS: Int,
-        pairEW: Int,
+        pairNS: PlayerPair,
+        pairEW: PlayerPair,
         suit: Suit,
         trickNumbers: Int,
         tricksMade: Int,
@@ -147,7 +155,7 @@ class Board {
 
         val contract = Contract(suit, trickNumbers, declarer, doubled, redoubled)
         val leadCard = Card(lead)
-        return Game(boardNumber, contract, pairNS, pairEW, tricksMade, leadCard, vulnerability)
+        return Game(boardNumber, pairNS, pairEW,  vulnerability, contract, tricksMade, leadCard)
     }
 
     private fun IMPConversion(score: Int) : Int{
@@ -163,16 +171,16 @@ class Board {
         val scores = HashMap<Int, Int?>()
         for(game1 in this.games){
             for(game2 in this.games){
-                if(game1.pairNS == game2.pairEW && game1.pairEW == game2.pairNS && !scores.containsKey(game1.pairNS)){
+                if(game1.pairNS == game2.pairEW && game1.pairEW == game2.pairNS && !scores.containsKey(game1.pairNS.scoringNumber)){
                     val overallScorewrtNS = game1.score - game2.score
                     val IMPs : Int = IMPConversion(abs(overallScorewrtNS))
                     if(overallScorewrtNS > 0){
-                        scores[game1.pairNS] = IMPs
-                        scores[game1.pairEW] = IMPs * -1
+                        scores[game1.pairNS.scoringNumber] = IMPs
+                        scores[game1.pairEW.scoringNumber] = IMPs * -1
                     }
                     else{
-                        scores[game1.pairNS] = IMPs * -1
-                        scores[game1.pairEW] = IMPs
+                        scores[game1.pairNS.scoringNumber] = IMPs * -1
+                        scores[game1.pairEW.scoringNumber] = IMPs
                     }
                 }
             }
@@ -189,23 +197,23 @@ class Board {
         for(game1 in this.games){
             for(game2 in this.games){
                 if(game1.pairNS != game2.pairNS){
-                    if(!scores.containsKey(game1.pairNS)){
-                        scores[game1.pairNS] = 0
+                    if(!scores.containsKey(game1.pairNS.scoringNumber)){
+                        scores[game1.pairNS.scoringNumber] = 0
                     }
-                    scores[game1.pairNS] = when {
-                        game1.score == game2.score -> scores[game1.pairNS] !!+ 1
-                        game1.score > game2.score -> scores[game1.pairNS] !!+ 2
-                        else -> scores[game1.pairNS]
+                    scores[game1.pairNS.scoringNumber] = scores[game1.pairNS.scoringNumber] !!+ when {
+                        game1.score == game2.score -> 1
+                        game1.score > game2.score -> 2
+                        else -> 0
                     }
                 }
                 if(game1.pairEW != game2.pairEW){
-                    if(!scores.containsKey(game1.pairEW)){
-                        scores[game1.pairEW] = 0
+                    if(!scores.containsKey(game1.pairEW.scoringNumber)){
+                        scores[game1.pairEW.scoringNumber] = 0
                     }
-                    scores[game1.pairEW] = when {
-                        game1.score == game2.score -> scores[game1.pairEW] !!+ 1
-                        game1.score < game2.score -> scores[game1.pairEW] !!+ 2
-                        else -> scores[game1.pairEW]
+                    scores[game1.pairEW.scoringNumber] = scores[game1.pairEW.scoringNumber] !!+ when {
+                        game1.score == game2.score -> 1
+                        game1.score < game2.score -> 2
+                        else -> 0
                     }
                 }
             }
@@ -218,16 +226,6 @@ class Board {
             GAMEMODE_TEAMS -> teamsScore()
             GAMEMODE_PAIRS -> pairScore()
             else -> HashMap()
-        }
-    }
-
-    private fun calculateVulnerability(boardNumber: Int) : Vulnerability{
-        return when(boardNumber % 4){
-            0->Vulnerability(CARDINALITIES)
-            1-> Vulnerability(arrayOf())
-            2-> Vulnerability(arrayOf(NORTH, SOUTH))
-            3-> Vulnerability(arrayOf(EAST, WEST))
-            else -> Vulnerability(arrayOf())
         }
     }
 
@@ -248,7 +246,7 @@ class Board {
 
 
 
-    fun getDisplayScore(myPair : Int) : String{
+    fun getDisplayScore(myPair : PlayerPair) : String{
         var postfix : String
         val currentScores : MutableMap<Int,Int?> = if(gameInfo.gameMode == GAMEMODE_TEAMS){
 
@@ -261,7 +259,7 @@ class Board {
         }
         for(game in games) {
             if (game.pairNS == myPair || game.pairEW == myPair) {
-                return "${currentScores[myPair]!!} $postfix"
+                return "${currentScores[myPair.scoringNumber]!!} $postfix"
             }
         }
         return "0 $postfix"
@@ -274,7 +272,7 @@ class Board {
     fun viewHand(view : View, boardNumber : Int, layoutInflater : LayoutInflater){
         var builder = AlertDialog.Builder(view.context)
         var boardView = layoutInflater.inflate(R.layout.deal_view, null)
-        var deal = match.boards[boardNumber]!!.deal
+        var deal = gameInfo.match.boards[boardNumber]!!.deal
         builder.setMessage("Board $boardNumber")
             .setPositiveButton("Ok"){_, _ ->
 
@@ -285,18 +283,17 @@ class Board {
         dialog.show()
     }
 
-    fun viewBidding(view : View, pairNS : Int, pairEW: Int, boardNumber : Int, layoutInflater : LayoutInflater){
+    fun viewBidding(view : View, pairNS : PlayerPair, pairEW: PlayerPair, boardNumber : Int, layoutInflater : LayoutInflater){
         var builder = AlertDialog.Builder(view.context)
         var biddingView = layoutInflater.inflate(R.layout.bidding_view, null)
         biddingView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200)
-        match.boards[boardNumber]!!.getGame(pairNS, pairEW)!!.bidding.updateBiddingTable(biddingView)
+        gameInfo.match.boards[boardNumber]!!.getGame(pairNS, pairEW)!!.bidding.updateBiddingTable(biddingView)
         builder.setMessage("Bidding for board $boardNumber")
             .setPositiveButton("Ok"){_, _ ->
 
             }
             .setView(biddingView)
         var dialog = builder.create()
-        dialog.setView(biddingView)
         dialog.show()
     }
 
@@ -304,8 +301,8 @@ class Board {
         showHandConstructorDiag(fragMan){
             if(it.validate()){
                 it.number = boardNumber
-                match.boards[boardNumber]!!.deal = it
-                wifiService.send(SENDNEWDEAL, it.toString())
+                gameInfo.match.boards[boardNumber]!!.deal = it
+                wifiService.send(MESSAGE_SEND_DEAL, it.toString())
                 Toast.makeText(view.context, "Board created successfully", Toast.LENGTH_LONG).show()
                 true
             }
@@ -316,11 +313,11 @@ class Board {
         }
     }
 
-    fun biddingBuilder(fragMan : FragmentManager, view : View, pairNS: Int, pairEW : Int, boardNumber: Int){
+    fun biddingBuilder(fragMan : FragmentManager, view : View, pairNS: PlayerPair, pairEW : PlayerPair, boardNumber: Int){
         showBiddingConstructorDiag(fragMan, boardNumber){bidding ->
             this.getGame(pairNS, pairEW)?.also {game ->
                 game.bidding = bidding
-                wifiService.send(SENDEDITGAME, game.toString())
+                wifiService.send(MESSAGE_EDIT_GAME, game.toString())
             }
         }
 
@@ -341,7 +338,7 @@ class Board {
         dialog.show()
     }
 
-    fun createBidding(fragMan: FragmentManager, view : View, pairNS : Int, pairEW : Int,  boardNumber: Int){
+    fun createBidding(fragMan: FragmentManager, view : View, pairNS : PlayerPair, pairEW : PlayerPair, boardNumber: Int){
 
         var builder = AlertDialog.Builder(view.context)
         builder.setMessage("Board $boardNumber doesn't have bidding yet. Would you like to input the bids now?")
@@ -356,12 +353,12 @@ class Board {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun displayScore(fragMan: FragmentManager, myPair: Int, view: View, layoutInflater: LayoutInflater){
+    fun displayScore(fragMan: FragmentManager, myPair: PlayerPair, view: View, layoutInflater: LayoutInflater){
         games.forEach {
-            if(it.pairNS == myPair){
+            if(it.pairNS.uniqueEquals(myPair)){
                 return displayScore(fragMan, myPair, it.pairEW, view, layoutInflater)
             }
-            if(it.pairEW == myPair){
+            if(it.pairEW.uniqueEquals(myPair)){
                 return displayScore(fragMan, it.pairNS, myPair, view, layoutInflater)
             }
         }
@@ -369,7 +366,7 @@ class Board {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun displayScore(fragMan: FragmentManager, pairNS : Int, pairEW : Int, view : View, layoutInflater: LayoutInflater){
+    fun displayScore(fragMan: FragmentManager, pairNS : PlayerPair, pairEW : PlayerPair, view : View, layoutInflater: LayoutInflater){
         var tableLayout = view.findViewById<TableLayout>(R.id.ScoreViewTable)
         val currentScores : MutableMap<Int,Int?> = if(gameInfo.gameMode == GAMEMODE_TEAMS){
 
@@ -385,7 +382,7 @@ class Board {
 
         for(game in gamesSorted){
             val tableRow = TableRow(tableLayout.context)
-            if(game.pairNS == pairNS && game.pairEW == pairEW){
+            if(game.pairNS.uniqueEquals(pairNS) && game.pairEW.uniqueEquals(pairEW)){
                 tableRow.setBackgroundColor(Color.parseColor("#A6DAF2"))
             }
             tableRow.addView(makeText(game.contract.toDisplayString(), tableLayout))
@@ -393,8 +390,8 @@ class Board {
             tableRow.addView(makeText(game.tricks.toString(), tableLayout))
             tableRow.addView(makeText(game.score.toString(), tableLayout))
 
-            if(currentScores.containsKey(game.pairNS)){
-                tableRow.addView(makeText(currentScores[game.pairNS].toString(), tableLayout))
+            if(currentScores.containsKey(game.pairNS.scoringNumber)){
+                tableRow.addView(makeText(currentScores[game.pairNS.scoringNumber].toString(), tableLayout))
             }
             else{
                 tableRow.addView(makeText("?", tableLayout))
@@ -425,14 +422,14 @@ class Board {
     @RequiresApi(Build.VERSION_CODES.M)
     fun setStarListener(s : StarButton){
         s.also {
-            it.checked = MYINFO.isStarred(this)
+            it.checked = myInfo.isStarred(this)
             it.update()
 
             it.setOnTurnOn {
-                MYINFO.addStarredBoard(this)
+                myInfo.addStarredBoard(this)
             }
             it.setOnTurnOff {
-                MYINFO.removeStarredBoard(this)
+                myInfo.removeStarredBoard(this)
             }
 
         }
@@ -477,7 +474,7 @@ class Board {
 
     }
 
-    fun playedBy(myNumber: Int): Boolean {
-        return hasGame(myNumber)
+    fun playedBy(me: PlayerPair): Boolean {
+        return hasGame(me)
     }
 }

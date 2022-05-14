@@ -56,12 +56,6 @@
             <argument
                 android:name="boardNumber"
                 app:argType="integer" />
-            <argument
-                android:name="pairNS"
-                app:argType="integer" />
-            <argument
-                android:name="pairEW"
-                app:argType="integer" />
         </action>
 
     </fragment>
@@ -118,12 +112,6 @@
             <argument
                 android:name="boardNumber"
                 app:argType="integer" />
-            <argument
-                android:name="pairNS"
-                app:argType="integer" />
-            <argument
-                android:name="pairEW"
-                app:argType="integer" />
         </action>
 
     </fragment>
@@ -136,24 +124,13 @@
         <argument
             android:name="boardNumber"
             app:argType="integer" />
-        <argument
-            android:name="pairNS"
-            app:argType="integer" />
-        <argument
-            android:name="pairEW"
-            app:argType="integer" />
+
         <action
             android:id="@+id/scoreEntryToScoreView"
             app:destination="@id/BoardScoreViewFragment" >
 
             <argument
                 android:name="boardNumber"
-                app:argType="integer" />
-            <argument
-                android:name="pairNS"
-                app:argType="integer" />
-            <argument
-                android:name="pairEW"
                 app:argType="integer" />
 
         </action>
@@ -163,6 +140,9 @@
         <action
             android:id="@+id/scoreEntryToMovementDisplay"
             app:destination="@id/MovementDisplayFragment" />
+        <action
+            android:id="@+id/scoreEntryToFinalScore"
+            app:destination="@id/FinalScoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/MovementDisplayFragment"
@@ -173,24 +153,12 @@
         <argument
             android:name="boardNumber"
             app:argType="integer" />
-        <argument
-            android:name="pairNS"
-            app:argType="integer" />
-        <argument
-            android:name="pairEW"
-            app:argType="integer" />
         <action
             android:id="@+id/movementDisplayToScoreEntry"
             app:destination="@id/ScoreEntryFragment">
             <argument
                 android:name="boardNumber"
                 app:argType="integer" />
-            <argument
-                android:name="pairNS"
-                app:argType="integer" />
-            <argument
-                android:name="pairEW"
-                app:argType="integer"/>
         </action>
     </fragment>
     <fragment
@@ -203,14 +171,6 @@
             android:name="boardNumber"
             app:argType="integer"
             android:defaultValue="0" />
-        <argument
-            android:name="pairNS"
-            app:argType="integer"
-            android:defaultValue="0" />
-        <argument
-            android:name="pairEW"
-            app:argType="integer"
-            android:defaultValue="0" />
 
         <action
             android:id="@+id/scoreViewToScoreEntry"
@@ -218,12 +178,6 @@
             >
             <argument
                 android:name="boardNumber"
-                app:argType="integer" />
-            <argument
-                android:name="pairNS"
-                app:argType="integer" />
-            <argument
-                android:name="pairEW"
                 app:argType="integer" />
         </action>
         <action

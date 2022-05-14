@@ -20,6 +20,21 @@ class Round {
     }
 
 
+    fun getTableWithBoard(board : Int) : Int{
+        tables.forEach {
+            if(board in it.value.boards){
+                return it.value.tableNumber
+            }
+        }
+        return 0
+    }
+
+    fun copyTablesPairs(tables : MutableMap<Int, Table>){
+        tables.forEach {
+            this.tables[it.key]!!.pairNS = it.value.pairNS
+            this.tables[it.key]!!.pairEW = it.value.pairEW
+        }
+    }
 
     override fun toString(): String {
         var tableArray = ArrayList<Table>()

@@ -30,7 +30,7 @@ class StatsViewFragment : RefreshableFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        stats = Stats(MYINFO.myNumber, match)
+        stats = Stats(myInfo.myPair, gameInfo.match)
         stats.display(view)
     }
 }

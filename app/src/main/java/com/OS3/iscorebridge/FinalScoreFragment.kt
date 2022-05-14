@@ -13,7 +13,7 @@ class FinalScoreFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        match.setupForFragment(this, {}, {})
+        gameInfo.match.setupForFragment(this, {}, {})
     }
 
     override fun onCreateView(
@@ -25,13 +25,14 @@ class FinalScoreFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createFile() {
-        match.export()
+        gameInfo.match.export()
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        myInfo.finishMatch()
         view.findViewById<Button>(R.id.exportPDFButton).setOnClickListener {
             createFile()
         }

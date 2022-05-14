@@ -21,6 +21,11 @@ class Hand {
         this.cards = cards
     }
 
+    fun copy(other : Hand){
+        this.cardinality = other.cardinality
+        this.cards = other.cards
+    }
+
     constructor(s: String){
         val hand = s.split(dlm)
         this.cardinality = Cardinality(hand[0])

@@ -12,6 +12,8 @@ import java.net.Socket
 @Volatile lateinit var wifiHost: WifiHost
 var wifiHostInitialised = false
 
+
+
 class WifiHost(@Volatile var parentHandler: Handler){
     
     @Volatile lateinit var hostHandler : Handler
@@ -21,8 +23,13 @@ class WifiHost(@Volatile var parentHandler: Handler){
     lateinit var hostSocket : ServerSocket
     lateinit var hostConnectedSocket : Socket
     @Volatile var connecting = false
+    @Volatile var authcode : Int = SETTINGS.getPin()
     init{
         ClientHandler().start()
+    }
+
+    fun authorise(code : Int) : Boolean{
+        return code == authcode
     }
 
     fun processGroupInfo(groupInfo: WifiP2pGroup){
@@ -32,6 +39,10 @@ class WifiHost(@Volatile var parentHandler: Handler){
                 ConnectThread(client).start()
             }
         }
+    }
+
+    fun setHandler(handler: Handler){
+        parentHandler = handler
     }
 
     fun hasTable(table : Int) : Boolean{
@@ -77,33 +88,20 @@ class WifiHost(@Volatile var parentHandler: Handler){
             Looper.prepare()
             hostHandler = object : Handler(Looper.myLooper()!!) {
                 override fun handleMessage(msg: Message) {
-
+                    var msgWhat = msg.what
+                    var forwardObj : Any = msg.obj
                     when (msg.what) {
                         MESSAGE_CLIENT_DISCONNECTED->{
                             removeClient(msg.obj as Client)
-                            parentHandler.obtainMessage(MESSAGE_UPDATE_CLIENT).sendToTarget()
                         }
-                        MESSAGE_UPDATE_CLIENT ->{
-                            parentHandler.obtainMessage(MESSAGE_UPDATE_CLIENT).sendToTarget()
-                        }
-
                         MESSAGE_SEND_DEAL ->{
-                            val newDeal = msg.obj as Deal
-                            send(SENDGAME, newDeal.toString())
+                            send(MESSAGE_SEND_DEAL, (msg.obj as Deal).toString())
                         }
-                        MESSAGE_EDIT_GAME -> {
-                            val newGame = msg.obj as Game
-                            send(SENDEDITGAME, newGame.toString())
+                        MESSAGE_EDIT_GAME, MESSAGE_SEND_GAME -> {
+                            send(msg.what, (msg.obj as Game).toString())
                         }
-                        MESSAGE_SEND_GAME ->{
-                            val newGame = msg.obj as Game
-                            send(SENDGAME, newGame.toString())
-                        }
-                        else -> {
-                            parentHandler.obtainMessage(msg.what, msg.arg1, msg.arg2, msg.obj).sendToTarget()
-                        }
-
                     }
+                    parentHandler.obtainMessage(msgWhat, forwardObj)
 
                 }
             }
@@ -128,7 +126,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
             val clientPort = getNextPort()
             val clientAssignment = ClientAssignment(clientPort, clients.size)
 
-            val message = Communication(MYINFO.deviceName, SENDCONNECTIONINFO, clientAssignment.toString())
+            val message = Communication(myInfo.deviceName, SENDCONNECTIONINFO, clientAssignment.toString())
             OneTimeWifiWriter(socket, hostHandler, message.toString())
             socket.close()
             connecting = false
@@ -171,19 +169,27 @@ class WifiHost(@Volatile var parentHandler: Handler){
     }
 
     fun send(purpose : Int, msg : String){
-        val c = Communication(MYINFO.deviceName, purpose, msg)
+        val c = Communication(myInfo.deviceName, purpose, msg)
         for(client in clients){
             client.send(c)
         }
     }
 
 
+    fun getSkeletonTables() : ArrayList<Table>{
+        var tables = ArrayList<Table>()
+        clients.forEach {
+            tables.add(it.clientInfo!!.currentTable)
+        }
+        return tables
+    }
+
     fun startGame(parentHandler: Handler){
         send(
-            SENDSTART,
+            MESSAGE_START,
             gameInfo.toString()
         )
-        parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+        parentHandler.obtainMessage(MESSAGE_START).sendToTarget()
         StatusHandler().start()
     }
 
@@ -214,28 +220,33 @@ class WifiHost(@Volatile var parentHandler: Handler){
 
     }
 
-    fun findClient(tableNumber : Int) : Client?{
+    fun findClient(pairNumber : Int) : Client?{
         clients.forEach {
-            if(it.getTableNumber() == tableNumber){
+            if(it.clientInfo?.currentTable?.pairNS?.displayNumber == pairNumber || it.clientInfo?.currentTable?.pairEW?.displayNumber == pairNumber){
                 return it
             }
         }
         return null
     }
 
+    fun nextRound(){
+        send(MESSAGE_ROUND_COMPLETE, "")
+    }
+
     fun populate(si : SpectatorInfo) : Boolean{
-        var client = findClient(si.tableNumber) ?: return false
+        var client = findClient(si.pair.displayNumber) ?: return false
+        if(client.clientInfo!!.currentTable.pairNS != si.pair && client.clientInfo!!.currentTable.pairEW != si.pair){
+            return false
+        }
         try {
             if (si.cardinality == NORTHSOUTH) {
-                if (si.playerNumber != client.clientInfo!!.north.id && si.playerNumber != client.clientInfo!!.south.id) {
+                if (si.playerNumber != client.clientInfo!!.currentTable.pairNS.p1.id && si.playerNumber != client.clientInfo!!.currentTable.pairNS.p2.id) {
                     return false
                 }
-                si.tableNumber = client.clientInfo!!.calculateNumber(si.playerNumber)
             } else {
-                if (si.playerNumber != client.clientInfo!!.east.id && si.playerNumber != client.clientInfo!!.west.id) {
+                if (si.playerNumber != client.clientInfo!!.currentTable.pairEW.p1.id && si.playerNumber != client.clientInfo!!.currentTable.pairEW.p2.id) {
                     return false
                 }
-                si.tableNumber = client.clientInfo!!.calculateNumber(si.playerNumber)
             }
             return true
         }

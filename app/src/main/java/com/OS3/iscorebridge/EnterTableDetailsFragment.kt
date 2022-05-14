@@ -77,10 +77,10 @@ class EnterTableDetailsFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Some players failed to resolve!!\n" +
                 "Select confirm to proceed with the wrong names" +
-                "\nNorth: " + MYINFO.north.name +
-                "\nEast: " + MYINFO.east.name +
-                "\nSouth: " + MYINFO.south.name +
-                "\nWest: " + MYINFO.west.name)
+                "\nNorth: " + myInfo.currentTable.pairNS.p1.name +
+                "\nEast: " + myInfo.currentTable.pairEW.p1.name +
+                "\nSouth: " + myInfo.currentTable.pairNS.p2.name +
+                "\nWest: " + myInfo.currentTable.pairEW.p2.name)
 
             .setPositiveButton("Confirm"
             ) { _, _ ->
@@ -96,7 +96,7 @@ class EnterTableDetailsFragment : Fragment() {
 
     fun tableNumberIncorrect(){
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Someone with the table number " + MYINFO.tableNumber + " has already joined")
+        builder.setMessage("Someone with the table number " + myInfo.currentTable.tableNumber + " has already joined")
             .setPositiveButton("Ok"
             ) { _, _ ->
             }
@@ -107,10 +107,10 @@ class EnterTableDetailsFragment : Fragment() {
     fun confirmDetails(){
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Players resolved!\n" +
-                "North: " + MYINFO.north.name +
-                "\nEast: " + MYINFO.east.name +
-                "\nSouth: " + MYINFO.south.name +
-                "\nWest: " + MYINFO.west.name)
+                "\nNorth: " + myInfo.currentTable.pairNS.p1.name +
+                "\nEast: " + myInfo.currentTable.pairEW.p1.name +
+                "\nSouth: " + myInfo.currentTable.pairNS.p2.name +
+                "\nWest: " + myInfo.currentTable.pairEW.p2.name)
 
             .setPositiveButton("Confirm"
             ) { _, _ ->
@@ -126,7 +126,7 @@ class EnterTableDetailsFragment : Fragment() {
 
     fun next(){
         Toast.makeText(context, "Game entered successfully", Toast.LENGTH_LONG).show()
-        wifiClient.send(SENDJOINCOMPLETE, MYINFO.toString())
+        wifiClient.send(SENDJOINCOMPLETE, myInfo.toString())
         findNavController().navigate(R.id.enterDetailsToWaitToString)
     }
 
@@ -140,17 +140,17 @@ class EnterTableDetailsFragment : Fragment() {
 
     fun handleCommunication(c : Communication){
         var ci = ClientInfo(c.msg)
-        MYINFO.north = ci.north
-        MYINFO.east = ci.east
-        MYINFO.south = ci.south
-        MYINFO.west = ci.west
-        if(ci.tableNumber == 0){
+        myInfo.currentTable.pairNS.p1 = ci.currentTable.pairNS.p1
+        myInfo.currentTable.pairEW.p1 = ci.currentTable.pairEW.p1
+        myInfo.currentTable.pairNS.p2 = ci.currentTable.pairNS.p2
+        myInfo.currentTable.pairEW.p2 = ci.currentTable.pairEW.p2
+        if(ci.currentTable.tableNumber == 0){
             tableNumberIncorrect()
         }
-        else if(ci.north.name == PLAYERNOTFOUND ||
-            ci.east.name == PLAYERNOTFOUND ||
-            ci.south.name == PLAYERNOTFOUND ||
-            ci.west.name == PLAYERNOTFOUND){
+        else if(myInfo.currentTable.pairNS.p1.name == PLAYERNOTFOUND ||
+            myInfo.currentTable.pairEW.p1.name == PLAYERNOTFOUND ||
+            myInfo.currentTable.pairNS.p2.name == PLAYERNOTFOUND ||
+            myInfo.currentTable.pairEW.p2.name == PLAYERNOTFOUND){
             detailsIncorrect()
         }
         else{
@@ -163,12 +163,12 @@ class EnterTableDetailsFragment : Fragment() {
 
         view.findViewById<FloatingActionButton>(R.id.submitTableDataButton).setOnClickListener {
             if(validate(view)){
-                MYINFO.tableNumber = requireView().findViewById<TextInputEditText>(R.id.tableInput).text.toString().toInt()
-                MYINFO.north = Player("", requireView().findViewById<TextInputEditText>(R.id.northInput).text.toString().toInt())
-                MYINFO.east = Player("", requireView().findViewById<TextInputEditText>(R.id.eastInput).text.toString().toInt())
-                MYINFO.south = Player("", requireView().findViewById<TextInputEditText>(R.id.southInput).text.toString().toInt())
-                MYINFO.west = Player("", requireView().findViewById<TextInputEditText>(R.id.westInput).text.toString().toInt())
-                handleCommunication(wifiClient.sendForResponse(CHECKCLIENTDETAILS, MYINFO.toString()))
+                myInfo.currentTable.tableNumber = requireView().findViewById<TextInputEditText>(R.id.tableInput).text.toString().toInt()
+                myInfo.currentTable.pairNS.p1 = Player("", requireView().findViewById<TextInputEditText>(R.id.northInput).text.toString().toInt())
+                myInfo.currentTable.pairEW.p1 = Player("", requireView().findViewById<TextInputEditText>(R.id.eastInput).text.toString().toInt())
+                myInfo.currentTable.pairNS.p2 = Player("", requireView().findViewById<TextInputEditText>(R.id.southInput).text.toString().toInt())
+                myInfo.currentTable.pairEW.p2 = Player("", requireView().findViewById<TextInputEditText>(R.id.westInput).text.toString().toInt())
+                handleCommunication(wifiClient.sendForResponse(CHECKCLIENTDETAILS, myInfo.toString()))
             }
         }
 

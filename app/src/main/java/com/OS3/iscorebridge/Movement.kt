@@ -1,26 +1,34 @@
 package com.OS3.iscorebridge
 
-const val MOVEMENT_MITCHELL = 0
-const val MOVEMENT_HOWELL = 1
-const val MOVEMENT_NONE = 2
+fun getPlayerPair(tables : ArrayList<Table>, pairNum : Int) : PlayerPair?{
+    tables.forEach {
+        if(it.pairNS.scoringNumber == pairNum){
+            return it.pairNS
+        }
+        if(it.pairEW.scoringNumber == pairNum){
+            return it.pairEW
+        }
+    }
+    return null
+}
 
-class Movement {
+
+
+class Movement : MovementSkeleton{
 
     val dlm = "&&&"
     val secondarydlm = "**"
 
-    var rounds : MutableMap<Int, Round>
-    var selectedMovement : Int
-
-    constructor(tables : Int, gameMode : Int, boards: Int, selectedMovement : Int, arrowSwitch : Boolean, shareAndRelay : Boolean){
-        rounds = HashMap()
-        createMovement(tables, gameMode, boards, selectedMovement, arrowSwitch, shareAndRelay)
-        this.selectedMovement = selectedMovement
+    constructor(tables : ArrayList<Table>, skeleton : MovementSkeleton) : super(skeleton){
+        this.merge(tables)
     }
+
+    constructor()
+
     constructor(s:String) {
 
         var params = s.split(dlm + secondarydlm)
-        selectedMovement = params[0].toInt()
+        movementType = MovementType.valueOf(params[0])
         var hashMapString = params[1]
         rounds = HashMap()
         if (hashMapString.isNotEmpty()) {
@@ -30,61 +38,45 @@ class Movement {
                 rounds[r.roundNumber] = r
             }
         }
+        twoWinner = params[2].toBoolean()
     }
 
-    fun mitchellPairs(tables : Int, boards : Int, arrowSwitch: Boolean, shareAndRelay: Boolean){
-        if(tables % 2 == 0){
 
+    fun splitPairs() : Pair<ArrayList<PlayerPair>, ArrayList<PlayerPair>>{
+        var ret = Pair(ArrayList<PlayerPair>(), ArrayList<PlayerPair>())
+        this.rounds[1]!!.tables.forEach {
+            ret.first.add(it.value.pairNS)
+            ret.second.add(it.value.pairEW)
         }
-        else{
-            val boardsPerRound = boards/tables
+        return ret
+    }
 
-            for(i in 0 until tables){
-                rounds[i + 1] = Round(i+1)
-            }
-
-            for(tableNumber in 1..tables){
-                for(roundNumber in 1..tables){
-                    var pairEW = tables - roundNumber
-                    if(pairEW <= tables){
-                        pairEW += tables
-                    }
-                    var startBoard = boardsPerRound * (tableNumber + roundNumber - 2) + 1
-                    if(startBoard > boards){
-                        startBoard-= boards
-                    }
-                    var roundBoards = ArrayList<Int>()
-                    for(k in startBoard..startBoard+boardsPerRound){
-                        roundBoards.add(k)
-                    }
-                    var table = Table(tableNumber, roundBoards, tableNumber, pairEW)
-                    rounds[roundNumber]!!.tables[tableNumber] = table
-                }
+    fun getTablesInPlay(roundNumber : Int) : ArrayList<Table>{
+        var out = ArrayList<Table>()
+        rounds[roundNumber]!!.tables.forEach {
+            if(it.value.getNextBoard() != 0){
+                out.add(it.value)
             }
         }
-    }
-    fun mitchellTeams(tables:Int, boards: Int){
-
+        return out
     }
 
-    fun howell(tables: Int, boards: Int){
 
-    }
 
-    fun getNSTable(pairNumber : Int, roundNumber : Int) : Table?{
+    fun getNSTable(pair : PlayerPair, roundNumber : Int) : Table?{
         var round = rounds[roundNumber]!!
         round.tables.values.forEach {
-            if(it.pairNS == pairNumber){
+            if(it.pairNS == pair){
                 return it
             }
         }
         return null
     }
 
-    fun getEWTable(pairNumber : Int, roundNumber : Int) : Table?{
+    fun getEWTable(pair : PlayerPair, roundNumber : Int) : Table?{
         var round = rounds[roundNumber]!!
         round.tables.values.forEach {
-            if(it.pairEW == pairNumber){
+            if(it.pairEW == pair){
                 return it
             }
         }
@@ -107,10 +99,10 @@ class Movement {
         return null
     }
 
-    fun getNSMovement(round : Int, tableNumber : Int) : String{
-        var pairNS = rounds[round]!!.tables[tableNumber]!!.pairNS
+    fun getNSMovement(round : Int, currentTable : Table) : String{
+        var pairNS = currentTable.pairNS
         var nextNS : Table = getNSTable(pairNS, round + 1)!!
-        var movementNumber : Int =  nextNS.tableNumber - tableNumber
+        var movementNumber : Int =  nextNS.tableNumber - currentTable.tableNumber
         if(movementNumber < 0){
             movementNumber += rounds[round]!!.tables.size
         }
@@ -124,10 +116,10 @@ class Movement {
             else "NS: Go to table ${nextNS.tableNumber} and sit EW"
         }
     }
-    fun getEWMovement(round : Int, tableNumber : Int) : String{
-        var pairEW = rounds[round]!!.tables[tableNumber]!!.pairEW
+    fun getEWMovement(round : Int, currentTable: Table) : String{
+        var pairEW = currentTable.pairEW
         var nextEW : Table = getEWTable(pairEW, round + 1)!!
-        var movementNumber : Int =  nextEW.tableNumber - tableNumber
+        var movementNumber : Int =  nextEW.tableNumber - currentTable.tableNumber
         if(movementNumber < 0){
             movementNumber += rounds[round]!!.tables.size
         }
@@ -141,10 +133,13 @@ class Movement {
             else "EW: Go to table ${nextEW.tableNumber} and sit NS"
         }
     }
-    fun getBoardMovement(round : Int, tableNumber : Int) : String{
-        var boards = rounds[round]!!.tables[tableNumber]!!.boards
-        var nextBoards : Table = getBoardsTable(boards, round + 1)!!
-        var movementNumber : Int =  nextBoards.tableNumber - tableNumber
+    fun getBoardMovement(round : Int, currentTable : Table) : String{
+        var boards = currentTable.boards
+        if(boards.size == 0){
+            return "Boards: Go grab the boards you need when the round has started"
+        }
+        var nextBoards : Table = getBoardsTable(boards, round + 1)?: return "Boards: Go to the relay table"
+        var movementNumber : Int =  nextBoards.tableNumber - currentTable.tableNumber
         if(movementNumber < 0){
             movementNumber += rounds[round]!!.tables.size
         }
@@ -157,32 +152,23 @@ class Movement {
     }
 
 
-    private fun createMovement(tables : Int, boards : Int, gameMode : Int, movement : Int, arrowSwitch: Boolean, shareAndRelay: Boolean){
 
-        if(movement == MOVEMENT_NONE){
-            return
-        }
-        if(movement == MOVEMENT_HOWELL){
-            howell(tables, boards)
-        }
-        if(movement == MOVEMENT_MITCHELL){
-            if(gameMode == GAMEMODE_PAIRS) {
-                mitchellPairs(tables, boards, arrowSwitch, shareAndRelay)
-            }
-            else{
-                mitchellTeams(tables, boards)
-            }
-        }
+
+    fun getTable(pair : PlayerPair, round : Int) : Table{
+        return getNSTable(pair, round) ?: return getEWTable(pair, round)!!
     }
 
+
+
     override fun toString(): String {
-        var out = selectedMovement.toString() + dlm + secondarydlm
+        var out = movementType.toString() + dlm + secondarydlm
         for(round in rounds.values){
             out += round.toString() + dlm
         }
         if(rounds.values.isNotEmpty()){
             out.substring(0, out.length - dlm.length)
         }
+        out += dlm + secondarydlm + twoWinner.toString()
 
         return out
     }

@@ -8,8 +8,6 @@ import androidx.annotation.RequiresApi
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-@Volatile var match : Match = Match()
-
 class Match() : Exportable("scores", ".pdf"){
 
     private val pageWidth = 792
@@ -33,6 +31,8 @@ class Match() : Exportable("scores", ".pdf"){
         }
 
     }
+
+
 
 
     override fun toString(): String {
@@ -72,17 +72,17 @@ class Match() : Exportable("scores", ".pdf"){
 
 
 
-    fun getGame(boardNumber: Int, pairNS: Int, pairEW: Int, suit: Suit, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Cardinality, doubled: Boolean, redoubled: Boolean) : Game{
+    fun getGame(boardNumber: Int, pairNS: PlayerPair, pairEW: PlayerPair, suit: Suit, trickNumbers: Int, tricksMade: Int, lead: String, declarer: Cardinality, doubled: Boolean, redoubled: Boolean) : Game{
         val b = Board(boardNumber)
         return b.getGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
     }
 
-    fun getGames(myNumber : Int) : ArrayList<Game>{
+    fun getGames(myPair : PlayerPair) : ArrayList<Game>{
 
         var games = ArrayList<Game>()
         this.boards.forEach {
             it.value!!.games.forEach { game ->
-                if(game.pairNS == myNumber || game.pairEW == myNumber){
+                if(game.pairNS == myPair || game.pairEW == myPair){
                     games.add(game)
                 }
             }
@@ -105,7 +105,7 @@ class Match() : Exportable("scores", ".pdf"){
         }
     }
 
-    fun getBoards(pairNS: Int, pairEW: Int) : ArrayList<Int>{
+    fun getBoards(pairNS: PlayerPair, pairEW: PlayerPair) : ArrayList<Int>{
         var boardsPlayed = ArrayList<Int>()
         for(board in boards.values){
                 if(board!!.hasGame(pairNS, pairEW)){
@@ -115,17 +115,34 @@ class Match() : Exportable("scores", ".pdf"){
         return boardsPlayed
     }
 
-    fun getNextUnplayedBoard(round : Int, pairNS: Int, pairEW: Int) : Int{
-        var played = getBoards(pairNS, pairEW)
-        gameInfo.movement.rounds[round]!!.tables.forEach {
-            if(it.value.pairNS == pairNS && it.value.pairEW == pairEW){
-                it.value.boards.forEach { board ->
-                    if(!played.contains(board)){
-                        return board
-                    }
-                }
-                return 0
+    fun zeroRemainingBoards(lastBoard: Int){
+        var nextBoard = getNextUnplayedBoard(lastBoard)
+        while(nextBoard != 0){
+            var game = Game(nextBoard, myInfo.currentTable.pairNS, myInfo.currentTable.pairEW, calculateVulnerability(nextBoard))
+            boards[nextBoard]!!.addGame(game)
+            wifiService.send(MESSAGE_SEND_GAME, game.toString())
+            nextBoard = getNextUnplayedBoard(nextBoard)
+        }
+    }
+
+    fun getNextUnplayedBoard(lastBoard : Int) : Int{
+        if(lastBoard == 0){
+            return myInfo.getFirstBoard()
+        }
+        var played = getBoards(myInfo.currentTable.pairNS, myInfo.currentTable.pairEW)
+        var table = myInfo.currentTable
+        var startBoardIndex = table.boards.indexOf(lastBoard)
+        var currentBoardIndex = startBoardIndex + 1
+        while(currentBoardIndex != startBoardIndex){
+            if(currentBoardIndex == table.boards.size){
+                currentBoardIndex = 0
+                continue
             }
+            if(table.boards[currentBoardIndex] !in played){
+                return table.boards[currentBoardIndex]
+            }
+            currentBoardIndex++
+
         }
         return 0
 
@@ -147,7 +164,9 @@ class Match() : Exportable("scores", ".pdf"){
             TablePage(arrayOf("Position", "Team", "Final Score (IMPs)"))
         }
         val scoresImmut : MutableMap<Int, Int?> = scores
-        val sortedScores = scoresImmut.toSortedMap()
+        val scoresInt =  scoresImmut.entries.associate{(k,v)-> k to v}
+
+        val sortedScores = scoresInt.toSortedMap()
         var i = 0
         for(pair in sortedScores.keys.reversed()){
             i++

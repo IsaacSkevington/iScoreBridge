@@ -46,11 +46,35 @@ class OverallScoreViewFragment : RefreshableFragment() {
 
     }
 
-    private fun displayOverallScore(view : View){
-        val scores = match.getScores(gameInfo.gameMode)
-        val tableLayout = view.findViewById<TableLayout>(R.id.scoreDisplayTable)
-        tableLayout.removeAllViews()
-        tableLayout.isStretchAllColumns = true
+    private fun displayScoreTwoWinner(view : View, tableLayout: TableLayout, scores : MutableMap<Int, Int?>){
+
+        var scoresNS = HashMap<Int, Int?>()
+        var scoresEW = HashMap<Int, Int?>()
+
+        var pairs = gameInfo.movement.splitPairs()
+        var pairsNS = pairs.first
+        var pairsEW = pairs.second
+        scores.forEach {
+            if(PlayerPair(it.key) in pairsNS){
+                scoresNS[it.key] = it.value
+            }
+            else if(PlayerPair(it.key) in pairsEW){
+                scoresEW[it.key] = it.value
+            }
+        }
+
+        tableLayout.addView(TableRow(view.context).also{
+            it.addView(makeTitle("North/South", view))
+        })
+        displayScoreOneWinner(view, tableLayout, scoresNS)
+
+        tableLayout.addView(TableRow(view.context).also{
+            it.addView(makeTitle("East/West", view))
+        })
+        displayScoreOneWinner(view, tableLayout, scoresEW)
+    }
+
+    private fun displayScoreOneWinner(view : View, tableLayout: TableLayout, scores : MutableMap<Int, Int?>){
         val titleRow = TableRow(view.context)
         titleRow.addView(makeTitle("Position", view))
         if(gameInfo.gameMode == GAMEMODE_PAIRS){
@@ -63,7 +87,8 @@ class OverallScoreViewFragment : RefreshableFragment() {
         }
         tableLayout.addView(titleRow)
         val scoresImmut : MutableMap<Int, Int?> = scores
-        val sortedScores = scoresImmut.toSortedMap()
+        val scoresInt = scoresImmut.entries.associate { (k, v) -> k to v }
+        val sortedScores = scoresInt.toSortedMap()
         var i = 0
         for(pair in sortedScores.keys.reversed()){
             i++
@@ -73,6 +98,20 @@ class OverallScoreViewFragment : RefreshableFragment() {
             row.addView(makeText(sortedScores[pair]!!.toString(), view))
             tableLayout.addView(row)
         }
+    }
+
+    private fun displayOverallScore(view : View){
+        val scores = gameInfo.match.getScores(gameInfo.gameMode)
+        val tableLayout = view.findViewById<TableLayout>(R.id.scoreDisplayTable)
+        tableLayout.removeAllViews()
+        tableLayout.isStretchAllColumns = true
+        if(gameInfo.movement.twoWinner){
+            displayScoreTwoWinner(view, tableLayout, scores)
+        }
+        else{
+            displayScoreOneWinner(view, tableLayout, scores)
+        }
+
 
     }
 

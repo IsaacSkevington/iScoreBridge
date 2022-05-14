@@ -13,17 +13,7 @@ class PlayerList : Exportable("players", ".playerData"){
     var map : MutableMap<Int, String> = HashMap()
 
 
-    fun load(fileName : String, context : Context) : Boolean{
-        return try {
-            File(context.filesDir, fileName).forEachLine {
-                var p = Player(it)
-                map[p.id] = p.name
-            }
-            true
-        } catch(e : FileNotFoundException){
-            false
-        }
-    }
+
 
     fun remove(id : Int){
         map.remove(id)
@@ -178,6 +168,17 @@ class PlayerList : Exportable("players", ".playerData"){
         File(context.filesDir, fileName).delete()
         var file = File(context.filesDir, fileName)
         file.writeText(toString())
+    }
+    fun load(fileName : String, context : Context) : Boolean{
+        return try {
+            File(context.filesDir, fileName).forEachLine {
+                var p = Player(it)
+                map[p.id] = p.name
+            }
+            true
+        } catch(e : FileNotFoundException){
+            false
+        }
     }
 
     fun populate(p : Player) : Boolean{

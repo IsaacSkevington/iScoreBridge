@@ -90,7 +90,7 @@ class HomePage : Fragment() {
             }
             manager!!.requestDeviceInfo(channel) {
                 if (!idSet) {
-                    MYINFO.deviceName = it!!.deviceName
+                    myInfo.deviceName = it!!.deviceName
                     idSet = true
                     next()
                 }

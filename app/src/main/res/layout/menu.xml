@@ -75,8 +75,19 @@
             android:background="@color/colorPrimary"
             android:clickable="false"
             android:padding="20sp"
+            android:layout_marginBottom="5sp"
             android:shadowColor="#000000"
             android:text="About"
+            android:textColor="#FFFFFF" />
+        <Button
+            android:id="@+id/testingButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:clickable="false"
+            android:padding="20sp"
+            android:shadowColor="#000000"
+            android:text="Test"
             android:textColor="#FFFFFF" />
 
 

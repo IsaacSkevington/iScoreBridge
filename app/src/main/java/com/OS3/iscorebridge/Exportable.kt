@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -19,6 +20,8 @@ abstract class Exportable(val defaultName : String, val defaultExtension : Strin
 
     private var activityResultImportLauncher : ActivityResultLauncher<Intent>? = null
     private var activityResultExportLauncher : ActivityResultLauncher<Intent>? = null
+
+    var importFilename = ""
 
 
     fun setupForActivity(activity: ComponentActivity, onExportSuccess: () -> Unit, onImportSuccess: () -> Unit){
@@ -94,6 +97,8 @@ abstract class Exportable(val defaultName : String, val defaultExtension : Strin
                     val descriptor = contentResolver.openFileDescriptor(uri, "r")
                     FileInputStream(descriptor?.fileDescriptor).use {
                         if(read(it)){
+                            var file = File(uri.toString())
+                            importFilename = file.name
                             Toast.makeText(context, "Import successful", Toast.LENGTH_LONG).show()
                             return true
                         }

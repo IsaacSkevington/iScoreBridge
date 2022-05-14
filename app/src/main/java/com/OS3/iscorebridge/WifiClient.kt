@@ -50,7 +50,10 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                         MESSAGE_WRITER_DISCONNECTED->{
 
                         }
+
                         MESSAGE_READ ->{
+                            var forwardObj : Any? = msg.obj
+                            var msgWhat = msg.what
                             val c = msg.obj as Communication
                             if(responsePending){
                                 if(c.purpose == response.first){
@@ -59,28 +62,32 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                                 }
                             }
                             when(c.purpose){
-                                SENDGAME ->  {
-                                    if (c.deviceID != MYINFO.deviceName) {
-                                        val newGame = Game(c.msg)
-                                        match.addGame(newGame)
+                                MESSAGE_SEND_GAME ->  {
+                                    if (c.deviceID != myInfo.deviceName) {
+                                        gameInfo.match.addGame(Game(c.msg))
                                     }
                                 }
-                                SENDNEWDEAL -> {
+                                MESSAGE_SEND_DEAL -> {
                                     var deal = Deal(c.msg)
-                                    match.boards[deal.number]!!.deal = deal
+                                    gameInfo.match.boards[deal.number]!!.deal = deal
                                 }
-                                SENDSTART -> {
-                                val gameInfo = GameInfo(c.msg)
-                                    parentHandler.obtainMessage(MESSAGE_START, gameInfo).sendToTarget()
+                                MESSAGE_START -> {
+                                    val inf = GameInfo(c.msg)
+                                    for (player in gameInfo.players) {
+                                        if(player == myInfo.myPair){
+                                            myInfo.myPair = player
+                                        }
+                                    }
+                                    wifiService.clientList = inf.clientList
+                                    gameInfo = inf
+                                    forwardObj = gameInfo
+
                                 }
                                 MATCHFINISHED -> {
-                                    MYINFO.finished = true
+                                    myInfo.finished = true
                                 }
-                                else -> {
-                                    parentHandler.obtainMessage(MESSAGE_READ, msg.obj).sendToTarget()
-                                }
-
                             }
+                            parentHandler.obtainMessage(msgWhat, forwardObj).sendToTarget()
                         }
                     }
 
@@ -111,7 +118,7 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
     }
 
     fun send(purpose : Int, msg : String){
-        val c = Communication(MYINFO.deviceName, purpose, msg)
+        val c = Communication(myInfo.deviceName, purpose, msg)
         writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
     }
 
@@ -198,7 +205,7 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
                 parentHandler.obtainMessage(MESSAGE_CONNECTION_FAILED).sendToTarget()
             }
             else{
-                parentHandler.obtainMessage(MESSAGECONNECTEDHOST).sendToTarget()
+                parentHandler.obtainMessage(MESSAGE_CONNECTED_HOST).sendToTarget()
             }
         }
 
@@ -210,7 +217,7 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
     }
 
     fun sendForResponse(purpose : Int, msg : String) : Communication{
-        val c = Communication(MYINFO.deviceName, purpose, msg)
+        val c = Communication(myInfo.deviceName, purpose, msg)
         responsePending = true
         response.copy(purpose, null)
         writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()

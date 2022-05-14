@@ -5,16 +5,26 @@ class Table {
     val dlm = "&"
     var tableNumber : Int
     var boards : ArrayList<Int>
-    var pairNS : Int
-    var pairEW : Int
+    var pairNS : PlayerPair
+    var pairEW : PlayerPair
 
-    constructor(tableNumber : Int, boards: ArrayList<Int>, pairNS : Int, pairEW : Int){
+    constructor(tableNumber: Int){
+        this.tableNumber = tableNumber
+        this.boards = ArrayList<Int>()
+        this.pairNS = PlayerPair()
+        this.pairEW = PlayerPair()
+    }
+
+    constructor() : this(0)
+
+    constructor(tableNumber : Int, boards: ArrayList<Int>, pairNS : PlayerPair, pairEW : PlayerPair){
 
         this.boards = boards
         this.pairNS = pairNS
         this.pairEW = pairEW
         this.tableNumber = tableNumber
     }
+    constructor(tableNumber: Int, pairNS: PlayerPair, pairEW: PlayerPair) : this(tableNumber, ArrayList(), pairNS, pairEW)
 
     constructor(s : String){
         val table = s.split(dlm)
@@ -23,12 +33,12 @@ class Table {
         for(board in b){
             boards.add(board.toInt())
         }
-        this.pairNS = table[1].toInt()
-        this.pairEW = table[2].toInt()
+        this.pairNS = PlayerPair(table[1])
+        this.pairEW = PlayerPair(table[2])
         this.tableNumber = table[3].toInt()
     }
      fun getNextBoard() : Int{
-         var played = match.getBoards(pairNS, pairEW)
+         var played = gameInfo.match.getBoards(pairNS, pairEW)
          if(played.size == boards.size){
              return 0
          }
@@ -42,6 +52,13 @@ class Table {
          return 0
      }
 
+
+
+    fun switchPairs(){
+        var temp = pairNS
+        pairNS = pairEW
+        pairEW = temp
+    }
 
     override fun toString() : String{
         var boardListString = boards.toString()

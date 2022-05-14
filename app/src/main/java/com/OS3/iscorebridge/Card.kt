@@ -29,6 +29,7 @@ fun isCard(card : String) : Boolean{
 
 class Card (var suit : Suit, var value : CardValue) : Comparable<Card>{
 
+    constructor() : this(Suit(SPADES), CardValue(ACE))
     constructor(card:String) : this(Suit(card[1]), CardValue(card[0]))
 
     override fun compareTo(other: Card): Int {

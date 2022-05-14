@@ -123,7 +123,7 @@ class JoinGame : Fragment() {
         handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
-                    MESSAGECONNECTEDHOST -> {
+                    MESSAGE_CONNECTED_HOST -> {
                         if(!joined) {
                             joined = true
                             Toast.makeText(context, "Joined successfully", Toast.LENGTH_LONG).show()

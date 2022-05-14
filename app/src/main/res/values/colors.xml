@@ -35,4 +35,6 @@
     <color name="WHITE">#FFFFFF</color>
     <color name="MENUFADE">#C1C1C1</color>
 
+    <color name="selected">#CCCCCC</color>
+
 </resources>

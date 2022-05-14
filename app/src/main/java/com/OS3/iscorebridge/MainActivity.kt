@@ -1,10 +1,6 @@
 package com.OS3.iscorebridge
 
-import android.animation.ArgbEvaluator
-import android.animation.ValueAnimator
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.view.MenuItem
 import android.view.View
 import android.view.View.INVISIBLE
@@ -15,10 +11,12 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
+@Volatile var gameStarted = false
+@Volatile var finishRoundImmediately = false
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,24 +28,30 @@ class MainActivity : AppCompatActivity() {
     val fadeOutCover : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.fade_out_cover)}
     var clicked = false
     lateinit var menuButton : FloatingActionButton
+    var t = this
+    lateinit var roundTimer : Timer
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        MatchHandler().start()
         if(!playerList.load(PLAYERLISTFILE, this)){
             playerList.save(PLAYERLISTFILE, this)
         }
         playerList.setupForActivity(this, {}, {playerList.save(PLAYERLISTFILE, this.applicationContext)})
+        if(!SETTINGS.load(this)){
+            SETTINGS.save(this)
+        }
 
         setContentView(R.layout.activity_main)
-        findViewById<LinearLayout>(R.id.menuLayout).visibility = View.INVISIBLE
+        findViewById<LinearLayout>(R.id.menuLayout).visibility = INVISIBLE
         menuButton = findViewById(R.id.menuButton)
         menuButton.setOnClickListener {
             if(clicked) closeMenu()
             else openMenu()
         }
+        findViewById<Button>(R.id.testingButton).setOnClickListener { test() }
         findViewById<Button>(R.id.settingsButton).setOnClickListener { settings() }
         findViewById<Button>(R.id.addPlayer).setOnClickListener { addPlayer() }
         findViewById<Button>(R.id.findPlayer).setOnClickListener { searchPlayers() }
@@ -60,6 +64,74 @@ class MainActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.helpCenterButton).setOnClickListener {
             openHelp()
         }
+        infoTag = InfoTag(findViewById(R.id.infoTag), this)
+        findViewById<ImageView>(R.id.toolbarLogo).setOnClickListener {
+            if(gameStarted && !amHost){
+                callDirector()
+            }
+        }
+        findViewById<ImageView>(R.id.toolbarLogo).setOnLongClickListener {
+            if(gameStarted) {
+                if (amHost) {
+                    director()
+                } else {
+                    var view = layoutInflater.inflate(R.layout.auth_entry, null)
+                    var entry = view.findViewById<TextInputEditText>(R.id.authcodeEntry)
+                    AlertDialog.Builder(this)
+                        .setTitle("Authorisation Needed")
+                        .setView(view)
+                        .setPositiveButton("Ok") { _, _ ->
+                            try {
+                                if (wifiService.authorise(entry.text.toString().toInt())) {
+                                    director()
+                                } else {
+                                    Toast.makeText(this, "Authorisation Failed", Toast.LENGTH_LONG)
+                                }
+                            } catch (e: java.lang.Exception) {
+                                Toast.makeText(
+                                    this,
+                                    "Authorisation Failed, game may not have started yet",
+                                    Toast.LENGTH_LONG
+                                )
+                            }
+                        }
+                        .setNegativeButton("Cancel") { _, _ ->
+                        }
+
+                }
+            }
+            true
+        }
+    }
+
+    fun director(){
+        var view = layoutInflater.inflate(R.layout.director_details, null)
+        if(amHost) {
+            view.findViewById<TextView>(R.id.authCodeView).text = wifiHost.authcode.toString()
+        }
+        view.findViewById<FloatingActionButton>(R.id.openEditBoardDiag).setOnClickListener {
+            showBoardEditDiag(supportFragmentManager)
+        }
+        roundTimer.displayIn(view.findViewById(R.id.roundTimerView))
+        view.findViewById<FloatingActionButton>(R.id.nextRoundButton).setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Proceed to the next round")
+                .setMessage("Do you want to start the timer for the next round?")
+                .setPositiveButton("Yes"){_, _ -> wifiHost.nextRound()}
+                .setNegativeButton("No"){_, _ ->}
+                .create()
+                .show()
+        }
+        AlertDialog.Builder(this)
+            .setTitle("Director View")
+            .setView(view)
+            .setPositiveButton("Ok"){_, _ ->}
+            .create().show()
+    }
+
+    fun test(){
+
+
     }
 
     fun openHelp(){
@@ -111,6 +183,11 @@ class MainActivity : AppCompatActivity() {
             ret = false
         }
         return ret
+    }
+
+    fun callDirector(){
+        wifiService.send(MESSAGE_DIRECTOR_CALL, "")
+        Toast.makeText(this, "Called director", Toast.LENGTH_LONG)
     }
 
     fun addPlayer(){
@@ -187,7 +264,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun settings(){
-        Toast.makeText(this, "Settings not yet implemented", Toast.LENGTH_LONG).show()
+        showSettingsDiag(supportFragmentManager)
     }
 
 
@@ -198,25 +275,15 @@ class MainActivity : AppCompatActivity() {
 
         var view = layoutInflater.inflate(R.layout.about_layout, null)
         VERSIONS.last().display(this, view.findViewById(R.id.aboutLinearLayout))
-        builder.setMessage("About")
+        builder.setTitle("About")
+            .setView(view)
             .setPositiveButton("Ok"
             ) { _, _ ->
 
             }
-            .setView(view)
 
         var dialog = builder.create()
         dialog.show()
-    }
-
-    fun animateColour(layout : ConstraintLayout, from : Int, to : Int, duration : Long){
-        val colorFrom = resources.getColor(from, theme)
-        val colorTo = resources.getColor(to, theme)
-        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
-        colorAnimation.duration = duration
-
-        colorAnimation.addUpdateListener { animator -> layout.foreground = ColorDrawable(animator.animatedValue as Int) }
-        colorAnimation.start()
     }
 
     fun openMenu(){
@@ -257,6 +324,82 @@ class MainActivity : AppCompatActivity() {
             wifiService.kill()
         }
         catch(e:Exception){}
+    }
+
+    inner class MatchHandler : Thread(){
+        override fun run() {
+            Looper.prepare()
+            val handler = object : Handler(Looper.myLooper()!!){
+                override fun handleMessage(msg: Message) {
+                    when(msg.what){
+                        MESSAGE_ROUND_COMPLETE ->{
+                            finishRoundImmediately = true
+                            AlertDialog.Builder(t)
+                                .setTitle("Round Complete")
+                                .setMessage("Please move for the next round or finish the board you are playing, all remaining boards will gain a 0 score")
+                                .setPositiveButton("Ok"){_, _ ->}
+                                .create()
+                                .show()
+                        }
+                        MESSAGE_DIRECTOR_CALL ->{
+                            if(amHost) {
+                                var client = msg.obj as Client
+                                AlertDialog.Builder(t)
+                                    .setTitle("Director!")
+                                    .setMessage("Table ${client.clientInfo!!.currentTable} is requesting the director")
+                                    .setPositiveButton("On my way") { _, _ ->
+                                        client.send(
+                                            Communication(
+                                                myInfo.deviceName,
+                                                MESSAGE_DIRECTOR_CALL,
+                                                "Confirmed"
+                                            )
+                                        )
+                                    }
+                                    .create()
+                                    .show()
+                            }
+                            else{
+                                Toast.makeText(t, "Director is en-route", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
+            }
+            while(!gameStarted){
+
+            }
+            if(amHost) {
+                wifiHost.setHandler(handler)
+            }
+            else{
+                wifiClient.setHandler(handler)
+            }
+            roundTimer = Timer(Time(gameInfo.roundTime)){
+                var tablesInPlay = gameInfo.getTablesInPlay(myInfo.currentRound)
+                if(amHost) {
+
+                    AlertDialog.Builder(t)
+                        .setTitle("Round Timer Finished")
+                        .setMessage("The round timer has finished, would you like to automatically move everyone to the next round?\n" +
+                                "There are currently ${tablesInPlay.size} tables still playing")
+                        .setPositiveButton("Yes"){_, _ ->
+                            wifiHost.nextRound()
+                        }
+                        .setNegativeButton("No"){_, _ ->}
+                        .create()
+                        .show()
+                }
+                if(myInfo.currentTable in tablesInPlay){
+                    AlertDialog.Builder(t)
+                        .setTitle("Round Finished")
+                        .setMessage("The round time is up, but you are still playing, please try to finishing as quickly as possible")
+                        .setPositiveButton("Ok"){_, _ ->}
+                        .create()
+                        .show()
+                }
+            }
+        }
     }
 
 

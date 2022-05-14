@@ -22,15 +22,40 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
-
 var teams : Boolean = true
-var round = 0
 
 
 
 class ScoreEntryFragment : Fragment(){
 
-    lateinit var game : Game
+    var suitIdMap = mapOf<Suit, Int>(
+        CLUBS to R.id.clubButton,
+        DIAMONDS to R.id.diamondButton,
+        HEARTS to R.id.heartButton,
+        SPADES to R.id.spadeButton,
+        NOTRUMPS to R.id.noTrumpButton
+    )
+
+    var numberIdMap = mapOf<Int, Int>(
+        1 to R.id.button1,
+        2 to R.id.button2,
+        3 to R.id.button3,
+        4 to R.id.button4,
+        5 to R.id.button5,
+        6 to R.id.button6,
+        7 to R.id.button7
+    )
+
+    companion object{
+        fun newInstance(game : Game): ScoreEntryFragment{
+            var ret = ScoreEntryFragment()
+            ret.game = game
+            return ret
+        }
+    }
+
+
+    var game : Game? = null
 
     private var contractNumber: Int = 0
     private var contractSuit: Suit? = null
@@ -38,9 +63,12 @@ class ScoreEntryFragment : Fragment(){
     private var redoubled: Boolean = false
     private lateinit var background : Drawable
     var boardNumber = 0
-    var pairNS = 0
-    var pairEW = 0
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val args : ScoreEntryFragmentArgs by navArgs()
+        boardNumber = args.boardNumber
+    }
 
     private fun displayContract(view : View){
         var text: String
@@ -61,19 +89,19 @@ class ScoreEntryFragment : Fragment(){
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private fun setSuit(suit: Suit, button: View, view: View){
+    private fun setSuit(suit: Suit, view: View){
         view.findViewById<ImageButton>(R.id.clubButton).background = background
         view.findViewById<ImageButton>(R.id.diamondButton).background = background
         view.findViewById<ImageButton>(R.id.heartButton).background = background
         view.findViewById<ImageButton>(R.id.spadeButton).background = background
         view.findViewById<Button>(R.id.noTrumpButton).background = background
-        button.background = ColorDrawable(Color.CYAN)
+        view.findViewById<Button>(suitIdMap[suit]!!).background = ColorDrawable(Color.CYAN)
         contractSuit = Suit(suit)
         displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private fun setNumber(number: Int, button : View, view: View){
+    private fun setNumber(number: Int, view: View){
         view.findViewById<Button>(R.id.button1).background = background
         view.findViewById<Button>(R.id.button2).background = background
         view.findViewById<Button>(R.id.button3).background = background
@@ -81,36 +109,36 @@ class ScoreEntryFragment : Fragment(){
         view.findViewById<Button>(R.id.button5).background = background
         view.findViewById<Button>(R.id.button6).background = background
         view.findViewById<Button>(R.id.button7).background = background
-        button.background = ColorDrawable(Color.CYAN)
+        view.findViewById<Button>(numberIdMap[number]!!).background = ColorDrawable(Color.CYAN)
         contractNumber = number
         displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private fun setDouble(button: View, view: View){
+    private fun setDouble(view: View){
         view.findViewById<Button>(R.id.undoublebutton).background = background
         view.findViewById<Button>(R.id.reDoubleButton).background = background
-        button.background = ColorDrawable(Color.CYAN)
+        view.findViewById<Button>(R.id.DoubleButton).background = ColorDrawable(Color.CYAN)
         redoubled = false
         doubled = true
         displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private fun setreDouble(button: View, view: View){
+    private fun setreDouble(view: View){
         view.findViewById<Button>(R.id.undoublebutton).background = background
         view.findViewById<Button>(R.id.DoubleButton).background = background
-        button.background = ColorDrawable(Color.CYAN)
+        view.findViewById<Button>(R.id.reDoubleButton).background = ColorDrawable(Color.CYAN)
         redoubled = true
         doubled = false
         displayContract(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-    private fun setunDouble(button: View, view: View){
+    private fun setunDouble(view: View){
         view.findViewById<Button>(R.id.DoubleButton).background = background
         view.findViewById<Button>(R.id.reDoubleButton).background = background
-        button.background = ColorDrawable(Color.CYAN)
+        view.findViewById<Button>(R.id.undoublebutton).background = ColorDrawable(Color.CYAN)
         redoubled = false
         doubled = false
         displayContract(view)
@@ -247,8 +275,8 @@ class ScoreEntryFragment : Fragment(){
         val pairNS = view.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
         val pairEW = view.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
         val boardNumber = view.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
-        if(match.boards.containsKey(boardNumber)){
-            if(match.boards[boardNumber]!!.hasGame(pairNS, pairEW)){
+        if(gameInfo.match.boards.containsKey(boardNumber)){
+            if(gameInfo.match.boards[boardNumber]!!.hasGame(myInfo.currentTable.pairNS, myInfo.currentTable.pairEW)){
                 view.findViewById<TextInputLayout>(R.id.BoardNumLayout).error = "Game already played"
                 view.findViewById<TextInputLayout>(R.id.NorthSouthLayout).error = "Game already played"
                 view.findViewById<TextInputLayout>(R.id.EastWestLayout).error = "Game already played"
@@ -259,10 +287,10 @@ class ScoreEntryFragment : Fragment(){
     }
 
     private fun getGame(view : View) : Game{
-        pairNS = view.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt()
-        pairEW = view.findViewById<TextView>(R.id.EastWest).text.toString().toInt()
+        var pairNS = gameInfo.getPlayerPair(view.findViewById<TextView>(R.id.NorthSouth).text.toString().toInt())!!
+        var pairEW = gameInfo.getPlayerPair(view.findViewById<TextView>(R.id.EastWest).text.toString().toInt())!!
         boardNumber = view.findViewById<TextView>(R.id.BoardNum).text.toString().toInt()
-        return match.getGame(  boardNumber,
+        return gameInfo.match.getGame(  boardNumber,
             pairNS,
             pairEW,
             contractSuit!!,
@@ -277,9 +305,9 @@ class ScoreEntryFragment : Fragment(){
 
     private fun submit(game : Game){
 
-        match.addGame(game)
-        wifiService.send(SENDGAME, game.toString())
-        var action = ScoreEntryFragmentDirections.scoreEntryToScoreView(boardNumber, pairNS, pairEW)
+        gameInfo.match.addGame(game)
+        wifiService.send(MESSAGE_SEND_GAME, game.toString())
+        var action = ScoreEntryFragmentDirections.scoreEntryToScoreView(boardNumber)
         findNavController().navigate(action)
 
     }
@@ -293,18 +321,53 @@ class ScoreEntryFragment : Fragment(){
 
         val args : ScoreEntryFragmentArgs by navArgs()
         this.boardNumber = args.boardNumber
-        this.pairNS = args.pairNS
-        this.pairEW = args.pairEW
 
         return inflater.inflate(R.layout.fragment_score_entry, container, false)
     }
 
     fun nextRound(){
-        var action = ScoreEntryFragmentDirections.scoreEntryToMovementDisplay(boardNumber, pairNS, pairEW)
-        findNavController().navigate(action)
+        if(myInfo.hasNextRound()) {
+            var action = ScoreEntryFragmentDirections.scoreEntryToMovementDisplay(boardNumber)
+            findNavController().navigate(action)
+        }
+        else{
+            infoTag.clear()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Match Finished")
+                .setMessage("You have completed all the boards, time to take a look at the scores!")
+                .setPositiveButton("Ok"){_, _ ->}
+                .create().show()
+            findNavController().navigate(R.id.scoreEntryToFinalScore)
+        }
     }
 
 
+    fun loadGame(view: View){
+        view.findViewById<TextView>(R.id.NorthSouth).text = game!!.pairNS.displayNumber.toString()
+        view.findViewById<TextView>(R.id.EastWest).text = game!!.pairEW.displayNumber.toString()
+        view.findViewById<TextView>(R.id.BoardNum).text = game!!.boardNumber.toString()
+        game!!.contract.also {
+            setSuit(it.suit, view)
+            setNumber(it.number, view)
+            when {
+                it.doubled -> {
+                    setDouble(view)
+                }
+                it.redoubled -> {
+                    setreDouble(view)
+                }
+                else -> {
+                    setunDouble(view)
+                }
+            }
+            view.findViewById<TextView>(R.id.DeclarerEntry).text = it.declarer.toDisplayString()
+
+
+
+        }
+        view.findViewById<TextView>(R.id.TricksEntry).text = game!!.tricks.toString()
+        view.findViewById<TextView>(R.id.LeadEntry).text = game!!.lead.toString()
+    }
 
 
 
@@ -313,108 +376,112 @@ class ScoreEntryFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.undoublebutton).background = ColorDrawable(Color.CYAN)
-
-        if(gameInfo.movementType == MOVEMENT_NONE){
-            if(pairNS != 0 && pairEW != 0 && boardNumber != 0){
-                boardNumber+= 1
-                view.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
-                view.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
-                view.findViewById<TextView>(R.id.BoardNum).text = boardNumber.toString()
-            }
+        gameStarted = true
+        if(game != null){
+            loadGame(view)
         }
-
-        else{
-            boardNumber = match.getNextUnplayedBoard(round, pairNS, pairEW)
-            if(boardNumber == 0){
+        else {
+            boardNumber = gameInfo.match.getNextUnplayedBoard(boardNumber)
+            if (boardNumber == 0) {
                 nextRound()
                 return
             }
-            else {
-                view.findViewById<TextView>(R.id.NorthSouth).text = pairNS.toString()
-                view.findViewById<TextView>(R.id.EastWest).text = pairEW.toString()
-                view.findViewById<TextView>(R.id.BoardNum).text = boardNumber.toString()
+            if(finishRoundImmediately){
+                finishRoundImmediately = false
+                gameInfo.match.zeroRemainingBoards(boardNumber)
+                nextRound()
+                return
             }
+            view.findViewById<TextView>(R.id.NorthSouth).text =
+                myInfo.currentTable.pairNS.toString()
+            view.findViewById<TextView>(R.id.EastWest).text = myInfo.currentTable.pairEW.toString()
+            view.findViewById<TextView>(R.id.BoardNum).text = boardNumber.toString()
         }
 
         background = view.findViewById<ImageButton>(R.id.clubButton).background
 
         view.findViewById<ImageButton>(R.id.clubButton).setOnClickListener{
-            setSuit(CLUBS, it, view)
+            setSuit(CLUBS, view)
         }
         view.findViewById<ImageButton>(R.id.diamondButton).setOnClickListener{
-            setSuit(DIAMONDS, it, view)
+            setSuit(DIAMONDS, view)
         }
         view.findViewById<ImageButton>(R.id.heartButton).setOnClickListener{
-            setSuit(HEARTS, it, view)
+            setSuit(HEARTS, view)
         }
         view.findViewById<ImageButton>(R.id.spadeButton).setOnClickListener{
-            setSuit(SPADES, it, view)
+            setSuit(SPADES, view)
         }
         view.findViewById<Button>(R.id.noTrumpButton).setOnClickListener{
-            setSuit(NOTRUMPS, it, view)
+            setSuit(NOTRUMPS, view)
         }
         view.findViewById<Button>(R.id.button1).setOnClickListener{
-            setNumber(1, it, view)
+            setNumber(1, view)
         }
         view.findViewById<Button>(R.id.button2).setOnClickListener{
-            setNumber(2, it, view)
+            setNumber(2, view)
         }
         view.findViewById<Button>(R.id.button3).setOnClickListener{
-            setNumber(3, it, view)
+            setNumber(3, view)
         }
         view.findViewById<Button>(R.id.button4).setOnClickListener{
-            setNumber(4, it, view)
+            setNumber(4, view)
         }
         view.findViewById<Button>(R.id.button5).setOnClickListener{
-            setNumber(5, it, view)
+            setNumber(5, view)
         }
         view.findViewById<Button>(R.id.button6).setOnClickListener{
-            setNumber(6, it, view)
+            setNumber(6, view)
         }
         view.findViewById<Button>(R.id.button7).setOnClickListener{
-            setNumber(7, it, view)
+            setNumber(7, view)
         }
         view.findViewById<Button>(R.id.DoubleButton).setOnClickListener{
-            setDouble(it, view)
+            setDouble(view)
         }
         view.findViewById<Button>(R.id.reDoubleButton).setOnClickListener{
-            setreDouble(it, view)
+            setreDouble(view)
         }
         view.findViewById<Button>(R.id.undoublebutton).setOnClickListener{
-            setunDouble(it, view)
+            setunDouble(view)
         }
         view.findViewById<FloatingActionButton>(R.id.submitResult).setOnClickListener{
             if(errorCheck(view)) {
-                if(logicCheck(view)){
-                    game = getGame(view)
+                if (logicCheck(view)) {
+                    getGame(view).also {game ->
+                        this.game = game
+                        val resultString = when {
+                            game.tricks - (game.contract.number + 6) == 0 -> {
+                                "="
+                            }
+                            game.tricks - (game.contract.number + 6) < 0 -> {
+                                (game.tricks - (game.contract.number + 6)).toString()
+                            }
+                            else -> {
+                                "+" + (game.tricks - (game.contract.number + 6)).toString()
+                            }
+                        }
+                        val builder = AlertDialog.Builder(view.context)
+                        builder.setMessage(
+                            "Confirmation required!" +
+                                    "\nBoard: " + game.boardNumber.toString() + " (NS " + game.pairNS.toString() + " vs EW " + game.pairEW.toString() + ")" +
+                                    "\nContract: " + game.contract.toDisplayString(false) + " by " + game.contract.declarer +
+                                    "\nTricks: " + game.tricks.toString() + " (" + resultString + ")" +
+                                    "\nScore: " + game.score.toString()
+                        )
+                            .setPositiveButton(
+                                "Confirm"
+                            ) { _, _ ->
+                                submit(game)
+                            }
+                            .setNegativeButton(
+                                "Reject"
+                            ) { _, _ ->
 
-                    val resultString = when {
-                        game.tricks - (game.contract.number + 6) == 0 -> {
-                            "="
-                        }
-                        game.tricks - (game.contract.number + 6) < 0 -> {
-                            (game.tricks - (game.contract.number + 6)).toString()
-                        }
-                        else -> {
-                            "+" + (game.tricks - (game.contract.number + 6)).toString()
-                        }
+                            }
+                        builder.create()
+                        builder.show()
                     }
-                    val builder = AlertDialog.Builder(view.context)
-                    builder.setMessage("Confirmation required!" +
-                            "\nBoard: " + game.boardNumber.toString() + " (NS " + game.pairNS.toString() + " vs EW " + game.pairEW.toString() + ")" +
-                            "\nContract: " + game.contract.toDisplayString(false) + " by " + game.contract.declarer +
-                            "\nTricks: " + game.tricks.toString() + " (" + resultString + ")" +
-                            "\nScore: " + game.score.toString())
-                        .setPositiveButton("Confirm"
-                        ) { _, _ ->
-                            submit(game)
-                        }
-                        .setNegativeButton("Reject"
-                        ) { _, _ ->
-
-                        }
-                    builder.create()
-                    builder.show()
                 }
             }
         }

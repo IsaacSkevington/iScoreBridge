@@ -46,8 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="20dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/StartPlayingButton"
+        app:layout_constraintBottom_toTopOf="@+id/startGameBackButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -57,6 +56,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addDealsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:src="@drawable/outline_card_black"
+                android:tint="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selectMovementButton"
+                app:maxImageSize="32dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/selectMovementButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/repeat_48px"
+                android:tint="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5"
+                app:maxImageSize="32dp" />
 
             <TableLayout
                 android:id="@+id/playersTable"
@@ -86,21 +113,9 @@
                 android:id="@+id/constraintLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-                <CheckBox
-                    android:id="@+id/arrowSwitchCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="Arrow Switch"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movementGroup" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -111,16 +126,6 @@
                     app:layout_constraintBottom_toBottomOf="@+id/modeSwitch"
                     app:layout_constraintEnd_toStartOf="@+id/modeSwitch"
                     app:layout_constraintTop_toTopOf="@+id/modeSwitch" />
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Movement"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/modeSwitch" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -141,7 +146,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     app:errorEnabled="true"
-                    app:layout_constraintEnd_toStartOf="@+id/movementGroup"
+                    app:layout_constraintEnd_toStartOf="@+id/space2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -163,7 +168,7 @@
                     android:paddingBottom="10dp"
                     app:errorEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/movementGroup"
+                    app:layout_constraintStart_toEndOf="@+id/space2"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -184,78 +189,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/numberTablesLayout" />
 
-                <RadioGroup
-                    android:id="@+id/movementGroup"
+                <Space
+                    android:id="@+id/space2"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checkedButton="@id/movementNone"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12">
-
-                    <RadioButton
-                        android:id="@+id/movementNone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="None"
-                        tools:layout_editor_absoluteX="181dp"
-                        tools:layout_editor_absoluteY="169dp" />
-
-                    <RadioButton
-                        android:id="@+id/movementHowell"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Howell"
-                        tools:layout_editor_absoluteX="181dp"
-                        tools:layout_editor_absoluteY="201dp" />
-
-                    <RadioButton
-                        android:id="@+id/movementMitchell"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Mitchell"
-                        tools:layout_editor_absoluteX="181dp"
-                        tools:layout_editor_absoluteY="233dp" />
-
-                </RadioGroup>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/mitchellTypeLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/arrowSwitchCheck">
-
-                    <Switch
-                        android:id="@+id/mitchellTypeSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView19"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Skip"
-                        app:layout_constraintBottom_toBottomOf="@+id/mitchellTypeSwitch"
-                        app:layout_constraintEnd_toStartOf="@+id/mitchellTypeSwitch"
-                        app:layout_constraintTop_toTopOf="@+id/mitchellTypeSwitch" />
-
-                    <TextView
-                        android:id="@+id/textView20"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Share &amp; Relay"
-                        app:layout_constraintBottom_toBottomOf="@+id/mitchellTypeSwitch"
-                        app:layout_constraintStart_toEndOf="@+id/mitchellTypeSwitch"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="20dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -274,7 +221,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingBottom="100sp"
                 android:text="Tell the other players this code"
                 android:textSize="36sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -291,8 +237,33 @@
                 app:layout_constraintTop_toBottomOf="@+id/playersTable"
                 tools:layout_editor_absoluteX="1dp" />
 
+            <TextView
+                android:id="@+id/dealSelectedView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="No deal selected"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/addDealsButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/addDealsButton"
+                app:layout_constraintTop_toTopOf="@+id/addDealsButton" />
+
+            <TextView
+                android:id="@+id/movementSelectedView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="No Movement Selected"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/selectMovementButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/selectMovementButton"
+                app:layout_constraintTop_toTopOf="@+id/selectMovementButton" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

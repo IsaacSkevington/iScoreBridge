@@ -59,7 +59,6 @@ class WifiWriter(private var socket: Socket, private var serviceHandler : Handle
                             else if (msg.arg1 == BYTEARRAY) {
                                 write(msg.obj as ByteArray)
                             }
-
                         }
                     }
                 }

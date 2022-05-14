@@ -3,15 +3,15 @@ package com.OS3.iscorebridge
 class Game {
     var contract: Contract
     var bidding : Bidding
-    var pairNS: Int
-    var pairEW: Int
+    var pairNS: PlayerPair
+    var pairEW: PlayerPair
     var tricks: Int
     var score: Int
     var boardNumber : Int
     var lead : Card
     var dlm = "||"
 
-    constructor(boardNumber : Int, contract: Contract, pairNS: Int, pairEW: Int, tricks: Int, lead: Card, vulnerability: Vulnerability){
+    constructor(boardNumber : Int, pairNS: PlayerPair, pairEW: PlayerPair, vulnerability: Vulnerability, contract: Contract = Contract(), tricks: Int = 0, lead: Card = Card()){
         this.boardNumber = boardNumber
         this.contract = contract
         this.pairNS = pairNS
@@ -22,12 +22,13 @@ class Game {
         this.bidding = Bidding(getDealer(boardNumber))
     }
 
+
     constructor(game: String){
         val parametersAsString = game.split(dlm)
         this.boardNumber = parametersAsString[0].toInt()
         this.contract = Contract(parametersAsString[1])
-        this.pairNS = parametersAsString[2].toInt()
-        this.pairEW = parametersAsString[3].toInt()
+        this.pairNS = PlayerPair(parametersAsString[2])
+        this.pairEW = PlayerPair(parametersAsString[3])
         this.tricks = parametersAsString[4].toInt()
         this.lead = Card(parametersAsString[5])
         this.score = parametersAsString[6].toInt()
@@ -37,6 +38,7 @@ class Game {
     override fun toString(): String {
         return this.boardNumber.toString() + dlm +this.contract.toString() + dlm + this.pairNS.toString() + dlm + this.pairEW.toString() + dlm + this.tricks.toString() + dlm + this.lead.toString() + dlm + this.score.toString() + dlm + this.bidding.toString()
     }
+
 
     fun copy(other: Game){
         this.pairNS = other.pairNS
@@ -50,8 +52,8 @@ class Game {
     }
 
 
-    fun declaredBy(myNumber : Int) : Boolean{
-        return contract.declaredBy(myNumber, pairNS)
+    fun declaredBy(myPair : PlayerPair) : Boolean{
+        return contract.declaredBy(myPair, pairNS)
     }
 
     fun made():Boolean{
@@ -62,6 +64,6 @@ class Game {
 
 
     fun toArray() : ArrayList<String>{
-        return arrayListOf(pairNS.toString(), pairEW.toString(), contract.toDisplayString(), lead.toString(), tricks.toString(), score.toString())
+        return arrayListOf(pairNS.displayNumber.toString(), pairEW.displayNumber.toString(), contract.toDisplayString(), lead.toString(), tricks.toString(), score.toString())
     }
 }

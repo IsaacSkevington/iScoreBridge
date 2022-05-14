@@ -87,8 +87,8 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
             WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION -> {
                 val device: WifiP2pDevice =
                     intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE)!!
-                if(device.deviceName != MYINFO.deviceName) {
-                    MYINFO.deviceName = device.deviceName
+                if(device.deviceName != myInfo.deviceName) {
+                    myInfo.deviceName = device.deviceName
                     parentHandler.obtainMessage(MESSAGE_DEVICE_ID_CHANGED).sendToTarget()
                 }
             }
@@ -108,23 +108,38 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
             wps.setup = WpsInfo.PBC
             groupOwnerIntent = 0
         }
-        manager.connect(wifiService.channel, config, object : WifiP2pManager.ActionListener{
-            override fun onSuccess() {
-                Log.d("Connection status","Connection success")
-            }
-            override fun onFailure(p0: Int) {
-                Log.d("Connection status","Connection failure")
-            }
+        try {
+            manager.connect(wifiService.channel, config, object : WifiP2pManager.ActionListener {
+                override fun onSuccess() {
+                    Log.d("Connection status", "Connection success")
+                }
 
-        })
+                override fun onFailure(p0: Int) {
+                    Log.d("Connection status", "Connection failure")
+                }
+
+            })
+        }
+        catch(e : SecurityException){}
     }
 
     fun createGroup(){
-        manager.createGroup(channel, null)
+        try {
+            manager.createGroup(channel, null)
+        }
+        catch(e : SecurityException){}
+
     }
 
     fun discoverPeers(){
-        manager.discoverPeers(channel, null)
+        try{
+            manager.discoverPeers(channel, null)
+        }
+        catch(e : SecurityException){}
+    }
+    fun authorise(code : Int) : Boolean{
+        return if(amHost) true
+        else wifiClient.sendForResponse(REQUESTAUTHORISATION, code.toString()).msg.toBoolean()
     }
 
     fun send(type : Int, message: String){

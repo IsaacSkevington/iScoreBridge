@@ -5,7 +5,7 @@ import android.widget.TextView
 import kotlin.math.roundToInt
 
 
-class Stats(val number : Int, val match : Match) {
+class Stats(val pair : PlayerPair, val match : Match) {
 
 
     var boardsPlayed : Int = 0
@@ -28,11 +28,11 @@ class Stats(val number : Int, val match : Match) {
         populate(match)
     }
 
-    fun splitGamesByNumberDeclaration(games : ArrayList<Game>, number : Int) : Pair<ArrayList<Game>, ArrayList<Game>>{
+    fun splitGamesByNumberDeclaration(games : ArrayList<Game>, pair: PlayerPair) : Pair<ArrayList<Game>, ArrayList<Game>>{
         var declared = ArrayList<Game>()
         var defended = ArrayList<Game>()
         games.forEach {
-            if(it.declaredBy(number)){
+            if(it.declaredBy(pair)){
                 declared.add(it)
             }
             else{
@@ -55,17 +55,17 @@ class Stats(val number : Int, val match : Match) {
 
 
     private fun populate(match: Match){
-        allBoards = match.getGames(number)
+        allBoards = match.getGames(pair)
         scores = HashMap()
         match.boards.forEach {
-            var boardScores = it.value!!.calculateScores(gameInfo.gameMode)
-            if(boardScores[number] != null){
-                scores[it.value!!.boardNumber] = boardScores[number]
+            var boardScores : MutableMap<Int, Int?> = it.value!!.calculateScores(gameInfo.gameMode)
+            if(boardScores[pair.displayNumber] != null){
+                scores[it.value!!.boardNumber] = boardScores[pair.displayNumber]
             }
         }
         boardsPlayed = allBoards.size
         totalTimeTaken = 0
-        var splitContracts = splitGamesByNumberDeclaration(allBoards, number)
+        var splitContracts = splitGamesByNumberDeclaration(allBoards, pair)
         contractsDeclared = splitContracts.first
         contractsDefended = splitContracts.second
         contractsDeclaredByType = splitGamesByContractType(splitContracts.first)

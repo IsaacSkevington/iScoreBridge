@@ -30,7 +30,20 @@ val VERSIONS = arrayOf(
         ),
         arrayOf()
 
+    ),
+    Version(
+        "0.3.1",
+        arrayOf(
+            Feature("Settings", "Adding settings menu"),
+            Feature("Help", "Added help menu and manual"),
+            Feature("Deal imports", "Added the ability to import deals from auto-deal machine"),
+            Feature("Director Menu", "Added menu for director to change board details"),
+            Feature("Round timer", "Added timer for rounds which shows up on each device"),
+            Feature("UI Look", "Changed the UI look and feel")
+        ),
+        arrayOf()
     )
+
 )
 
 open class Addition(val title : String, val contents: String){

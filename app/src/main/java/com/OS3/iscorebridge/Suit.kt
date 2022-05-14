@@ -9,6 +9,7 @@ val DIAMONDS = Suit('D')
 val HEARTS = Suit('H')
 val SPADES = Suit('S')
 val NOTRUMPS = Suit('N')
+val SUIT_NONE = Suit('X')
 
 val SUITS = arrayOf(CLUBS, DIAMONDS, HEARTS, SPADES)
 
@@ -24,7 +25,8 @@ class Suit : Comparable<Suit>{
         "D" to 1,
         "H" to 2,
         "S" to 3,
-        "NT" to 4
+        "NT" to 4,
+        "X" to 5
     )
 
     var valueToSymbolMap = mapOf(
@@ -32,7 +34,8 @@ class Suit : Comparable<Suit>{
         1 to "♦",
         2 to "♥",
         3 to "♠",
-        4 to "NT"
+        4 to "NT",
+        5 to "X"
 
     )
     var symbolToValueMap = valueToSymbolMap.entries.associate { (k, v) -> v[0] to k }
@@ -42,7 +45,8 @@ class Suit : Comparable<Suit>{
         1 to Color.RED,
         2 to Color.RED,
         3 to Color.BLACK,
-        4 to Color.BLACK
+        4 to Color.BLACK,
+        5 to Color.BLACK
 
     )
 
@@ -51,7 +55,8 @@ class Suit : Comparable<Suit>{
         'D' to 1,
         'H' to 2,
         'S' to 3,
-        'N' to 4
+        'N' to 4,
+        'X' to 5
     )
 
     var valueSuitMap = suitValueMap.entries.associate{(k,v)-> v to k}
