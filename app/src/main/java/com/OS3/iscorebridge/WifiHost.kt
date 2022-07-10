@@ -16,7 +16,7 @@ var wifiHostInitialised = false
 
 class WifiHost(@Volatile var parentHandler: Handler){
     
-    @Volatile lateinit var hostHandler : Handler
+    @Volatile var hostHandler : Handler? = null
     @Volatile var clients = ArrayList<Client>()
     @Volatile var p2pClientList = ArrayList<String>()
     private var currentPort = HOSTPORT + 1
@@ -26,6 +26,11 @@ class WifiHost(@Volatile var parentHandler: Handler){
     @Volatile var authcode : Int = SETTINGS.getPin()
     init{
         ClientHandler().start()
+        while(hostHandler == null){}
+        var hostClient = HostClient(1, hostHandler!!)
+        wifiClient = HostWifiClient(parentHandler, hostClient)
+        clients.add(hostClient)
+
     }
 
     fun authorise(code : Int) : Boolean{
@@ -95,7 +100,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
                             removeClient(msg.obj as Client)
                         }
                         MESSAGE_SEND_DEAL ->{
-                            send(MESSAGE_SEND_DEAL, (msg.obj as Deal).toString())
+                            send(msg.what, (msg.obj as Deal).toString())
                         }
                         MESSAGE_EDIT_GAME, MESSAGE_SEND_GAME -> {
                             send(msg.what, (msg.obj as Game).toString())
@@ -105,6 +110,7 @@ class WifiHost(@Volatile var parentHandler: Handler){
 
                 }
             }
+
             Looper.loop()
         }
 
@@ -127,11 +133,11 @@ class WifiHost(@Volatile var parentHandler: Handler){
             val clientAssignment = ClientAssignment(clientPort, clients.size)
 
             val message = Communication(myInfo.deviceName, SENDCONNECTIONINFO, clientAssignment.toString())
-            OneTimeWifiWriter(socket, hostHandler, message.toString())
+            OneTimeWifiWriter(socket, hostHandler!!, message.toString())
             socket.close()
             connecting = false
             Log.d("Sending data", "Send successful")
-            val c = Client(clientPort, clients.size, hostHandler)
+            val c = Client(clientPort, clients.size, hostHandler!!)
             Log.d("Connecting client", "Initialising connection on port $clientPort")
             c.connect()
             Log.d("Connecting client", "Connection successful")
@@ -184,12 +190,11 @@ class WifiHost(@Volatile var parentHandler: Handler){
         return tables
     }
 
-    fun startGame(parentHandler: Handler){
+    fun startGame(){
         send(
             MESSAGE_START,
             gameInfo.toString()
         )
-        parentHandler.obtainMessage(MESSAGE_START).sendToTarget()
         StatusHandler().start()
     }
 

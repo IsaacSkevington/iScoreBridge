@@ -1,30 +1,53 @@
 package com.OS3.iscorebridge
 
+import android.os.Handler
 import android.widget.TextView
 
-class Timer(@Volatile var time : Time, var onFinish: ()->Unit) : Thread(){
+class Timer(@Volatile var time : Time, var timerHandler : Handler) : Thread(){
 
-    @Volatile var displayTextView : TextView? = null
     @Volatile var finished = false
     @Volatile var initTime = Time(time)
+    @Volatile var displayThread : DisplayThread? = null
 
-    fun displayIn(dtv : TextView){
-        this.displayTextView = dtv
-        this.displayTextView!!.text = time.toDisplayString()
+    fun show(dtv : TextView){
+        DisplayThread(dtv).also{
+            displayThread = it
+            it.start()
+        }
+    }
+    fun hide(){
+        displayThread?.kill()
+    }
+
+    fun restart(){
+        time = Time(initTime)
     }
 
     fun reset() : Timer{
-        return Timer(initTime, onFinish)
+        return Timer(initTime, timerHandler)
+    }
+    inner class DisplayThread(var displayTextView : TextView) : Thread(){
+
+        @Volatile var killFlag = false
+        override fun run() {
+            while(!killFlag) {
+                if(this.displayTextView!!.text != time.toDisplayString()){
+                    this.displayTextView!!.text = time.toDisplayString()
+                }
+            }
+        }
+
+        fun kill(){
+            killFlag = true
+        }
     }
 
     override fun run() {
         while(time.decrement()){
-            if(displayTextView != null){
-                displayTextView!!.text = time.toDisplayString()
-            }
+            sleep(1000)
         }
         finished = true
-        onFinish()
+        timerHandler.obtainMessage(MESSAGE_TIMER_FINISHED).sendToTarget()
     }
 
 }

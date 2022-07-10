@@ -3,6 +3,7 @@ package com.OS3.iscorebridge
 import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -17,13 +18,18 @@ open class MovementSkeleton{
     var rounds : MutableMap<Int, Round> = HashMap()
     var twoWinner : Boolean = true
     var arrowSwitch = false
+    var gameMode : Int = GAMEMODE_PAIRS
 
+    constructor(gameMode : Int){
+        this.gameMode = gameMode
+    }
     constructor()
 
     constructor(other : MovementSkeleton){
         var string = other.stringify()
         fromString(string)
         this.movementType = other.movementType
+        this.gameMode = other.gameMode
     }
 
 
@@ -61,9 +67,9 @@ open class MovementSkeleton{
     }
 
 
-    fun display(layout : TableLayout){
+    fun display(layout : TableLayout, outerLayout : LinearLayout){
         var topRow = TableRow(layout.context)
-        topRow.addView(TextView(layout.context).also {
+        outerLayout.addView(TextView(layout.context).also {
             it.text = "Round"
             it.typeface = Typeface.DEFAULT_BOLD
             it.setPadding(20, 20, 20, 20)
@@ -77,14 +83,16 @@ open class MovementSkeleton{
                 it.text = round.key.toString()
                 it.layoutParams = params
                 it.typeface = Typeface.DEFAULT_BOLD
+                it.setPadding(20, 20, 20, 20)
                 center(it)
+
             })
         }
         layout.addView(topRow)
 
         //Headings Row
         var expansionRow = TableRow(layout.context)
-        expansionRow.addView(TextView(layout.context).also{
+        outerLayout.addView(TextView(layout.context).also{
             it.text = "Table"
             it.setPadding(20, 20, 20, 20)
         })
@@ -108,12 +116,11 @@ open class MovementSkeleton{
         var rows = HashMap<Int, TableRow>()
         params = TableRow.LayoutParams()
         rounds[1]!!.tables.forEach {table ->
-            rows[table.key] = TableRow(layout.context).also{ row ->
-                row.addView(TextView(layout.context).also{
-                    it.text = table.key.toString()
-                    center(it)
-                })
-            }
+            rows[table.key] = TableRow(layout.context)
+            outerLayout.addView(TextView(layout.context).also{
+                it.text = table.key.toString()
+                center(it)
+            })
         }
         rounds.forEach {round ->
             round.value.tables.forEach { table ->
@@ -126,7 +133,7 @@ open class MovementSkeleton{
                     center(it)
                 })
                 rows[table.key]!!.addView(TextView(layout.context).also{
-                    it.text = "${table.value.boards.first()} - ${table.value.boards.last()}"
+                    it.text = table.value.boardRange()
                     center(it)
                 })
             }
@@ -159,14 +166,14 @@ open class MovementSkeleton{
         return float.toInt().toFloat() - float == 0f
     }
 
-    fun scaleDown(newBoardsPerRound : Int){
-        var reductionFactor = newBoardsPerRound.toFloat() / boardsPerRound.toFloat()
+    fun scale(newBoardsPerRound : Int){
         rounds.forEach {round ->
             round.value.tables.forEach { table->
                 var newBoards = ArrayList<Int>()
-                var removeVal = (table.value.boards[0] - ((table.value.boards[0] - 1) * reductionFactor).toInt()) - 1
+                var boardSet = (table.value.boards[0] - 1)/boardsPerRound
+                var addVal = boardSet * (newBoardsPerRound - boardsPerRound)
                 for(i in 0 until newBoardsPerRound){
-                    newBoards.add(table.value.boards[i] - removeVal)
+                    newBoards.add(table.value.boards[0] + i + addVal)
                 }
                 table.value.boards = newBoards
             }

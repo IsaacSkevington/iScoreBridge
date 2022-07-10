@@ -25,9 +25,11 @@ class Match() : Exportable("scores", ".pdf"){
 
         boards = HashMap()
         val boardsAsString = matchString.split(dlm)
-        for(board in boardsAsString){
-            val b = Board(board)
-            boards[b.boardNumber] = b
+        if(boardsAsString.first() != "") {
+            for (board in boardsAsString) {
+                val b = Board(board)
+                boards[b.boardNumber] = b
+            }
         }
 
     }
@@ -37,6 +39,9 @@ class Match() : Exportable("scores", ".pdf"){
 
     override fun toString(): String {
         var out = ""
+        if(boards.size == 0){
+            return ""
+        }
         for(board in boards.values){
             out += board.toString() + dlm
         }
@@ -47,6 +52,9 @@ class Match() : Exportable("scores", ".pdf"){
     fun addGame(g : Game) : Game{
         if(!boards.containsKey(g.boardNumber)){
             boards[g.boardNumber] = Board(g.boardNumber)
+        }
+        if(boards[g.boardNumber]!!.hasGame(g)){
+            boards[g.boardNumber]!!.games.remove(g)
         }
         boards[g.boardNumber]!!.addGame(g)
         return g
@@ -77,7 +85,7 @@ class Match() : Exportable("scores", ".pdf"){
         return b.getGame(pairNS, pairEW, suit, trickNumbers, tricksMade, lead, declarer, doubled, redoubled)
     }
 
-    fun getGames(myPair : PlayerPair) : ArrayList<Game>{
+    fun getGames(myPair : PlayerPair) : ArrayList<Game> {
 
         var games = ArrayList<Game>()
         this.boards.forEach {
@@ -115,22 +123,26 @@ class Match() : Exportable("scores", ".pdf"){
         return boardsPlayed
     }
 
-    fun zeroRemainingBoards(lastBoard: Int){
-        var nextBoard = getNextUnplayedBoard(lastBoard)
-        while(nextBoard != 0){
-            var game = Game(nextBoard, myInfo.currentTable.pairNS, myInfo.currentTable.pairEW, calculateVulnerability(nextBoard))
-            boards[nextBoard]!!.addGame(game)
-            wifiService.send(MESSAGE_SEND_GAME, game.toString())
-            nextBoard = getNextUnplayedBoard(nextBoard)
+    fun zeroRemainingBoards(table : Table){
+        var played = getBoards(table.pairNS, table.pairEW)
+        for(board in table.boards){
+            if(board !in played){
+                Game(board, table.pairNS, table.pairEW, calculateVulnerability(board), Contract().also{it.setAllPass()}, 0, Card(CARD_NONE)).also {
+                    addGame(it)
+                    wifiService.send(MESSAGE_SEND_GAME, it.toString())
+                }
+            }
         }
     }
 
-    fun getNextUnplayedBoard(lastBoard : Int) : Int{
+    fun getNextUnplayedBoard(lastBoard : Int, round: Int, table : Table) : Int{
         if(lastBoard == 0){
-            return myInfo.getFirstBoard()
+            if(round == 0){
+                return 0
+            }
+            return table.boards[0]
         }
-        var played = getBoards(myInfo.currentTable.pairNS, myInfo.currentTable.pairEW)
-        var table = myInfo.currentTable
+        var played = getBoards(table.pairNS, table.pairEW)
         var startBoardIndex = table.boards.indexOf(lastBoard)
         var currentBoardIndex = startBoardIndex + 1
         while(currentBoardIndex != startBoardIndex){

@@ -33,7 +33,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_club_button"
-                    android:text="@string/club1" />
+                    android:text="@string/club1"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_1_diamond"
@@ -41,7 +42,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_diamond_button"
-                    android:text="@string/diamond1" />
+                    android:text="@string/diamond1"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_1_heart"
@@ -49,7 +51,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_heart_button"
-                    android:text="@string/heart1" />
+                    android:text="@string/heart1"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_1_spade"
@@ -57,7 +60,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_spade_button"
-                    android:text="@string/spade1" />
+                    android:text="@string/spade1"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_1_NT"
@@ -65,7 +69,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_nt_button"
-                    android:text="1NT" />
+                    android:text="1NT"
+                    android:textColor="@color/text_default" />
 
             </LinearLayout>
 
@@ -86,7 +91,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_club_button"
-                    android:text="@string/club2" />
+                    android:text="@string/club2"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_2_diamond"
@@ -94,7 +100,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_diamond_button"
-                    android:text="@string/diamond2" />
+                    android:text="@string/diamond2"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_2_heart"
@@ -102,7 +109,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_heart_button"
-                    android:text="@string/heart2" />
+                    android:text="@string/heart2"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_2_spade"
@@ -110,7 +118,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_spade_button"
-                    android:text="@string/spade2" />
+                    android:text="@string/spade2"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_2_NT"
@@ -118,7 +127,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_nt_button"
-                    android:text="2NT" />
+                    android:text="2NT"
+                    android:textColor="@color/text_default" />
             </LinearLayout>
 
 
@@ -138,7 +148,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_club_button"
-                    android:text="@string/club3" />
+                    android:text="@string/club3"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_3_diamond"
@@ -146,7 +157,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_diamond_button"
-                    android:text="@string/diamond3" />
+                    android:text="@string/diamond3"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_3_heart"
@@ -154,7 +166,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_heart_button"
-                    android:text="@string/heart3" />
+                    android:text="@string/heart3"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_3_spade"
@@ -162,7 +175,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_spade_button"
-                    android:text="@string/spade3" />
+                    android:text="@string/spade3"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_3_NT"
@@ -170,7 +184,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_nt_button"
-                    android:text="3NT" />
+                    android:text="3NT"
+                    android:textColor="@color/text_default" />
             </LinearLayout>
 
             <LinearLayout
@@ -189,7 +204,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_club_button"
-                    android:text="@string/club4" />
+                    android:text="@string/club4"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_4_diamond"
@@ -197,7 +213,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_diamond_button"
-                    android:text="@string/diamond4" />
+                    android:text="@string/diamond4"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_4_heart"
@@ -205,7 +222,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_heart_button"
-                    android:text="@string/heart4" />
+                    android:text="@string/heart4"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_4_spade"
@@ -213,7 +231,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_spade_button"
-                    android:text="@string/spade4" />
+                    android:text="@string/spade4"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_4_NT"
@@ -221,7 +240,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_nt_button"
-                    android:text="4NT" />
+                    android:text="4NT"
+                    android:textColor="@color/text_default" />
             </LinearLayout>
 
 
@@ -241,7 +261,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_club_button"
-                    android:text="@string/club5" />
+                    android:text="@string/club5"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_5_diamond"
@@ -249,7 +270,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_diamond_button"
-                    android:text="@string/diamond5" />
+                    android:text="@string/diamond5"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_5_heart"
@@ -257,7 +279,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_heart_button"
-                    android:text="@string/heart5" />
+                    android:text="@string/heart5"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_5_spade"
@@ -265,7 +288,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_spade_button"
-                    android:text="@string/spade5" />
+                    android:text="@string/spade5"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_5_NT"
@@ -273,7 +297,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_nt_button"
-                    android:text="5NT" />
+                    android:text="5NT"
+                    android:textColor="@color/text_default" />
             </LinearLayout>
 
 
@@ -293,7 +318,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_club_button"
-                    android:text="@string/club6" />
+                    android:text="@string/club6"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_6_diamond"
@@ -301,7 +327,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_diamond_button"
-                    android:text="@string/diamond6" />
+                    android:text="@string/diamond6"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_6_heart"
@@ -309,7 +336,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_heart_button"
-                    android:text="@string/heart6" />
+                    android:text="@string/heart6"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_6_spade"
@@ -317,7 +345,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_spade_button"
-                    android:text="@string/spade6" />
+                    android:text="@string/spade6"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_6_NT"
@@ -325,7 +354,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_nt_button"
-                    android:text="6NT" />
+                    android:text="6NT"
+                    android:textColor="@color/text_default" />
             </LinearLayout>
 
 
@@ -345,7 +375,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_club_button"
-                    android:text="@string/club7" />
+                    android:text="@string/club7"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_7_diamond"
@@ -353,7 +384,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_diamond_button"
-                    android:text="@string/diamond7" />
+                    android:text="@string/diamond7"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_7_heart"
@@ -361,7 +393,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_heart_button"
-                    android:text="@string/heart7" />
+                    android:text="@string/heart7"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_7_spade"
@@ -369,7 +402,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_spade_button"
-                    android:text="@string/spade7" />
+                    android:text="@string/spade7"
+                    android:textColor="@color/text_default" />
 
                 <Button
                     android:id="@+id/bidding_7_NT"
@@ -377,7 +411,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_nt_button"
-                    android:text="7NT" />
+                    android:text="7NT"
+                    android:textColor="@color/text_default" />
 
             </LinearLayout>
 
@@ -399,6 +434,7 @@
                     android:layout_weight="2"
                     android:background="@drawable/bidding_box_dble_button"
                     android:text="@string/dble"
+                    android:textColor="@color/text_default"
                     android:textSize="40sp" />
 
                 <Button
@@ -408,6 +444,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/bidding_box_pass_button"
                     android:text="@string/pass"
+                    android:textColor="@color/text_default"
                     android:textSize="40sp" />
 
                 <Button
@@ -417,6 +454,7 @@
                     android:layout_weight="2"
                     android:background="@drawable/bidding_box_rdble_button"
                     android:text="@string/redble"
+                    android:textColor="@color/text_default"
                     android:textSize="40sp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ var GENERAL = null
 var SETUP = HelpItem(
     arrayOf(
         HelpSection("Hosting a game", R.array.hostingagame, R.array.hostingagamenotes),
+        HelpSection("Setting up the Movement", R.array.movementsetup, R.array.movementsetupnotes),
         HelpSection("Joining a game", R.array.joiningagame, R.array.joiningagamenotes),
         HelpSection("Spectating a game", R.array.spectating, R.array.spectatingnotes),
     )
@@ -18,7 +19,7 @@ var SETUP = HelpItem(
 var PLAYERINFO = null
 var DURINGAGAME = null
 
-val HELPINFOLIST = arrayOf<Pair<String, HelpItem>>(
+val HELPINFOLIST = arrayOf(
     //Pair("General", GENERAL),
     Pair("Setup", SETUP),
     //Pair("In a Game", DURINGAGAME)

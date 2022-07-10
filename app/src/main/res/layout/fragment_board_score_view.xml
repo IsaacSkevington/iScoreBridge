@@ -37,7 +37,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="32dp" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include4">
+
+    </FrameLayout>
+
     <include
+        android:id="@+id/include4"
         layout="@layout/board_detail_display"
         android:layout_width="0dp"
         android:layout_height="0dp"

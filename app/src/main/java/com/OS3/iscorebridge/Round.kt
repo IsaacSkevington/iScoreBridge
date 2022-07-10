@@ -4,7 +4,7 @@ class Round {
     var tables : MutableMap<Int, Table> = HashMap<Int, Table>()
     var roundNumber : Int
     var dlm = "&&"
-
+    var tableSplitter = "***^"
 
     constructor(roundNumber : Int){
         this.roundNumber = roundNumber
@@ -13,7 +13,7 @@ class Round {
     constructor(s : String){
         val params = s.split(dlm)
         this.roundNumber = params[0].toInt()
-        for(table in params[1].split(", ")){
+        for(table in params[1].split(tableSplitter)){
             var t = Table(table)
             tables[t.tableNumber] = t
         }
@@ -37,12 +37,11 @@ class Round {
     }
 
     override fun toString(): String {
-        var tableArray = ArrayList<Table>()
+        var tablesString = ""
         tables.values.forEach {
-            tableArray.add(it)
+            tablesString += it.toString() + tableSplitter
         }
-        var tablesString = tableArray.toString()
-        tablesString = tablesString.substring(1, tablesString.length - 1)
+        tablesString = tablesString.removeSuffix(tableSplitter)
         return roundNumber.toString() + dlm + tablesString
     }
 }

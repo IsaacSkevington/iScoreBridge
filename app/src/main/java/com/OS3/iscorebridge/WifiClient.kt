@@ -18,7 +18,7 @@ import java.net.SocketTimeoutException
 @Volatile lateinit var wifiClient : WifiClient
 var wifiClientInitialised = false
 
-class WifiClient(private var hostID : String, var parentHandler: Handler) : Thread(){
+open class WifiClient(var parentHandler: Handler){
 
     @Volatile lateinit  var connectionHandler : Handler
     @Volatile lateinit var reader: WifiReader
@@ -27,97 +27,79 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
     @Volatile var connecting = false
     @Volatile var clientPort : Int = 0
     @Volatile var responsePending = false
-    @Volatile var response : Pair<Int, Communication?> = Pair(-1, null)
+    @Volatile var response : Pair<Int, (Communication)->Unit> = Pair(-1, fun(_: Communication){})
 
 
     init{
-        ConnectionHandler().start()
+        setupMessageHandler()
     }
 
     fun setHandler(handler: Handler){
         parentHandler = handler
     }
 
-    inner class ConnectionHandler : Thread(){
-        override fun run(){
-            Looper.prepare()
-            connectionHandler = object : Handler(Looper.myLooper()!!) {
-                override fun handleMessage(msg: Message) {
-                    when (msg.what) {
-                        MESSAGE_READER_DISCONNECTED->{
 
+    fun setupMessageHandler(){
+        connectionHandler = object : Handler(Looper.myLooper()!!) {
+            override fun handleMessage(msg: Message) {
+                when (msg.what) {
+                    MESSAGE_READER_DISCONNECTED->{ }
+                    MESSAGE_WRITER_DISCONNECTED->{ }
+                    MESSAGE_READ ->{
+                        var forwardObj : Any? = msg.obj
+                        val c = msg.obj as Communication
+                        var msgWhat = c.purpose
+                        if(responsePending && c.purpose == response.first){
+                                responsePending = false
+                                response.second(c)
                         }
-                        MESSAGE_WRITER_DISCONNECTED->{
-
+                        when(c.purpose){
+                            MESSAGE_SEND_GAME ->
+                                forwardObj = Game(c.msg).also { if (c.deviceID != myInfo.deviceName) gameInfo.match.addGame(it) }
+                            MESSAGE_SEND_DEAL ->
+                                forwardObj = Deal(c.msg).also{gameInfo.match.boards[it.number]!!.deal = it}
+                            MESSAGE_EDIT_GAME ->
+                                forwardObj = Game(c.msg).also{ gameInfo.match.boards[it.boardNumber]!!.getGame(it)!!.copy(it)}
+                            MESSAGE_START ->
+                                forwardObj = GameInfo(c.msg).also {
+                                    myInfo.myPair = it.movement.getTable(1, myInfo.currentTable.tableNumber).pairNS
+                                    wifiService.clientList = it.clientList
+                                    gameInfo = it
+                                }
+                            MATCHFINISHED -> myInfo.finished = true
                         }
-
-                        MESSAGE_READ ->{
-                            var forwardObj : Any? = msg.obj
-                            var msgWhat = msg.what
-                            val c = msg.obj as Communication
-                            if(responsePending){
-                                if(c.purpose == response.first){
-                                    response.copy(c.purpose, c)
-                                    responsePending = false
-                                }
-                            }
-                            when(c.purpose){
-                                MESSAGE_SEND_GAME ->  {
-                                    if (c.deviceID != myInfo.deviceName) {
-                                        gameInfo.match.addGame(Game(c.msg))
-                                    }
-                                }
-                                MESSAGE_SEND_DEAL -> {
-                                    var deal = Deal(c.msg)
-                                    gameInfo.match.boards[deal.number]!!.deal = deal
-                                }
-                                MESSAGE_START -> {
-                                    val inf = GameInfo(c.msg)
-                                    for (player in gameInfo.players) {
-                                        if(player == myInfo.myPair){
-                                            myInfo.myPair = player
-                                        }
-                                    }
-                                    wifiService.clientList = inf.clientList
-                                    gameInfo = inf
-                                    forwardObj = gameInfo
-
-                                }
-                                MATCHFINISHED -> {
-                                    myInfo.finished = true
-                                }
-                            }
-                            parentHandler.obtainMessage(msgWhat, forwardObj).sendToTarget()
-                        }
+                        parentHandler.obtainMessage(msgWhat, forwardObj).sendToTarget()
                     }
+                }
 
+            }
+        }
+        connectionHandlerSet = true
+    }
+
+
+    inner class ConnectionThread(var hostID: String) : Thread(){
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun run(){
+            lateinit var device : WifiP2pDevice
+            var connected = false
+            while (!connected){
+                for (i in 0 until peers.size) {
+                    if (encodeID(peers[i].deviceName) == hostID) {
+                        device = peers[i]
+                        connected = true
+                        break
+                    }
                 }
             }
-            connectionHandlerSet = true
-            Looper.loop()
+            Log.d("Device search", "Device search complete, found device " + device.deviceName)
+            wifiService.connectP2p(device.deviceAddress)
         }
     }
 
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun run(){
-        lateinit var device : WifiP2pDevice
-        var connected = false
-        while (!connected){
-            for (i in 0 until peers.size) {
-                if (encodeID(peers[i].deviceName) == hostID) {
-                    device = peers[i]
-                    connected = true
-                    break
-                }
-            }
-        }
-        Log.d("Device search", "Device search complete, found device " + device.deviceName)
-        wifiService.connectP2p(device.deviceAddress)
-    }
-
-    fun send(purpose : Int, msg : String){
+    open fun send(purpose : Int, msg : String){
         val c = Communication(myInfo.deviceName, purpose, msg)
         writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
     }
@@ -216,13 +198,11 @@ class WifiClient(private var hostID : String, var parentHandler: Handler) : Thre
 
     }
 
-    fun sendForResponse(purpose : Int, msg : String) : Communication{
-        val c = Communication(myInfo.deviceName, purpose, msg)
+
+    fun sendForResponse(purpose : Int, msg : String, onResponse : (response : Communication)->Unit){
         responsePending = true
-        response.copy(purpose, null)
-        writer.sendHandler.obtainMessage(MESSAGE_WRITE, STRING, -1, c.toString()).sendToTarget()
-        while(responsePending){}
-        return response.second!!
+        response = Pair(purpose, onResponse)
+        send(purpose, msg)
     }
 
 

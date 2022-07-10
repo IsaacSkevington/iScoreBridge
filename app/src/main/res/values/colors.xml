@@ -33,7 +33,7 @@
 
     <color name="starColor">#FFC51A</color>
     <color name="WHITE">#FFFFFF</color>
-    <color name="MENUFADE">#C1C1C1</color>
+    <color name="text_default">#000000</color>
 
     <color name="selected">#CCCCCC</color>
 

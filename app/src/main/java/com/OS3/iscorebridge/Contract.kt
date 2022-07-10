@@ -57,7 +57,7 @@ class Contract {
     }
 
     fun toDisplayString(displayDeclarer : Boolean) : String{
-        if(suit == SUIT_NONE){
+        if(isAllPass()){
             return "All Pass"
         }
         var out = this.number.toString() + suit.toString()
@@ -185,7 +185,14 @@ class Contract {
         return 0
     }
 
+    fun isAllPass() : Boolean{
+        return suit == SUIT_NONE
+    }
+
     fun calculateScore(tricks : Int, vulnerability: Vulnerability) : Int{
+        if(isAllPass()){
+            return 0
+        }
         var score = 0
         val tricksNeeded = number + 6
         if(tricksNeeded > tricks){

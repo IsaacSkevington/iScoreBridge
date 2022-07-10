@@ -5,7 +5,7 @@ class Player{
     var name : String
     var id : Int
 
-    val dlm = "****"
+    val dlm = "$**"
 
     constructor(){
         name = "???"

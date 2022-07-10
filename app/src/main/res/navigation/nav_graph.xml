@@ -97,8 +97,15 @@
         tools:layout="@layout/fragment_enter_table_details">
 
         <action
-            android:id="@+id/enterDetailsToWaitToString"
+            android:id="@+id/enterDetailsToWaitToStart"
             app:destination="@id/WaitToStartFragment"/>
+        <action
+            android:id="@+id/enterDetailsToScoreEntry"
+            app:destination="@id/ScoreEntryFragment">
+            <argument
+                android:name="boardNumber"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/WaitToStartFragment"

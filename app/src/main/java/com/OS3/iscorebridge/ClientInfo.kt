@@ -2,6 +2,9 @@ package com.OS3.iscorebridge
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Typeface
+import android.widget.LinearLayout
+import android.widget.TextView
 
 val myInfo = ClientInfo()
 
@@ -16,17 +19,39 @@ class ClientInfo{
     var currentTable : Table
     lateinit var client : Client
 
-    fun nextRound(){
+    fun nextRound(context: Context){
         currentRound++
         currentTable = gameInfo.movement.getTable(myPair, currentRound)
+        infoTag.mainActivity.matchHandler.obtainMessage(MESSAGE_START_TIMER).sendToTarget()
         wifiService.send(CHANGEINFO, this.toString())
-    }
-    fun getFirstBoard() : Int{
-        if(currentRound == 0){
-            return 0
+        infoTag.setMessage(myInfo.getRoundInfo())
+        infoTag.setOnClickListener {
+            var layout = LinearLayout(context).also {
+                it.setPadding(20, 20, 20, 20)
+                it.orientation = LinearLayout.VERTICAL
+            }
+            TextView(context).also{
+                it.text = "Time left for round:"
+                it.textSize = 20f
+                it.typeface = Typeface.DEFAULT_BOLD
+                layout.addView(it)
+            }
+            var timer = infoTag.mainActivity.roundTimer
+            TextView(context).also {
+                timer.show(it)
+                layout.addView(it)
+            }
+            AlertDialog.Builder(context)
+                .setTitle("Round details")
+                .setView(layout)
+                .setPositiveButton("Ok"){_, _ ->
+                    timer.hide()
+                }
+                .create().show()
+
         }
-        return currentTable.boards[0]
     }
+
     fun getNSMovement() : String{
         return gameInfo.movement.getNSMovement(currentRound, currentTable)
     }
@@ -41,7 +66,7 @@ class ClientInfo{
 
     fun getRoundInfo() : String{
         return "Round ${currentRound}\n" +
-                "Boards ${currentTable.boards.first()} to ${currentTable.boards.last()}"
+                "Boards ${currentTable.boardRange()}"
     }
 
     fun getBoardMovement() : String{
@@ -49,7 +74,12 @@ class ClientInfo{
             currentRound, currentTable)
     }
 
+    fun firstRound(context: Context){
+        nextRound(context)
+    }
+
     fun setup(context: Context){
+        firstRound(context)
         var builder = AlertDialog.Builder(context)
         builder.setTitle("Pair Number")
             .setMessage("Pair Numbers Available!\n" +
@@ -81,8 +111,8 @@ class ClientInfo{
     constructor(string: String){
         var params = string.split(delim)
         this.deviceName = params[0]
-        this.myPair = PlayerPair(params[5])
-        this.currentTable = Table(params[6])
+        this.myPair = PlayerPair(params[1])
+        this.currentTable = Table(params[2])
     }
 
 

@@ -137,27 +137,22 @@ class WifiService(@Volatile var parentHandler: Handler) : BroadcastReceiver(){
         }
         catch(e : SecurityException){}
     }
-    fun authorise(code : Int) : Boolean{
-        return if(amHost) true
-        else wifiClient.sendForResponse(REQUESTAUTHORISATION, code.toString()).msg.toBoolean()
+    fun authorise(code : Int, onAuthorise : (Boolean) -> Unit){
+        if(amHost) onAuthorise(true)
+        else wifiClient.sendForResponse(REQUESTAUTHORISATION, code.toString()){
+            onAuthorise(it.msg.toBoolean())
+        }
     }
 
     fun send(type : Int, message: String){
-        if(amHost){
-            wifiHost.send(type, message)
-        }
-        else{
-            wifiClient.send(type, message)
-        }
+        wifiClient.send(type, message)
     }
 
     fun kill(){
         if(amHost){
             wifiHost.kill()
         }
-        else{
-            wifiClient.kill()
-        }
+        wifiClient.kill()
         manager.removeGroup(channel, null)
     }
 

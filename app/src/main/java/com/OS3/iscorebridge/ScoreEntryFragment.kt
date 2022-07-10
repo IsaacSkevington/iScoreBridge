@@ -95,7 +95,12 @@ class ScoreEntryFragment : Fragment(){
         view.findViewById<ImageButton>(R.id.heartButton).background = background
         view.findViewById<ImageButton>(R.id.spadeButton).background = background
         view.findViewById<Button>(R.id.noTrumpButton).background = background
-        view.findViewById<Button>(suitIdMap[suit]!!).background = ColorDrawable(Color.CYAN)
+        try {
+            view.findViewById<ImageButton>(suitIdMap[suit]!!).background = ColorDrawable(Color.CYAN)
+        }
+        catch(e : ClassCastException){
+            view.findViewById<Button>(suitIdMap[suit]!!).background = ColorDrawable(Color.CYAN)
+        }
         contractSuit = Suit(suit)
         displayContract(view)
     }
@@ -366,7 +371,7 @@ class ScoreEntryFragment : Fragment(){
 
         }
         view.findViewById<TextView>(R.id.TricksEntry).text = game!!.tricks.toString()
-        view.findViewById<TextView>(R.id.LeadEntry).text = game!!.lead.toString()
+        view.findViewById<TextView>(R.id.LeadEntry).text = game!!.lead.toDisplayString()
     }
 
 
@@ -381,20 +386,15 @@ class ScoreEntryFragment : Fragment(){
             loadGame(view)
         }
         else {
-            boardNumber = gameInfo.match.getNextUnplayedBoard(boardNumber)
-            if (boardNumber == 0) {
-                nextRound()
-                return
-            }
-            if(finishRoundImmediately){
+            boardNumber = gameInfo.match.getNextUnplayedBoard(boardNumber, myInfo.currentRound, myInfo.currentTable,)
+            if (boardNumber == 0 || finishRoundImmediately) {
                 finishRoundImmediately = false
-                gameInfo.match.zeroRemainingBoards(boardNumber)
                 nextRound()
                 return
             }
             view.findViewById<TextView>(R.id.NorthSouth).text =
-                myInfo.currentTable.pairNS.toString()
-            view.findViewById<TextView>(R.id.EastWest).text = myInfo.currentTable.pairEW.toString()
+                myInfo.currentTable.pairNS.displayNumber.toString()
+            view.findViewById<TextView>(R.id.EastWest).text = myInfo.currentTable.pairEW.displayNumber.toString()
             view.findViewById<TextView>(R.id.BoardNum).text = boardNumber.toString()
         }
 
@@ -464,8 +464,8 @@ class ScoreEntryFragment : Fragment(){
                         val builder = AlertDialog.Builder(view.context)
                         builder.setMessage(
                             "Confirmation required!" +
-                                    "\nBoard: " + game.boardNumber.toString() + " (NS " + game.pairNS.toString() + " vs EW " + game.pairEW.toString() + ")" +
-                                    "\nContract: " + game.contract.toDisplayString(false) + " by " + game.contract.declarer +
+                                    "\nBoard: " + game.boardNumber.toString() + " (NS " + game.pairNS.displayNumber.toString() + " vs EW " + game.pairEW.displayNumber.toString() + ")" +
+                                    "\nContract: " + game.contract.toDisplayString(false) + " by " + game.contract.declarer.toDisplayString() +
                                     "\nTricks: " + game.tricks.toString() + " (" + resultString + ")" +
                                     "\nScore: " + game.score.toString()
                         )

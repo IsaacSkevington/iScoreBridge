@@ -13,9 +13,10 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
-class EnterTableDetailsFragment : Fragment() {
+open class EnterTableDetailsFragment : Fragment() {
 
 
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,6 +74,11 @@ class EnterTableDetailsFragment : Fragment() {
 
     }
 
+    fun completeJoin(){
+        wifiClient.send(CHANGEINFO, myInfo.toString())
+        next()
+    }
+
     fun detailsIncorrect(){
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Some players failed to resolve!!\n" +
@@ -84,7 +90,7 @@ class EnterTableDetailsFragment : Fragment() {
 
             .setPositiveButton("Confirm"
             ) { _, _ ->
-                next()
+                completeJoin()
             }
             .setNegativeButton("Reject"
             ) { _, _ ->
@@ -114,7 +120,7 @@ class EnterTableDetailsFragment : Fragment() {
 
             .setPositiveButton("Confirm"
             ) { _, _ ->
-                next()
+                completeJoin()
             }
             .setNegativeButton("Reject"
             ) { _, _ ->
@@ -124,10 +130,18 @@ class EnterTableDetailsFragment : Fragment() {
         builder.show()
     }
 
-    fun next(){
+    open fun next(){
         Toast.makeText(context, "Game entered successfully", Toast.LENGTH_LONG).show()
-        wifiClient.send(SENDJOINCOMPLETE, myInfo.toString())
-        findNavController().navigate(R.id.enterDetailsToWaitToString)
+        wifiClient.send(MESSAGE_JOIN_COMPLETE, myInfo.toString())
+        if(amHost){
+
+        }
+        if(gameStarted){
+            findNavController().navigate(WaitToStartFragmentDirections.waitToStartToScoreEntry(START_BOARDNUMBER))
+        }
+        else{
+            findNavController().navigate(R.id.enterDetailsToWaitToStart)
+        }
     }
 
 
@@ -168,7 +182,9 @@ class EnterTableDetailsFragment : Fragment() {
                 myInfo.currentTable.pairEW.p1 = Player("", requireView().findViewById<TextInputEditText>(R.id.eastInput).text.toString().toInt())
                 myInfo.currentTable.pairNS.p2 = Player("", requireView().findViewById<TextInputEditText>(R.id.southInput).text.toString().toInt())
                 myInfo.currentTable.pairEW.p2 = Player("", requireView().findViewById<TextInputEditText>(R.id.westInput).text.toString().toInt())
-                handleCommunication(wifiClient.sendForResponse(CHECKCLIENTDETAILS, myInfo.toString()))
+                wifiClient.sendForResponse(CHECKCLIENTDETAILS, myInfo.toString()){
+                    handleCommunication(it)
+                }
             }
         }
 

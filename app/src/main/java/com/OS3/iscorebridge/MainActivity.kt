@@ -27,9 +27,10 @@ class MainActivity : AppCompatActivity() {
     val fadeInCover : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.fade_in_cover)}
     val fadeOutCover : Animation by lazy {AnimationUtils.loadAnimation(this, R.anim.fade_out_cover)}
     var clicked = false
+    @Volatile lateinit var matchHandler : Handler
     lateinit var menuButton : FloatingActionButton
     var t = this
-    lateinit var roundTimer : Timer
+    @Volatile lateinit var roundTimer : Timer
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -82,10 +83,16 @@ class MainActivity : AppCompatActivity() {
                         .setView(view)
                         .setPositiveButton("Ok") { _, _ ->
                             try {
-                                if (wifiService.authorise(entry.text.toString().toInt())) {
-                                    director()
-                                } else {
-                                    Toast.makeText(this, "Authorisation Failed", Toast.LENGTH_LONG)
+                                wifiService.authorise(entry.text.toString().toInt()) {
+                                    if (it) {
+                                        director()
+                                    } else {
+                                        Toast.makeText(
+                                            this,
+                                            "Authorisation Failed",
+                                            Toast.LENGTH_LONG
+                                        )
+                                    }
                                 }
                             } catch (e: java.lang.Exception) {
                                 Toast.makeText(
@@ -112,8 +119,8 @@ class MainActivity : AppCompatActivity() {
         view.findViewById<FloatingActionButton>(R.id.openEditBoardDiag).setOnClickListener {
             showBoardEditDiag(supportFragmentManager)
         }
-        roundTimer.displayIn(view.findViewById(R.id.roundTimerView))
-        view.findViewById<FloatingActionButton>(R.id.nextRoundButton).setOnClickListener {
+        roundTimer.show(view.findViewById(R.id.roundTimerView))
+        view.findViewById<FloatingActionButton>(R.id.directorNextRoundButton).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Proceed to the next round")
                 .setMessage("Do you want to start the timer for the next round?")
@@ -314,7 +321,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        Toast.makeText(applicationContext, "Cannot go back", Toast.LENGTH_SHORT).show()
+
     }
 
 
@@ -329,20 +336,59 @@ class MainActivity : AppCompatActivity() {
     inner class MatchHandler : Thread(){
         override fun run() {
             Looper.prepare()
-            val handler = object : Handler(Looper.myLooper()!!){
+            matchHandler = object : Handler(Looper.myLooper()!!) {
                 override fun handleMessage(msg: Message) {
-                    when(msg.what){
-                        MESSAGE_ROUND_COMPLETE ->{
+                    when (msg.what) {
+                        MESSAGE_START->{
+                            if(amHost) wifiHost.setHandler(matchHandler)
+                            wifiClient.setHandler(matchHandler)
+                        }
+
+                        MESSAGE_TIMER_FINISHED ->{
+                            var tablesInPlay = gameInfo.getTablesInPlay(myInfo.currentRound)
+                            if (amHost) {
+                                AlertDialog.Builder(t)
+                                    .setTitle("Round Timer Finished")
+                                    .setMessage(
+                                        "The round timer has finished, would you like to automatically move everyone to the next round?\n" +
+                                                "There are currently ${tablesInPlay.size} tables still playing"
+                                    )
+                                    .setPositiveButton("Yes") { _, _ ->
+                                        wifiHost.nextRound()
+                                    }
+                                    .setNegativeButton("No") { _, _ -> }
+                                    .create()
+                                    .show()
+                            }
+                            else {
+                                if (myInfo.currentTable in tablesInPlay) {
+                                    AlertDialog.Builder(t)
+                                        .setTitle("Round Finished")
+                                        .setMessage("The round time is up, but you are still playing, please try to finishing as quickly as possible")
+                                        .setPositiveButton("Ok") { _, _ -> }
+                                        .create()
+                                        .show()
+                                }
+                            }
+                        }
+
+                        MESSAGE_START_TIMER -> {
+                            roundTimer = Timer(Time(gameInfo.roundTime), matchHandler)
+                            roundTimer.start()
+                        }
+
+                        MESSAGE_ROUND_COMPLETE -> {
                             finishRoundImmediately = true
+                            gameInfo.match.zeroRemainingBoards(myInfo.currentTable)
                             AlertDialog.Builder(t)
                                 .setTitle("Round Complete")
                                 .setMessage("Please move for the next round or finish the board you are playing, all remaining boards will gain a 0 score")
-                                .setPositiveButton("Ok"){_, _ ->}
+                                .setPositiveButton("Ok") { _, _ -> }
                                 .create()
                                 .show()
                         }
-                        MESSAGE_DIRECTOR_CALL ->{
-                            if(amHost) {
+                        MESSAGE_DIRECTOR_CALL -> {
+                            if (amHost) {
                                 var client = msg.obj as Client
                                 AlertDialog.Builder(t)
                                     .setTitle("Director!")
@@ -358,47 +404,14 @@ class MainActivity : AppCompatActivity() {
                                     }
                                     .create()
                                     .show()
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(t, "Director is en-route", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
                 }
             }
-            while(!gameStarted){
-
-            }
-            if(amHost) {
-                wifiHost.setHandler(handler)
-            }
-            else{
-                wifiClient.setHandler(handler)
-            }
-            roundTimer = Timer(Time(gameInfo.roundTime)){
-                var tablesInPlay = gameInfo.getTablesInPlay(myInfo.currentRound)
-                if(amHost) {
-
-                    AlertDialog.Builder(t)
-                        .setTitle("Round Timer Finished")
-                        .setMessage("The round timer has finished, would you like to automatically move everyone to the next round?\n" +
-                                "There are currently ${tablesInPlay.size} tables still playing")
-                        .setPositiveButton("Yes"){_, _ ->
-                            wifiHost.nextRound()
-                        }
-                        .setNegativeButton("No"){_, _ ->}
-                        .create()
-                        .show()
-                }
-                if(myInfo.currentTable in tablesInPlay){
-                    AlertDialog.Builder(t)
-                        .setTitle("Round Finished")
-                        .setMessage("The round time is up, but you are still playing, please try to finishing as quickly as possible")
-                        .setPositiveButton("Ok"){_, _ ->}
-                        .create()
-                        .show()
-                }
-            }
+            Looper.loop()
         }
     }
 

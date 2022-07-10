@@ -31,32 +31,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_vertical"
-            android:foregroundGravity="fill_vertical">
+            android:foregroundGravity="fill_vertical"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <View
                 android:id="@+id/view4"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:background="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/BoardNumLayout" />
+                android:background="#000000" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/BoardNumLayout"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:gravity="center_vertical"
                 android:hint="Board Number"
                 android:padding="10sp"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/BoardNum"
@@ -65,261 +62,203 @@
                     android:numeric="integer" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/textView3"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/NorthSouthLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/NorthSouth"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center_vertical"
+                        android:hint="N/S Pair"
+                        android:numeric="integer" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp"
+                    android:text="VS"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/EastWestLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/EastWest"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="E/W Pair"
+                        android:numeric="integer" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/constraintLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10sp"
-                android:paddingRight="10sp"
-                android:text="VS"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view4" />
+                android:layout_margin="10dp"
+                android:gravity="center">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
-                android:layout_width="355dp"
-                android:layout_height="433dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/EastWestLayout">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/tableLayout"
-                    android:layout_width="99dp"
-                    android:layout_height="340dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
-                    app:layout_constraintStart_toEndOf="@+id/constraintLayout"
-                    app:layout_constraintTop_toTopOf="parent">
+                <LinearLayout
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="vertical">
 
                     <Button
-                        android:id="@+id/noTrumpButton"
-                        android:layout_width="65dp"
-                        android:layout_height="66dp"
-                        android:text="NT"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:id="@+id/button1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="1" />
 
-                    <ImageButton
-                        android:id="@+id/spadeButton"
-                        android:layout_width="65dp"
-                        android:layout_height="66dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/spade"
-                        app:layout_constraintBottom_toTopOf="@+id/noTrumpButton"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:tint="#000000" />
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="2" />
 
-                    <ImageButton
-                        android:id="@+id/heartButton"
-                        android:layout_width="65dp"
-                        android:layout_height="66dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/heart"
-                        app:layout_constraintBottom_toTopOf="@+id/spadeButton"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:tint="#FF0000" />
+                    <Button
+                        android:id="@+id/button3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="3" />
 
-                    <ImageButton
-                        android:id="@+id/diamondButton"
-                        android:layout_width="65dp"
-                        android:layout_height="66dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/diamond"
-                        app:layout_constraintBottom_toTopOf="@+id/heartButton"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:tint="#FF0000" />
+                    <Button
+                        android:id="@+id/button4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="4" />
+
+                    <Button
+                        android:id="@+id/button5"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="5" />
+
+                    <Button
+                        android:id="@+id/button6"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="6" />
+
+                    <Button
+                        android:id="@+id/button7"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="7" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tableLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/clubButton"
                         android:layout_width="65dp"
                         android:layout_height="66dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/club"
-                        app:layout_constraintBottom_toTopOf="@+id/diamondButton"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:tint="#000000" />
+                        android:src="@drawable/club" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageButton
+                        android:id="@+id/diamondButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/diamond" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
-                    android:layout_width="73dp"
-                    android:layout_height="358dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageButton
+                        android:id="@+id/heartButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/heart" />
 
-                    <Button
-                        android:id="@+id/button3"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="3"
-                        app:layout_constraintBottom_toTopOf="@+id/button4"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                    <ImageButton
+                        android:id="@+id/spadeButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/spade" />
 
                     <Button
-                        android:id="@+id/button6"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="6"
-                        app:layout_constraintBottom_toTopOf="@+id/button7"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:id="@+id/noTrumpButton"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:text="NT" />
 
-                    <Button
-                        android:id="@+id/button7"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="7"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                </LinearLayout>
 
-                    <Button
-                        android:id="@+id/button4"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="4"
-                        app:layout_constraintBottom_toTopOf="@+id/button5"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <Button
-                        android:id="@+id/button1"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="1"
-                        app:layout_constraintBottom_toTopOf="@+id/button2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <Button
-                        android:id="@+id/button2"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="2"
-                        app:layout_constraintBottom_toTopOf="@+id/button3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <Button
-                        android:id="@+id/button5"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="5"
-                        app:layout_constraintBottom_toTopOf="@+id/button6"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:id="@+id/constraintLayout2"
-                    android:layout_width="76dp"
-                    android:layout_height="164dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <Button
-                        android:id="@+id/reDoubleButton"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="XX"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <Button
-                        android:id="@+id/DoubleButton"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="X"
-                        app:layout_constraintBottom_toTopOf="@+id/reDoubleButton"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/undoublebutton" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/undoublebutton"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:text="-"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:text="-" />
 
-                <TextView
-                    android:id="@+id/contractView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No Contract Selected"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <Button
+                        android:id="@+id/DoubleButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="X" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/NorthSouthLayout"
-                android:layout_width="0dp"
+                    <Button
+                        android:id="@+id/reDoubleButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:text="XX" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/contractView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toStartOf="@+id/textView3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/BoardNumLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/NorthSouth"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
-                    android:hint="N/S Pair"
-                    android:numeric="integer" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/EastWestLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
-                app:layout_constraintTop_toBottomOf="@+id/BoardNumLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/EastWest"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="E/W Pair"
-                    android:numeric="integer" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_margin="10dp"
+                android:text="No Contract Selected"
+                android:textSize="30sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/linearLayout9"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+                android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/LeadEntryLayout"
@@ -371,7 +310,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

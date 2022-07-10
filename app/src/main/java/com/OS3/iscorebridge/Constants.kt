@@ -11,7 +11,7 @@ const val MESSAGE_START = 3
 
 const val STRING = 4
 const val BYTEARRAY = 5
-
+const val START_BOARDNUMBER = 0
 
 var clientNumber = 0
 
@@ -48,22 +48,25 @@ const val EASTWEST = 1
 const val  CHECKSPECTATORDETAILS = 33
 
 
-var gameInfo : GameInfo = GameInfo( ArrayList(), GAMEMODE_TEAMS, ArrayList(),
-    Time(0), MovementSkeleton()
-)
+lateinit var gameInfo : GameInfo
 
 const val MESSAGE_CLIENT_DISCONNECTED = 34
 
-const val SENDJOINCOMPLETE = 35
+const val MESSAGE_JOIN_COMPLETE = 35
 const val REQUESTAUTHORISATION = 36
 
 const val MESSAGE_ROUND_COMPLETE = 37
 
 const val MESSAGE_DIRECTOR_CALL = 40
 
+const val MESSAGE_START_TIMER = 42
+
 const val CHANGEINFO = 41
 
 const val HOSTIP = "192.168.49.1"
+
+
+const val MESSAGE_TIMER_FINISHED = 43
 
 
 val programUUID: UUID = UUID.fromString("096e8f5d-2b31-410a-9cc3-c577003bbfdd")

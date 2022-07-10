@@ -5,7 +5,7 @@ class PlayerPair{
 
     var p1 : Player
     var p2 : Player
-    var delim = "??"
+    var delim = "@$$%"
     var displayNumber : Int
     var scoringNumber : Int
 

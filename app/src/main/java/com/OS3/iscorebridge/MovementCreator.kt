@@ -9,21 +9,32 @@ import kotlin.math.ceil
 
 class MovementCreator{
 
+    public fun none(tables: Int, boards: Int, gameMode: Int) : MovementSkeleton{
+        var tablesList = ArrayList<Table>()
+        for(i in 1..tables){
+            tablesList.add(Table(i))
+        }
+        return none(tablesList, boards, gameMode)
+
+    }
+
     fun findMovements(context : Context, tables : Int, boards: Int, gameMode : Int, noMovement : Boolean = false) : ArrayList<MovementSkeleton>{
         var movements = ArrayList<MovementSkeleton>()
         var tablesList = ArrayList<Table>()
         for(i in 1..tables){
             tablesList.add(Table(i))
         }
-        if(noMovement){
-            movements.add(none(tablesList, boards))
+        if(tables > boards){
             return movements
         }
+        movements.add(none(tablesList, boards, gameMode))
+
+
+
         if(gameMode == TEAMS){
             movements.add(mitchellTeams(tablesList, boards))
             return movements
         }
-
 
         var sandr = mitchellPairs(ArrayList(tablesList), boards, arrowSwitch = false, shareAndRelay = false)
         var skip = mitchellPairs(ArrayList(tablesList), boards, arrowSwitch = false, shareAndRelay = true)
@@ -50,8 +61,14 @@ class MovementCreator{
 
 
 
-    fun none(tables: ArrayList<Table>, boards: Int) : MovementSkeleton{
-        var skeleton = MovementSkeleton()
+    fun none(tables: ArrayList<Table>, boards: Int, gameMode: Int) : MovementSkeleton{
+        assignPairNumbers(tables){
+            it.pairNS.displayNumber = it.tableNumber
+            it.pairNS.scoringNumber = it.tableNumber
+            it.pairEW.displayNumber = it.tableNumber + tables.size
+            it.pairEW.scoringNumber = it.tableNumber + tables.size
+        }
+        var skeleton = MovementSkeleton(gameMode)
         skeleton.rounds[1] = Round(1)
         tables.forEach {
             var allBoards = ArrayList<Int>()
@@ -61,6 +78,8 @@ class MovementCreator{
             it.boards = allBoards
         }
         skeleton.rounds[1]!!.tables = tables.associate { table -> table.tableNumber to table }.toMutableMap()
+        skeleton.boardsPerRound = boards
+        skeleton.twoWinner = false
         return skeleton
     }
 
@@ -201,7 +220,7 @@ class MovementCreator{
             it.pairEW.scoringNumber = it.tableNumber + tables.size
         }
         val boardsPerRound = boards/tables.size
-        var skeleton = MovementSkeleton()
+        var skeleton = MovementSkeleton(GAMEMODE_PAIRS)
         skeleton.boardsPerRound = boardsPerRound
         for(i in 0 until tables.size){
             skeleton.rounds[i + 1] = Round(i+1)
@@ -244,7 +263,7 @@ class MovementCreator{
         return ret
     }
     fun mitchellTeams(tables:ArrayList<Table>, boards: Int) : MovementSkeleton{
-        return MovementSkeleton()
+        return MovementSkeleton(GAMEMODE_TEAMS)
     }
 
     fun howell(context: Context, tables: ArrayList<Table>, boards: Int) : MovementSkeleton?{
@@ -253,10 +272,16 @@ class MovementCreator{
             var rounds = (tables.size * 2 - 1) - i
             if(boards % rounds != 0) continue
             for(j in 0..48) {
-                var boardsUpscaled = boards + (j * (boards/rounds))
+                var boardsUpscaled = rounds * ((boards/rounds) + j)
+                var boardsDownScaled = rounds * ((boards/rounds) - j)
                 movement = fromFile(context, MovementType.Howell, tables, boardsUpscaled, rounds)
                 if(movement != null){
-                    movement.scaleDown((movement.boardsPerRound.toFloat() * (boards.toFloat()/boardsUpscaled.toFloat())).toInt())
+                    movement.scale((boards/rounds))
+                    break
+                }
+                movement = fromFile(context, MovementType.Howell, tables, boardsDownScaled, rounds)
+                if(movement != null){
+                    movement.scale((boards/rounds))
                     break
                 }
 
@@ -273,19 +298,17 @@ class MovementCreator{
         var file: InputStream
         var n = boards
         var boardsPerRound = boards / rounds
-        try {
-            file =
-                context.resources.assets.open("$movementType${tables.size}$rounds$boardsPerRound")
+        file = try {
+            context.resources.assets.open("$movementType${tables.size}$rounds$boardsPerRound")
         } catch (e: Exception) {
             try {
-                file =
-                    context.resources.assets.open("$movementType${tables.size}")
+                context.resources.assets.open("$movementType${tables.size}")
             } catch (e: Exception) {
                 return null
             }
         }
         var reader = BufferedReader(InputStreamReader(file))
-        return MovementSkeleton().also{it.fromFile(reader, movementType, n)}
+        return MovementSkeleton(GAMEMODE_PAIRS).also{it.fromFile(reader, movementType, n)}
     }
 
 }

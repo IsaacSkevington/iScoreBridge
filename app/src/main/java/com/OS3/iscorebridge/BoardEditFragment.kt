@@ -37,7 +37,10 @@ class BoardEditFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         if(diag){
+            dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
             view.findViewById<FloatingActionButton>(R.id.closeEditBoardButton).also {
                 it.visibility = VISIBLE
                 it.isClickable = true

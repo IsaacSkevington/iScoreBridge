@@ -51,6 +51,15 @@ class Game {
         this.boardNumber = other.boardNumber
     }
 
+    override fun equals(other: Any?): Boolean {
+        return try{
+            var otherGame = other as Game
+            (otherGame.pairNS == pairNS || otherGame.pairEW == pairEW)
+        }
+        catch(e : ClassCastException){
+            false
+        }
+    }
 
     fun declaredBy(myPair : PlayerPair) : Boolean{
         return contract.declaredBy(myPair, pairNS)
@@ -60,10 +69,7 @@ class Game {
         return contract.number >= tricks
     }
 
-
-
-
     fun toArray() : ArrayList<String>{
-        return arrayListOf(pairNS.displayNumber.toString(), pairEW.displayNumber.toString(), contract.toDisplayString(), lead.toString(), tricks.toString(), score.toString())
+        return arrayListOf(pairNS.displayNumber.toString(), pairEW.displayNumber.toString(), contract.toDisplayString(), lead.toDisplayString(), tricks.toString(), score.toString())
     }
 }

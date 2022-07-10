@@ -29,7 +29,7 @@
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/drawable/suit_rotate.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/about_layour.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/about_layout.xml" value="0.264" />
-        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/activity_spectator_view.xml" value="0.264" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/add_player_layout.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/auth_entry.xml" value="0.2" />
@@ -46,7 +46,7 @@
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_bidding_constructor.xml" value="0.2778505897771953" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_board_edit.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_board_review_display.xml" value="0.25" />
-        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_board_score_view.xml" value="0.33" />
+        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_board_score_view.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_boards_view.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_enter_table_details.xml" value="0.33" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_final_score_screen.xml" value="0.264" />
@@ -57,7 +57,7 @@
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_movement_display.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_movement_overview.xml" value="0.6500579374275782" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_overall_score_view.xml" value="0.264" />
-        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_score_entry.xml" value="0.33" />
+        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_score_entry.xml" value="0.3130699088145897" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_score_view.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_second.xml" value="0.22" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_settings.xml" value="0.2" />
@@ -65,7 +65,7 @@
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_spectator_view.xml" value="0.2264957264957265" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_spectator_view2.xml" value="0.1936725096194955" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_star.xml" value="0.16" />
-        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_start_game_screen.xml" value="0.33" />
+        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_start_game_screen.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_stats_view.xml" value="0.264" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/fragment_wait_to_start.xml" value="0.33" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/hand_view.xml" value="0.264" />
@@ -77,10 +77,11 @@
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/help_subpage.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/help_title.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/menu.xml" value="0.264" />
-        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/movement_overview_table_display.xml" value="0.1" />
+        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/movement_overview_table_display.xml" value="0.16" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/movement_overview_title.xml" value="0.4" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/movements_display_table.xml" value="0.264" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/remove_player_layout.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/select_time.xml" value="0.2" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/layout/view_detail_movement_button.xml" value="0.4" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/menu/main_menu.xml" value="0.1" />
         <entry key="..\:/Users/SSAPP/Documents/code/Java/iScoreBridge/app/src/main/res/menu/menu_main.xml" value="0.264" />

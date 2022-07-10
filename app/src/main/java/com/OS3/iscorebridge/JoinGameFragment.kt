@@ -49,8 +49,8 @@ class JoinGame : Fragment() {
 
         if(!wifiClientInitialised) {
             val id = view.findViewById<TextView>(R.id.idEntry).text
-            wifiClient = WifiClient(id.toString(), handler)
-            wifiClient.start()
+            wifiClient = WifiClient(handler)
+            wifiClient.ConnectionThread(id.toString()).start()
             wifiClientInitialised = true
         }
     }

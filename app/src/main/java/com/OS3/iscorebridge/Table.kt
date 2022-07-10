@@ -28,29 +28,40 @@ class Table {
 
     constructor(s : String){
         val table = s.split(dlm)
-        val b = table[0].split(", ")
         this.boards = ArrayList()
-        for(board in b){
-            boards.add(board.toInt())
+        if(table[0] != "") {
+            val b = table[0].split(", ")
+            for (board in b) {
+                boards.add(board.toInt())
+            }
         }
         this.pairNS = PlayerPair(table[1])
         this.pairEW = PlayerPair(table[2])
         this.tableNumber = table[3].toInt()
     }
-     fun getNextBoard() : Int{
-         var played = gameInfo.match.getBoards(pairNS, pairEW)
-         if(played.size == boards.size){
-             return 0
-         }
-         else{
-            boards.forEach {
-                if(!played.contains(it)){
-                    return it
-                }
-            }
-         }
-         return 0
-     }
+
+    fun boardRange() : String{
+        return if(boards.size > 1){
+            "${boards.first()} - ${boards.last()}"
+        } else{
+            boards.first().toString()
+        }
+    }
+
+    fun getNextBoard() : Int{
+        var played = gameInfo.match.getBoards(pairNS, pairEW)
+        if(played.size == boards.size){
+            return 0
+        }
+        else{
+           boards.forEach {
+               if(!played.contains(it)){
+                   return it
+               }
+           }
+        }
+        return 0
+    }
 
 
 

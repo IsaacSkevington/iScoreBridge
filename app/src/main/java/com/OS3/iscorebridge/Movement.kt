@@ -17,28 +17,30 @@ fun getPlayerPair(tables : ArrayList<Table>, pairNum : Int) : PlayerPair?{
 class Movement : MovementSkeleton{
 
     val dlm = "&&&"
-    val secondarydlm = "**"
+    val roundListSplitter = "££"
+    val secondarydlm = "££"
 
     constructor(tables : ArrayList<Table>, skeleton : MovementSkeleton) : super(skeleton){
         this.merge(tables)
     }
 
-    constructor()
+    constructor(gameMode : Int) : super(gameMode)
 
-    constructor(s:String) {
+    constructor(s:String) : super() {
 
-        var params = s.split(dlm + secondarydlm)
+        var params = s.split(dlm)
         movementType = MovementType.valueOf(params[0])
-        var hashMapString = params[1]
+        var roundsString = params[1]
         rounds = HashMap()
-        if (hashMapString.isNotEmpty()) {
-            val roundsString = hashMapString.split(dlm)
-            for (round in roundsString) {
+        if (roundsString != "|") {
+            val roundsStringList = roundsString.split(roundListSplitter)
+            for (round in roundsStringList) {
                 val r = Round(round)
                 rounds[r.roundNumber] = r
             }
         }
         twoWinner = params[2].toBoolean()
+        gameMode = params[3].toInt()
     }
 
 
@@ -97,6 +99,10 @@ class Movement : MovementSkeleton{
             }
         }
         return null
+    }
+
+    fun getTable(round : Int, table : Int) : Table{
+        return rounds[round]!!.tables[table]!!
     }
 
     fun getNSMovement(round : Int, currentTable : Table) : String{
@@ -161,15 +167,15 @@ class Movement : MovementSkeleton{
 
 
     override fun toString(): String {
-        var out = movementType.toString() + dlm + secondarydlm
-        for(round in rounds.values){
-            out += round.toString() + dlm
+        var roundsArray = ArrayList(rounds.values)
+        var roundsString = "|"
+        if(roundsArray.size != 0) {
+            roundsString = ""
+            roundsArray.forEach {
+                roundsString += it.toString() + roundListSplitter
+            }
+            roundsString = roundsString.removeSuffix(roundListSplitter)
         }
-        if(rounds.values.isNotEmpty()){
-            out.substring(0, out.length - dlm.length)
-        }
-        out += dlm + secondarydlm + twoWinner.toString()
-
-        return out
+        return movementType.toString() + dlm + roundsString + dlm + twoWinner.toString() + dlm + gameMode.toString()
     }
 }

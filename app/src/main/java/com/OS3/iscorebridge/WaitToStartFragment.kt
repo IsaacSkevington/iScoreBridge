@@ -44,10 +44,9 @@ class WaitToStartFragment : Fragment() {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
                     MESSAGE_START -> {
+                        infoTag.mainActivity.matchHandler.obtainMessage(MESSAGE_START).sendToTarget()
                         myInfo.setup(requireContext())
-
-
-                        findNavController().navigate(WaitToStartFragmentDirections.waitToStartToScoreEntry(0))
+                        findNavController().navigate(WaitToStartFragmentDirections.waitToStartToScoreEntry(START_BOARDNUMBER))
                     }
                 }
 

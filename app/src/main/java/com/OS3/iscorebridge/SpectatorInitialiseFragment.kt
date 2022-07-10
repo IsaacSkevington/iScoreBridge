@@ -25,34 +25,38 @@ class SpectatorInitialiseFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_spectator_initialise, container, false)
     }
 
-    fun checkSpectatorDetails(view : View) : Boolean{
+    fun checkSpectatorDetails(view : View, onCheckSuccess : (Boolean)->Unit){
         var pairNumber = view.findViewById<EditText>(R.id.spectatorPairNumberEntry).text.toString().toInt()
         var playerNumber = view.findViewById<EditText>(R.id.spectatorPlayerNumberEntry).text.toString().toInt()
         var cardinality = if(view.findViewById<Switch>(R.id.spectatorCardinalitySwitch).isChecked) EASTWEST
                             else NORTHSOUTH
         var info = SpectatorInfo(PlayerPair(pairNumber), playerNumber, cardinality)
-        var response = wifiClient.sendForResponse(CHECKSPECTATORDETAILS, info.toString())
-        var responseInfo = SpectatorInfo(response.msg)
-        return if(responseInfo.confirmation){
-            myInfo.myPair = responseInfo.pair
-            true
+        wifiClient.sendForResponse(CHECKSPECTATORDETAILS, info.toString()){
+            var responseInfo = SpectatorInfo(it.msg)
+            var res = if(responseInfo.confirmation){
+                myInfo.myPair = responseInfo.pair
+                true
+            }
+            else false
+            onCheckSuccess(res)
         }
-        else{
-            false
-        }
+
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<FloatingActionButton>(R.id.beginSpectatingButton).setOnClickListener {
-            if(checkSpectatorDetails(view)){
-                findNavController().navigate(R.id.SpectatorInitialiseToSpectatorView)
+            checkSpectatorDetails(view){
+                if(it) {
+                    findNavController().navigate(R.id.SpectatorInitialiseToSpectatorView)
+                }
+                else{
+                    view.findViewById<TextInputLayout>(R.id.spectatorTableNumberEntryLayout).error = "Details don't match"
+                    view.findViewById<TextInputLayout>(R.id.spectatorPlayerNumberEntryLayout).error = "Details don't match"
+                }
             }
-            else{
-                view.findViewById<TextInputLayout>(R.id.spectatorTableNumberEntryLayout).error = "Details don't match"
-                view.findViewById<TextInputLayout>(R.id.spectatorPlayerNumberEntryLayout).error = "Details don't match"
-            }
+
         }
     }
 }

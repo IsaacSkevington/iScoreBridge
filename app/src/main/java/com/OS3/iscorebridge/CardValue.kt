@@ -16,7 +16,7 @@ val THREE = CardValue('3')
 val TWO = CardValue('2')
 
 val CARDVALUES = arrayOf(TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE)
-
+val CARDVALUE_NONE = CardValue('0')
 
 
 
@@ -25,6 +25,7 @@ class IncorrectValueException(value : Char) : IllegalArgumentException("The valu
 class CardValue : Comparable<CardValue>{
 
     val charToVal = mapOf<Char, Int>(
+        '0' to 0,
         '2' to 2,
         '3' to 3,
         '4' to 4,

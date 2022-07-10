@@ -386,7 +386,7 @@ class Board {
                 tableRow.setBackgroundColor(Color.parseColor("#A6DAF2"))
             }
             tableRow.addView(makeText(game.contract.toDisplayString(), tableLayout))
-            tableRow.addView(makeText(game.lead.toString(), tableLayout))
+            tableRow.addView(makeText(game.lead.toDisplayString(), tableLayout))
             tableRow.addView(makeText(game.tricks.toString(), tableLayout))
             tableRow.addView(makeText(game.score.toString(), tableLayout))
 

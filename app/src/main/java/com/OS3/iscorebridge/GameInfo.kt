@@ -14,6 +14,7 @@ class GameInfo {
     var roundTime : Time
 
     val dlm = "&&&&"
+    val listSplitter = "!$!"
 
     constructor(tables : ArrayList<Table>, gameMode : Int, clientList : ArrayList<String>, roundTime: Time, skeleton: MovementSkeleton) {
         this.gameMode = gameMode
@@ -32,13 +33,13 @@ class GameInfo {
         this.gameMode = params[0].toInt()
         this.boards = params[1].toInt()
         this.movement = Movement(params[2])
-        val cl = params[3].split(", ")
+        val cl = params[3].split(listSplitter)
         this.clientList = ArrayList()
         for(client in cl){
             clientList.add(client)
         }
         this.players = ArrayList()
-        var pl = params[4].split(", ")
+        var pl = params[4].split(listSplitter)
         for(player in pl){
             players.add(PlayerPair(player))
         }
@@ -75,11 +76,17 @@ class GameInfo {
     }
 
     override fun toString(): String {
-        var clientListString = clientList.toString()
-        clientListString = clientListString.substring(1, clientListString.length - 1)
-        var playerListString = players.toString()
-        playerListString = playerListString.substring(1, clientListString.length - 1)
-        return gameMode.toString() + dlm + boards.toString() + dlm + movement.toString() + dlm + dlm + clientListString + dlm + playerListString + dlm + match.toString() + dlm + roundTime.toString()
+        var clientListString = ""
+        clientList.forEach {
+            clientListString += it + listSplitter
+        }
+        clientListString = clientListString.removeSuffix(listSplitter)
+        var playerListString = ""
+        players.forEach {
+            playerListString += it.toString() + listSplitter
+        }
+        playerListString = playerListString.removeSuffix(listSplitter)
+        return gameMode.toString() + dlm + boards.toString() + dlm + movement.toString() + dlm + clientListString + dlm + playerListString + dlm + match.toString() + dlm + roundTime.toString()
     }
 
 }

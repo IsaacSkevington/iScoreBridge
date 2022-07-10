@@ -1,6 +1,7 @@
 package com.OS3.iscorebridge
 
 
+val CARD_NONE = Card(Suit(SUIT_NONE), CardValue(CARDVALUE_NONE))
 
 fun cardListToString(list : ArrayList<Card>) : String{
     var out = ""
@@ -29,6 +30,7 @@ fun isCard(card : String) : Boolean{
 
 class Card (var suit : Suit, var value : CardValue) : Comparable<Card>{
 
+    constructor(card : Card) : this(card.suit, card.value)
     constructor() : this(Suit(SPADES), CardValue(ACE))
     constructor(card:String) : this(Suit(card[1]), CardValue(card[0]))
 
@@ -40,6 +42,14 @@ class Card (var suit : Suit, var value : CardValue) : Comparable<Card>{
         return value.getHCP()
     }
 
+    fun toDisplayString() : String{
+        return if(equals(CARD_NONE)){
+            "None"
+        }
+        else{
+            toString()
+        }
+    }
     override fun toString() : String{
         return this.value.toString() + this.suit.toString()
     }

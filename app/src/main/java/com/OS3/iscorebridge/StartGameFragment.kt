@@ -6,6 +6,7 @@ import android.os.*
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -31,16 +32,33 @@ fun encodeID(ID : String) : String{
         out
     }
 }
+class HostEnterTableDetailsFragment(var onNext : () -> Unit) : EnterTableDetailsFragment(){
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<FloatingActionButton>(R.id.submitTableDataButton).also{
+            it.setImageDrawable(requireActivity().getDrawable(R.drawable.outline_done_24))
+            it.rotation = 0f
+        }
+        view.findViewById<TextView>(R.id.enterTableDetailsPrompt).text = "Please enter your table's details before starting the game"
+    }
+
+    override fun next(){
+        Toast.makeText(context, "Details Confirmed", Toast.LENGTH_LONG).show()
+        onNext()
+    }
+}
+
 class StartGameScreen : Fragment() {
 
 
-    var start = false
     var boardsUploaded : ArrayList<Board>? = null
     var tables : Int? = null
     var boards : Int? = null
     var PBN : PBNFile? = null
     var gameMode = PAIRS
     var movement : MovementSkeleton? = null
+    var detailsSet = false
 
 
 
@@ -207,6 +225,7 @@ class StartGameScreen : Fragment() {
                 .setPositiveButton("Ok"){_, _ ->}
                 .create()
                 .show()
+            return
         }
         var rows = ArrayList<TableRow>()
         movements.forEach {
@@ -267,9 +286,7 @@ class StartGameScreen : Fragment() {
         var fabView = layoutInflater.inflate(R.layout.view_detail_movement_button, null)
         fabView.findViewById<FloatingActionButton>(R.id.viewDetailMovement).setOnClickListener {
             var v = layoutInflater.inflate(R.layout.movement_overview_table_display, null)
-            v.findViewById<TableLayout>(R.id.movementOverviewTable).also{
-                movement.display(it)
-            }
+            movement.display(v.findViewById(R.id.movementOverviewTable), v.findViewById(R.id.outerLayout))
             AlertDialog.Builder(requireContext())
                 .setTitle("${movement.movementType} movement for ${movement.getTotalTables()} tables")
                 .setPositiveButton("Ok"){_, _ ->}
@@ -282,36 +299,86 @@ class StartGameScreen : Fragment() {
 
     }
 
+    fun start(view : View){
+        when {
+            wifiHost.clients.size + 1 < tables!! -> {
+                view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error =
+                    "Too few people in game (${wifiHost.clients.size + 1})"
+            }
+            else -> {
+                val gameMode =
+                    if (view.findViewById<Switch>(R.id.modeSwitch).isChecked) GAMEMODE_PAIRS
+                    else GAMEMODE_TEAMS
+
+                var picker = TimePicker(requireContext()).also{
+                    it.hour = 8
+                    it.minute = 0
+                    it.setIs24HourView(true)
+                }
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Time Per Board (Minutes)")
+                    .setPositiveButton("Ok"){_, _ ->
+                        if(picker.hour != 0 || picker.minute != 0){
+                            val roundTime = Time(0, picker.hour, picker.minute)
+                            gameInfo =
+                                GameInfo(
+                                    wifiHost.getSkeletonTables(),
+                                    gameMode,
+                                    wifiHost.getClientAddresses(),
+                                    roundTime,
+                                    movement!!
+                                )
+                            boardsUploaded?.forEach {
+                                gameInfo.match.boards[it.boardNumber] = it
+                            }
+                            wifiHost.startGame()
+                        }
+                    }
+                    .setNegativeButton("Cancel"){_, _ ->}
+                    .setView(picker)
+                    .create()
+                    .show()
+            }
+        }
+    }
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         amHost = true
         view.findViewById<TextView>(R.id.idTextView).text = encodeID(myInfo.deviceName)
+        view.findViewById<FrameLayout>(R.id.enterDetailsWindow).also{
+            var trans = childFragmentManager.beginTransaction()
+            trans.add(R.id.enterDetailsWindow, HostEnterTableDetailsFragment{
+                it.visibility = GONE
+                detailsSet = true
+            })
+            trans.commit()
+        }
+
+
+
+
+
         val handler = object : Handler(Looper.myLooper()!!) {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
-                    MESSAGE_CONNECTED_HOST -> {
-
-                    }
+                    MESSAGE_CONNECTED_HOST -> {}
                     MESSAGE_START -> {
-                        if(!start) {
-                            start = true
+                        if(!gameStarted) {
+                            infoTag.mainActivity.matchHandler.obtainMessage(MESSAGE_START).sendToTarget()
+                            gameStarted = true
                             myInfo.setup(requireContext())
-                            findNavController().navigate(StartGameScreenDirections.startGameToScore(0))
+                            findNavController().navigate(StartGameScreenDirections.startGameToScore(
+                                START_BOARDNUMBER))
                         }
-
                     }
-                    MESSAGE_CLIENT_CONNECTED ->{
-                        var client = msg.obj as ClientInfo
-                        Toast.makeText(view.context, client.deviceName + " joined", Toast.LENGTH_LONG).show()
-
-                    }
-                    MESSAGE_UPDATE_CLIENT ->{
-                        updateClientTable(view)
-                    }
+                    MESSAGE_CLIENT_CONNECTED ->
+                        Toast.makeText(view.context, (msg.obj as ClientInfo).deviceName + " joined", Toast.LENGTH_LONG).show()
+                    MESSAGE_UPDATE_CLIENT -> updateClientTable(view)
                     MESSAGE_DEVICE_ID_CHANGED -> {
                         Toast.makeText(view.context, "Device ID Changed!", Toast.LENGTH_LONG).show()
                         view.findViewById<TextView>(R.id.idTextView).text = encodeID(myInfo.deviceName)
@@ -328,81 +395,73 @@ class StartGameScreen : Fragment() {
         var PBN = PBNFile()
         PBN.setupForFragment(this, {PBNImportSuccess(view, PBN)}, {})
         view.findViewById<FloatingActionButton>(R.id.addDealsButton).setOnClickListener{
-            if(boardsUploaded == null) {
-                PBN.import()
-            }
-            else{
-                switchImport(view, null)
-            }
+            if(boardsUploaded == null) PBN.import()
+            else switchImport(view, null)
         }
         view.findViewById<Switch>(R.id.modeSwitch).setOnClickListener{
-            gameMode = if(view.findViewById<Switch>(R.id.modeSwitch).isChecked){
-                TEAMS
-            } else{
-                PAIRS
-            }
+            gameMode = if(view.findViewById<Switch>(R.id.modeSwitch).isChecked) TEAMS
+                       else PAIRS
         }
-
-        view.findViewById<FloatingActionButton>(R.id.startGameBackButton).setOnClickListener {
-            onBack()
-        }
+        view.findViewById<FloatingActionButton>(R.id.startGameBackButton).setOnClickListener { onBack() }
 
         view.findViewById<FloatingActionButton>(R.id.selectMovementButton).setOnClickListener {
             if(errorCheck(view)){
-                tables =
-                    view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString()
-                        .toInt()
-                boards =
-                    view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString()
-                        .toInt()
+                tables = view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString().toInt()
+                boards = view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString().toInt()
                 movementSelector(view)
             }
         }
 
         view.findViewById<FloatingActionButton>(R.id.StartPlayingButton).setOnClickListener {
+            if(!detailsSet) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("No Details Provided")
+                    .setMessage("Please provide the details for your table")
+                    .setPositiveButton("Ok"){_, _ ->}
+                    .create()
+                    .show()
+                return@setOnClickListener
+            }
             if(movement != null || errorCheck(view)) {
                 if(movement == null){
-                    tables =
-                        view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString()
-                            .toInt()
-                    boards =
-                        view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString()
-                            .toInt()
-                    movement = MovementCreator().findMovements(requireContext(), tables!!, boards!!, gameMode, true)[0]
+                    tables = view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString().toInt()
+                    boards = view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString().toInt()
+                    movement = MovementCreator().none(tables!!, boards!!, gameMode)
                 }
-
-                when {
-                    wifiHost.clients.size + 1 > tables!! -> {
-                        view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error =
-                            "Too many people in game (${wifiHost.clients.size + 1})"
-
+                else{
+                    if(!errorCheck(view)) {
+                        return@setOnClickListener
                     }
-                    wifiHost.clients.size + 1 < tables!! -> {
-                        view.findViewById<TextInputLayout>(R.id.numberTablesLayout).error =
-                            "Too few people in game (${wifiHost.clients.size + 1})"
-                    }
-                    else -> {
-
-                        val gameMode = if (view.findViewById<Switch>(R.id.modeSwitch).isChecked) {
-                            GAMEMODE_PAIRS
-                        } else {
-                            GAMEMODE_TEAMS
-                        }
-
-                        val roundTime = Time(8000)
-
-                        gameInfo =
-                            GameInfo(wifiHost.getSkeletonTables(), gameMode, wifiHost.getClientAddresses(), roundTime, movement!!)
-                        boardsUploaded?.forEach {
-                            gameInfo.match.boards[it.boardNumber] = it
-                        }
-                        wifiHost.startGame(handler)
-
+                    if(view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString().toInt() != tables ||
+                        view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString().toInt() != boards ||
+                            movement!!.gameMode != gameMode){
+                                if(movement!!.movementType == MovementType.None){
+                                    tables = view.findViewById<TextInputEditText>(R.id.numberTablesEntry).text.toString().toInt()
+                                    boards = view.findViewById<TextInputEditText>(R.id.numberBoardsEntry).text.toString().toInt()
+                                    movement = MovementCreator().none(tables!!, boards!!, gameMode)
+                                }
+                                else {
+                                    AlertDialog.Builder(requireContext())
+                                        .setTitle("Error")
+                                        .setMessage("You changed a parameter since last searching for a movement, please update the movement")
+                                        .setPositiveButton("Ok") { _, _ -> }
+                                        .create()
+                                        .show()
+                                    return@setOnClickListener
+                                }
                     }
                 }
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Confirm Start")
+                    .setMessage("Would you like to start a game with $tables tables, with the movement \"${movement!!.getSummary()}\"")
+                    .setPositiveButton("Yes") { _, _ ->
+                        start(view)
+                    }
+                    .setNegativeButton("No"){_, _ ->}
+                    .create()
+                    .show()
+
             }
-
-
         }
 
     }
